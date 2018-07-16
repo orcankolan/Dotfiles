@@ -1,0 +1,39 @@
+Libraries Necessary to Run Receiver on Linux
+
+- ITPP => libitpp-dev
+  depends on:
+  -libitpp8v5
+  -libfftw3-3
+  -liblapack3 (includes blas)
+    depends on:
+      -libgfortran3
+
+- QWT => libqwt-qt5-dev
+
+- PICOSCOPE => libps2000
+  depends on:
+     -debconf (>= 0.5) | debconf-2.0
+     -libc6 (>= 2.3.2)
+     -libgcc1 (>= 1:4.1.1)
+     -libsdc++6 (>= 4.1.1)
+     -libusb-1.0-0 (>= 2: 1.0.8)
+
+
+
+PICOSCOPE
+
+1 Add repository to the updater
+sudo bash -c 'echo "deb http://labs.picotech.com/debian/ picoscope main" >/etc/apt/sources.list.d/picoscope.list'
+
+2  Import public key
+wget -O - http://labs.picotech.com/debian/dists/picoscope/Release.gpg.key | sudo apt-key add -
+
+3  Update package manager cache
+sudo apt-get update
+
+4 Install PicoScope
+sudo apt-get install picoscope (this is the osciloscope soft, so not needed)
+and
+sudo apt-get install libps2000
+
+5 /opt/picoscope

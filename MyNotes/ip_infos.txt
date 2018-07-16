@@ -1,0 +1,113 @@
+her yeni bilgisayarda internet paylaşımını tekrar kapatıp tekrar açmak gerekiyor..
+0 - to share an existing internet connection like wireless metu or wireless home
+	- go to "ağ paylaşım merkezi" click "kablosuz ağ bağlantısı" click "properties" click "sharing" share with the "ethernet" connection (the one with the ethernet adapter)
+	- do not check the second option saying "control the internet connection"
+1 - Find your autoconfig ipv4 address (something like 192.168.137.239) from windows network "ayrıntılar" of "ethernet" connection
+
+2 - open putty and with ssh connect to "raspberrypi.local" with user:pi and password:raspberry (enable x11 forwarding under ssh)
+3 - you can see ip and gateways by "route -ne" command
+5 -  or ip adress : "192.168.137.239" 
+6 - on raspberry 1st "sudo apt-get update" then  "sudo apt-get install realvnc-vnc-server realvnc-vnc-viewer"
+10 - download vnc viewer from "https://www.realvnc.com/download/viewer/"
+
+11 - run "vncserver" from raspberry by connecting with putty
+12 - if you do "sudo systemctl enable vncserver-x11-serviced.service", vncserver will be always enabled 
+11 - vnc server user/password is "pi"/"raspberry" which is gonna be used with vnc viewer when connecting tightvncserver 
+12 - when you command tightvncserver it will give you a port after a column "raspberrypi:2"
+13 - you connect to raspberrypie with vnc viewer by connecting to "raspberrypi.local:2" with this port "2" or whatever "tightvncserver" command produce
+
+SSH Enabling:
+1- Put the sd card into computer with adapter
+2- open cmd, and echo>G:\ssh #this will create an empty ssh file in the sdcard, put it back. rpi will serach for this file
+3- you can use mobaxterm instead of putty
+
+
+IP SEARCH:
+- plug the rpi3, then enable internet sharing from windows, unplug rpi3, then plug rpi3 again, then search from mobaxterm
+- you can use mobaxterm "network scanner", but you have to share the connection with ethernet
+
+
+apt-get nmap (this is slow)
+then nmap -v -sn 192.168.137.0/24 : this will search from 192.168.137.1 to 192.168.137.254
+
+1- #startx
+2- from another terminal, #x11vnc -display :0 (to start x11vnc, an X server must be initialized so startx is run first)
+3- to stop, #x11vnc -R stop, from another terminal
+4- OR you can terminate it from starx terminal by ctrl+c (by this way startx and x11vnc will stop)
+
+OR
+
+ifconfig -a
+
+it changes everytime you plug the raspberry pi
+ssh username@<ip address>
+
+STATIC IP ASSIGNING:
+#cat /etc/network/interfaces, ile sonuç al:
+iface eth0 inet dhcp (yazıyorsa dhcp ile dynamic ip alıyor demektir)
+
+#ifconfig ile bilgi topla(IP,BCAST, subnet Mask bilgileri)
+#route -n ile bilgi topla (Destination, Gateway, subnet Mask)
+
+Destination: 192.168.137.0
+Gateway: 192.168.137.1
+IP: 192.168.137.32 (herhangi bir sayı, otomatik olarak atandı dhcp)
+BCAST: 192.168.137.255 (range)
+subnet Mask: 255.255.255.0
+
+bu bilgileri: #nano /etc/network/interfaces ile gir:
+ama önce "iface eth0 inet dhcp" yi comment le ve "iface eth0 inet static" yap
+
+address 192.168.1.81
+netmask 255.255.255.0
+network 192.168.1.0
+broadcast 192.168.1.255
+gateway 192.168.1.254
+
+sonra 
+/etc/resolv.conf içinde (ping www.google.com yapabilmek için)dns name serverlar ile
+nameserver 8.8.8.8
+nameserver 8.8.4.4 
+satırları eklenicek ancak resolv.conf linked olduğu için
+unlink /etc/resolv.conf yapıp sonra nano ile yeni resolv.conf oluşturulmalı
+
+sonra reboot
+
+WLAN
+
+allow-hotplug wlan1
+iface wlan1 inet manual
+    wpa-conf /etc/wpa_supplicant.conf
+
+or?
+
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+        wpa-ssid "myssid"
+        wpa-psk "password"
+
+or?
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+        wpa-ssid "myssid"
+        wpa-psk "password"
+
+PICOSCOPE
+
+1 Add repository to the updater
+sudo bash -c 'echo "deb http://labs.picotech.com/debian/ picoscope main" >/etc/apt/sources.list.d/picoscope.list'
+
+2  Import public key
+wget -O - http://labs.picotech.com/debian/dists/picoscope/Release.gpg.key | sudo apt-key add -
+
+3  Update package manager cache
+sudo apt-get update
+
+4 Install PicoScope
+sudo apt-get install picoscope (this is the osciloscope soft, so not needed)
+and
+sudo apt-get install libps2000
+
+5 /opt/picoscope

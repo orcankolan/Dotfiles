@@ -1,0 +1,73 @@
+ON THE HOST COMPUTER:
+--------------------
+
+APT-GET build-essential with apt
+
+APT-GET qt5-default
+APT-GET qt4-default
+APT_GET pkg-config (this program is used for managing library compile and link flags for xconfig to run with qt4)
+after pkg-config you can use qt5 also.. it can manage to find qt4 and link against it for xconfig
+
+to switch betweeen qt versions. Inorder to see which version
+you can either: qtchooser -print-env , or qmake -v
+to choose other qt:  export QT_SELECT=4(or =qt4) , or QT_SELECT=5(or qt=5)
+then check the version
+
+to see version lists: qtchooser -list-versions
+
+APT-GET qtcreator
+
+APT-GET cmake-qt-gui
+
+(Before qwt:
+1- sudo apt-get install libqt5svg5-dev (this installs libqt5svg libraries)
+2- sudo apt-get install qttools5-dev (this installs libqt5designer5, libqt5designercomponents5, libqt5help5 libraries)
+
+see this for other modules: https://askubuntu.com/questions/508503/whats-the-development-package-for-qt5-in-14-04
+
+QWT:
+
+-you can install libqwt-qt5-dev with APT-GET
+
+INSTALL qwt 6.13 -- read http://qwt.sourceforge.net/qwtinstall.html
+(dont forget to "make install" with sudo)
+
+if make yields: Project ERROR: Unknown module(s) in QT: designer
+make: *** [sub-designer-make_first-ordered] Error 3
+mike@i5:~/pi/qwt6/qwt-6.1.0$
+
+see:http://www.qtcentre.org/threads/59011-Error-building-qwt-6-1-0-with-qmake-3-0
+
+AFTER INSTALLATION:
+after installation in order to use qwt you have to:
+qmake -set QMAKEFEATURES ${QWT_ROOT}/features 
+inorder to use CONFIG += qwt
+
+OR include ( ${QWT_ROOT}/features/qwt.prf ) in the .pro file
+
+where ${QWT_ROOT} is the root folder of the qwt installation which is /usr/local/qwt-6.1.3
+
+see http://qwt.sourceforge.net/qwtinstall.html#COMPILEANDLINKAPP
+
+On Unix platforms it is possible to link a runtime path into the executable, 
+so that the location of the Qwt libraries can be found without having to configure a runtime environment:
+
+with:
+QMAKE_RPATHDIR (this is done in my project in refreshtest.pri, last 2 lines)
+
+or set up runtime library:
+see http://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux
+
+LIBRARY PATHS:
+to see the paths for linking:
+
+On Linux, you can use ldconfig, which maintains the ld.so configuration and cache, to print out the directories search by ld.so with
+
+ldconfig -v 2>/dev/null | grep -v ^$'\t'
+ldconfig -v prints out the directories search by the linker (without a leading tab) and the shared libraries found in those directories (with a leading tab); the grep gets the directories.
+
+The first paths, without hwcap in the line, are either built-in or read from /etc/ld.so.conf.
+
+you have to put a file somethign.conf (maybe qwt.conf) in to the to /etc/ld.so.conf.d/ directory
+including the path to the libqwt.so which is /usr/local/qwt-6.1.3/lib.. this way you dont have to QMAKE_RPATH
+

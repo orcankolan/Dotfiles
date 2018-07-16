@@ -1,0 +1,27 @@
+THESE ARE FOR HOST COMPUTER.. NOT FOR ARM PROCESSOR
+
+FOR ITPP:
+
+ITTP needs Blas, Lapack and FFTW (for fft functions to work)
+
+For FFTW: install libfftw3-3 (on ubuntu), this installs runtime libraries: .so files, also it will add fortran compilers
+
+For Blas and Lapack: install liblapack3 (on ubuntu), this installs lapack (including Blas) libraries: .so files
+
+For ITPP: install libitpp-dev (on ubuntu), this will install header files for developing and it will prompt you to install
+libitpp8v5 which installs itpp libraries, .so files.
+
+when itpp is installing it will search for blas, lapack and fftw libraries. And it will find them, because they are:
+
+- blas and lapack is in /usr/lib/
+- fftw is in usr/lib/x86_64-linux-gnu/, 
+
+and these paths are in the search path of ldconfig: which can be seen by :
+
+ldconfig -v 2>/dev/null | grep -v ^$'\t'
+
+
+FOR QWT:
+
+1-) You may install it manually by downloading (using make, and make install) (this must be the the right way) 
+2-) Or you may install libqwt-qt5-dev ? (not sure)

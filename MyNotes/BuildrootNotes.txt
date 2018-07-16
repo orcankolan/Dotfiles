@@ -1,0 +1,185 @@
+Before building install "ccache" on to ubunutu (host machine), to reduce redundant work by the C/C++ preprocessor
+
+orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/buildroot$ mkdir ../orcan1-output
+orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/buildroot$ make O=../orcan1-output orcan_rpi3_defconfig
+
+After that, go to the directory you chose to run Buildroot make commands
+
+orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/buildroot$ cd ../orcan1-output
+orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output$ make menuconfig (optional)
+orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output$ make
+
+OR
+orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output$ time make (to time it)
+
+TO USE MENUCONFIG:
+- you need libncurses5-dev and libncursesw5-dev (wide character support)
+
+STATIC IP ASSIGNING: see in ip_infos.txt
+
+make graph-build (generates pdfs of build timing of packages etc., needs python-matplotlib and python-numpy)
+
+FOR A DIFFERENT/ANOTHER BUILD:
+when you go to orcan1-output, and run make xconfig and add/remove any package (e.g tslib) and save it from xconfig, 
+it will be written in .config in /orcan1-output, but it wont be written in configs/orcan_rpi3_defconfig.
+it will be written in orcan_rpi3_defconfig, if you do: $make savedefconfig, search buildroot pdf slides for make savedefconfig
+
+FOR PICOSCOPE:
+- you will need OPKG package-manager (from xconfig) , binary package installer.
+- install .deb packages of libps2000 from website:
+- opkg install http://labs.picotech.com/debian/pool/main/libp/libps2000/libps2000_2.1.6-3r05_armhf.deb
+	    OR http://labs.picotech.com/raspbian/pool/main/libp/libps2000/libps2000_2.1.6-3r05_armhf.deb
+            OR wget http://labs.picotech.com/raspbian/pool/main/libp/libps2000/libps2000_2.1.6-3r05_armhf.deb
+	then install it
+- https://wiki.openwrt.org/doc/devel/packages/opkg, says it can handle .deb packages.reate 
+
+- for opkg:, create /etc/opkg.conf:
+	src/gz local file:///root
+	dest root /
+	dest ram /tmp
+	option overlay_root /overlay
+	arch armhf 100
+
+- and: #opkg install -f /etc/opkg.conf --force-depends lib0s200lasdkflþasdf.deb
+
+OR opkg --add-arch armhf:100 install --force-depends libps2000_2.1.6-3r05_armhf.deb ( no need for a opkg.conf file)
+
+
+ADDING A NEW (package = ITTP) PACKAGE TO BUILDROOT (Learning the Basics of Buildroot - Thomas Petazzoni, 1:26:00)
+- goto buildroot directory (not orcan1-output)
+- orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/buildroot$
+- mkdir package/itpp
+- nano package/itpp/Config.in  (create a Config.in file, with a uppercase C):
+
+	config BR2_PACKAGE_ITPP
+	bool "itpp"
+	help
+	  IT++ is a C++ library of mathematical, signal processing and communication classes and functions.
+
+	  http://itpp.sourceforge.net 
+	  
+- add this source location into package/Config.in, under menu "Other" where similar libraries exist.
+
+	source "package/eigen/Config.in"
+	source "package/itpp/Config.in"
+	
+- now you can see the "itpp" option from:
+	orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output$ make xconfig
+	
+- also create package/itpp/itpp.mk file :
+
+		################################################################################
+		#
+		# itpp
+		#
+		################################################################################
+
+		ITPP_VERSION = 4.3.1
+		ITPP_SITE = http://downloads.sourceforge.net/project/itpp/itpp/$(ITPP_VERSION) (no trailing slash)
+		ITPP_SOURCE = itpp-$(ITPP_VERSION).tar.bz2
+		ITPP_INSTALL_STAGING = YES
+		ITPP_DEPENDENCIES = lapack fftw  #(this makes sure, lapack and fftw is installed before itpp)
+						#becaues itpp will look at these libraries before building and installing
+
+
+		$(eval $(cmake-package)) #because itpp is cmake project, this handles all the cmake configurations etc.
+
+
+	
+- we make ITPP_INSTALL_STAGING = YES (Default is NO), by this way header files of itpp is included in the output/staging/usr/include directory and libraries will be installed in the output/staging/usr/lib. But inorder to build our receiver for arm we need the header files of itpp. development files (header files) are needed to compile other libraries or applications depending on them.
+
+- from 	orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output$
+- you can do, make itpp-dirclean, and make itpp (this builds and installs), but inorder to produce img file you have do : make at the end	
+
+ADDING A NEW (package = PICOSCOPE) PACKAGE TO BUILDROOT
+
+- goto buildroot directory (not orcan1-output)
+- orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/buildroot$
+- mkdir package/itpp
+- nano package/itpp/Config.in  (create a Config.in file, with a uppercase C):
+
+	config BR2_PICOSCOPE_ITPP
+	bool "picoscope"
+	help
+	  Picoscope header files and shared library
+
+	  http://labs.picotech.com/raspbian/pool/main/libp/libps2000/
+	  
+- add this source location into package/Config.in, under menu "Other" where similar libraries exist.
+
+	source "package/eigen/Config.in"
+	source "package/itpp/Config.in"
+	source "package/picoscope/Config.in"
+	
+- now you can see the "itpp" option from:
+	orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output$ make xconfig
+	
+- also create package/itpp/itpp.mk file :
+
+			################################################################################
+			#
+			# picoscope
+			#
+			################################################################################
+
+			PICOSCOPE_VERSION = 2.1.6
+			PICOSCOPE_SITE = $(TOPDIR)/../picoscope-lib 
+			PICOSCOPE_SITE_METHOD = local
+			PICOSCOPE_INSTALL_STAGING = YES
+
+			define PICOSCOPE_INSTALL_STAGING_CMDS
+				$(INSTALL) -D -m 0644 $(@D)/ps2000.h $(STAGING_DIR)/usr/include/ps2000.h
+				$(INSTALL) -D -m 0755 $(@D)/libps2000.so* $(STAGING_DIR)/usr/lib
+			endef
+
+			define PICOSCOPE_INSTALL_TARGET_CMDS
+				$(INSTALL) -D -m 0755 $(@D)/libps2000.so* $(TARGET_DIR)/usr/lib
+			endef
+
+			$(eval $(generic-package))
+			
+			
+
+!!!NOTE : -TOPDIR is ~/raspberry/git_jumpnow_repo/buildroot/
+          -ps2000.h and libps2000.so.2.0.0 should be in picoscope-lib)
+		  
+		  these files are installed in the raspberry pi hardware by opkg --add-arch armhf:100 install --force-depends libps2000_2.1.6-3r05_armhf.deb
+		  and we fetch them by sftp from raspi to linux-ubuntu and then put to picoscope-lib/
+		  
+		  Typical project organization:
+				- buildroot/, the Buildroot source code
+				- external/, your BR2_EXTERNAL tree
+				- custom-app/, your custom application code
+				- picoscope-lib/, your custom library
+	
+- go to orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output/staging/usr/lib and 
+	make symbolic links for libps2000.so and libps2000.so.2 for newly created libps2000.so.2.0.0 (original one)
+
+	
+- also goto orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output/target/usr/lib
+	make symbolic links for libps2000.so and libps2000.so.2 for newly created libps2000.so.2.0.0 (original one)
+	
+- then run  orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output$ make
+
+SYMBOLIC LINK MAKING:
+To create a new symlink (will fail if symlink exists already):
+
+ln -s /path/to/file /path/to/symlink
+To create or update a symlink:
+
+ln -sf /path/to/file /path/to/symlink	
+
+
+REMOVING PACKAGES (Buildroot User Manual Chapter 8.3) 
+also read 10.7. Why doesn’t Buildroot generate binary packages (.deb, .ipkg…)?
+
+if you do: make itpp-dirclean, it cleans the output build directory
+
+DURING DEVELOPMENT (See Chapter 8.12.6. Using Buildroot during development), 
+
+
+TOPDIR is ~/raspberry/git_jumpnow_repo/buildroot/
+make clean : cleans the build directory of the output
+make distclean : cleans the build directory, config.in file, downloads
+The default for INSTALL_PROGRAM should be $(INSTALL)
+

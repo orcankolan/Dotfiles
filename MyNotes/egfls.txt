@@ -1,0 +1,22 @@
+EGFLS VARIABLES:
+
+shell script file:
+file: /etc/platform.d/qt5-env.sh (in the buildroot linux)
+
+# the other option is linuxfb if just using qt widgets
+export QT_QPA_PLATFORM=linuxfb:size=1366x768
+#export QT_QPA_PLATFORM=eglfs
+export QT_QPA_EGLFS_PHYSICAL_WIDTH=440
+export QT_QPA_EGLFS_PHYSICAL_HEIGHT=264
+export QT_QPA_EGLFS_WIDTH=1366
+export QT_QPA_EGLFS_HEIGHT=768
+
+We can then save and close the file. The next time you start a shell session, your environmental variable declaration will be read and passed on to the shell environment. You can force your current session to read the file now by typing:
+
+source /etc/platform.d/qt5-env.sh
+
+To LIST ENV VARIABLES AND SHELL VARABLES:
+
+#printenv or #env (for env variables)
+#set for (shell variables)
+

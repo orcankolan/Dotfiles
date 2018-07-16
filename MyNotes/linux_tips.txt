@@ -1,0 +1,252 @@
+12-07-2018
+Ubuntu version:
+lsb_release -a
+
+kernel version:
+uname -a
+
+Listing all enabled locales
+locale -a
+
+which shell (zsh or bash):
+echo $0
+
+Setting locale for the current session
+LANG = en_US.utf8
+
+Setting LANG permenantly
+sudo nano /etc/default/locale
+LANG=tr_TR.utf8
+LANG=en_US.utf8
+
+TOP and KILL
+The top command is the traditional way to view your systems resource usage and see the processes that are taking up the most system resources. Top displays a list of processes, with the ones using the most CPU at the top
+
+kill pid
+
+USING GREP:
+Comparing files:
+grep -i substring file1 (-i :case insensitive)
+or using with shell commands:
+ls -lh | grep -i substring
+
+COMPARING FILES
+diff file1 file2
+
+SIZE OF DIRECTORIES
+df -h  (for whole file system, to see free disk space)
+
+-go into a folder you wanna learn about its size , then $du -hs OR ONLY $du -h (this will show all the subdirectories, very long)
+
+- to see all the sizes of the directories in a directory, $du -h --max-depth=1 | sort -hr
+
+OR $du --max-depth=1 | sort -hr (to see in bytes)
+
+SFTP:
+#sftp root@10238.1309.913.32 
+
+TO INSTALL "locate command":
+sudo apt-get install mlocate
+then :
+mlocate maintains a database of all your files and is re-indexed once a day by default. If you want it to re-index immediately then run "sudo updatedb" from the command line.
+
+If you get a cannot stat error when you run locate, then you need to run sudo updatedb to populate the database, just as if you wanted to re-index immediately.
+
+
+APPLICATION SEARCH
+
+apt list --installed bash
+apt list -a --installed bash (for exact string match)
+
+This will try to list the installed packages with the name bash
+
+However, if you wanted to search for a particular file, use apt-file
+
+The following command will list all the packages that have string bash within their name:
+
+dpkg --get-selections | grep <string> (this works)
+
+to list files of an installed package:
+https://askubuntu.com/questions/32507/how-do-i-get-a-list-of-installed-files-from-a-package
+
+To see all the files the package installed onto your system, do this:
+
+dpkg --listfiles <package_name>
+dpkg-query -L <package_name>
+
+To see the files a .deb file will install
+
+dpkg-deb -c <package_name.deb>
+To see the files contained in a package NOT installed, do this once (if you haven't installed apt-file already:
+
+sudo apt-get install apt-file
+sudo apt-file update
+then
+
+apt-file list <package_name>
+
+To get a list of a specific package installed:
+dpkg --get-selections | grep <packagename>
+
+To get all the list of packages into a file
+dpkg --get-selections | grep -v deinstall > ~/packages
+
+APP INFO 
+apt-cache show postgresql
+apt-cache show packagename | less (less is used like vim)
+
+SEARCH FROM CACHE LIST
+apt-cache search packagename
+
+
+SYSTEM INFO
+uname -a or screenfetch for info about system
+
+CLONE A BRANCH FROM GITHUB (branchname is jumpnow)
+git clone -b jumpnow https://github.com/jumpnow/buildroot
+
+EXTRACTION
+extraction tar.gz files:
+tar -xvf filename.tar.gz
+all in: http://www.tecmint.com/18-tar-command-examples-in-linux/
+
+extraction xz files:
+unxz <filename>
+
+REMOVE FOLDERS:
+rm -r mydir (recursively all files) (but ask questions)
+rm -rf mydir (without questions)
+
+
+COPY FOLDERS (see https://www.cyberciti.biz/faq/copy-folder-linux-command-line/)
+cp -avr [source] [target]
+
+FIND FILES:
+find /home -name '*.jpg'
+find . -name '*aslda*' (in the current and below directories)
+OR locate *asdakjd*
+
+FIND IN FILES:
+find / -type f | xargs grep 'text-to-find-here'
+grep -irl "string to be searched"  /path/to/dir   
+-i ignore case -r recursive -l l stands for "show the file name, not the result itself".
+
+MOVE FILES AND FOLDERS:
+mv source target
+mv folder1 folder2 target
+mv folder1 file1 target
+mv -option source target
+
+
+RENAME FILES:
+mv /home/user/Files/filename1.ext /home/user/Files/filename2.ext
+
+
+
+RENAME FOLDER:
+mv -T /home/user/oldname /home/user/newname
+That will rename the directory if the destination doesn't exist or if it exists but it's empty. Otherwise it will give you an error.
+
+If you do this instead:
+
+mv /home/user/oldname /home/user/newname
+One of two things will happen:
+
+If /home/user/newname doesn't exist, it will rename /home/user/oldname to /home/user/newname
+If /home/user/newname exists, it will move /home/user/oldname into /home/user/newname, i.e. /home/user/newname/oldname
+
+SETTING PATH VARIABLES
+-also see shell variables:
+https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps
+
+-to list variables use printenv command
+
+The most common use of the export command is when defining the PATH shell variable:
+
+export PATH=$PATH:/usr/local/bin
+In the example above, we have included additional path /usr/local/bin to the existing PATH definition.
+
+see: https://linuxconfig.org/learning-linux-commands-export
+
+LD_LIBRARY PATHS:
+to see the paths for linking:
+
+On Linux, you can use ldconfig, which maintains the ld.so configuration and cache, to print out the directories search by ld.so with
+
+ldconfig -v 2>/dev/null | grep -v ^$'\t'
+ldconfig -v prints out the directories search by the linker (without a leading tab) and the shared libraries found in those directories (with a leading tab); the grep gets the directories.
+
+The first paths, without hwcap in the line, are either built-in or read from /etc/ld.so.conf.
+
+
+REMOVING PACKAGES:
+apt-get remove packagename
+
+will remove the binaries, but not the configuration or data files of the package packagename. 
+It will also leave dependencies installed with it on installation time untouched.
+
+apt-get purge packagename or apt-get remove --purge packagename
+
+will remove about everything regarding the package packagename, 
+but not the dependencies installed with it on installation. Both commands are equivalent.
+
+apt-get remove --auto-remove --purge packagename
+will remove dependency packages and the configuration files
+
+Particularly useful when you want to 'start all over' with an application because you messed up the configuration. 
+However, it does not remove configuration or data files residing in users home directories, usually in hidden folders there. There is no easy way to get those removed as well.
+
+apt-get autoremove
+
+removes orphaned packages, i.e. installed packages that used to be installed as an dependency, 
+but aren't any longer. 
+Use this after removing a package which had installed dependencies you're no longer interested in.
+
+do: sudo apt-get remove packagename then  sudo apt-get auto-remove
+or: sudo apt-get remove --auto-remove packagename
+
+REMOVING PPA:
+Use the --remove flag, similar to how the PPA was added:
+
+sudo add-apt-repository --remove ppa:whatever/ppa
+As a safer alternative, you can install ppa-purge:
+
+sudo apt-get install ppa-purge
+And then remove the PPA, downgrading gracefully packages it provided to packages provided by official repositories:
+
+sudo ppa-purge ppa_name
+
+
+LINUX ve WINDOWS SHARING
+on the device install virtualbox guest additions
+create a folder in d:\LinuxShared
+make this shared folder in Oracle VM VirtualBox , in the VMachine settings. and make it automount
+create a folder in ~/mntShared
+
+create a file named "mntShared.sh" in ~/  (home folder) and make it executable
+in that file there is only one line : sudo mount -t vboxsf LinuxShared mntShared
+execute that file (you have to execute it everytime you start linux)
+
+
+SD CARD:(This methpd is not used by you)
+there is C:\SDHard in the computer
+file in that folder is put as a SATA harddrive in the settings of VM Machine(Ubuntu or Debian)
+
+
+IP SEARCH:
+
+apt-get nmap
+then nmap -v -sn 192.168.137.0/24 : this will search from 192.168.137.1 to 192.168.137.254
+it changes everytime you plug the raspberry pi
+ssh username@<ip address>
+
+FILE MODES:
+read : 4
+write :2
+exe: 1
+
+CHANGE user to root:
+Run sudo -i. This will give you an interactive root shell. 
+Note that the $ at the end of your prompt has changed to a #, indicating that you have root access. 
+From here you can run any sequence of commands as root, 
+or run the command exit to leave the root shell.

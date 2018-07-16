@@ -1,0 +1,62 @@
+Qt Creator Locked Problem:
+
+	-disable 3d acceleration from virtualbox settings and boot the system
+	-In Qt Creator, go to Help › About Plugins…
+	-Uncheck Qt Creator –> Welcome
+	-exit Qt Creator, shutdown system and enable 3d acceleration
+	-It should work now after reboot
+
+He got the solution from https://dmitryfrank.com/blog/2015/0716_qt_creator_in_virtualbox_with_windows_guest_os
+
+QT CREATOR (In Ubuntu) SETTING A NEW KIT:
+
+check out: https://www.youtube.com/watch?v=lyQVw1RtaH4 (QtDD13 - Andy Nichols - Developing Embedded Linux Applications with Qt) - 37:00
+
+<tuple> is :  identifier of the architecture, vendor, operating system, C library and ABI. E.g:
+									arm-buildroot-linux-gnueabihf
+
+---The Buildroot cross-compiler is installed in $(HOST_DIR)/usr/bin 
+(which is orcan@orcan-virtualbox:~/raspberry/git_jumpnow_repo/orcan1-output/host/usr/bin)
+
+---Qmake is installed in $(HOST_DIR)/usr/bin
+
+The sysroot is in host/<tuple>/sysroot/usr
+
+output/
+	host/
+		usr/lib
+		usr/bin
+		
+		usr/<tuple>/sysroot/bin
+		usr/<tuple>/sysroot/lib
+		usr/<tuple>/sysroot/usr/lib
+		usr/<tuple>/sysroot/usr/bin
+		
+		
+output/
+	staging/
+
+Project under Qt-Projects/receiver-rpi3:
+
+- open receiver.pro
+- itpp.pri, picoscope.pri, receiver.pri are in the project folder (either in receiver or in receiver-rpi3), so they are configured for the 
+ubunutu linux or rpi3 buildroot linux)
+- QWT related files, i.e qwtbuild.pri, qwtconfigure.pri and qwtfunctions.pri are in the folder which is one level up
+so you have to make changes for receiver and receiver-rpi3 in the qwtconfig.pri file (others are same for both receiver and reciever-rpi projects)
+
+- under Projects => Manage Kits (or under Options => Build and Run):
+	Device Type = Generic Linux (Host name = ip address of rpi3, user = root, password = blank ) 
+	Sysroot = orcan1-output/host/usr/arm-buildroot-linux-gnueabihf/sysroot
+	Compiler = orcan1-output/host/usr/bin/arm-buildroot-linux-gnueabihf-gcc
+	Qmake = orcan1-output/host/usr/bin/qmake
+	- Do not change debugger, qt mkspecs or cmake tool!
+
+- before build change the QWT_INSTALL_PREFIX (in qwtconfig.pri file) for rpi3 sysroot
+	QWT_INSTALL_PREFIX    = /home/orcan/raspberry/git_jumpnow_repo/orcan1-output/host/usr/arm-buildroot-linux-				gnueabihf/sysroot/usr
+	
+
+- if you gonna build for ubuntu make it QWT_INSTALL_PREFIX = /usr/local/qwt-$$QWT_VERSION
+
+- build receiver-rpi3 project with this configuration then put the executable file receiver-rpi3 to rpi3 wtih sftp.
+
+	

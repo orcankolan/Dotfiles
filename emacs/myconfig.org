@@ -1,0 +1,180 @@
+
+* Built-in modes and variables
+** Startup message
+   #+BEGIN_SRC emacs-lisp
+     (setq inhibit-startup-message t)
+   #+END_SRC
+** Main window title
+   #+BEGIN_SRC emacs-lisp
+     (setq frame-title-format "emacs")
+   #+END_SRC
+** Other modes
+*** Tool bar
+    #+BEGIN_SRC emacs-lisp
+      (tool-bar-mode -1)
+    #+END_SRC
+*** Scroll bar
+    #+BEGIN_SRC emacs-lisp
+      (scroll-bar-mode -1)    
+    #+END_SRC
+*** Column number
+    #+BEGIN_SRC emacs-lisp
+      (column-number-mode)    
+    #+END_SRC
+*** Line numbers
+    #+BEGIN_SRC emacs-lisp
+      (global-linum-mode t)    
+    #+END_SRC
+*** Parenthesis highlighting
+    #+BEGIN_SRC emacs-lisp
+      (show-paren-mode)                
+    #+END_SRC
+*** Winner mode
+    When activated, it allows you to “undo” (and “redo”) changes in
+    the window configuration with the key commands ‘C-c left’ and ‘C-c
+    right’
+    #+BEGIN_SRC emacs-lisp
+      (winner-mode t)    
+    #+END_SRC
+** Revert buffer key-binding
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "<f5>") 'revert-buffer)
+   #+END_SRC
+* Try package
+  Used to try packages on emacs without permenantly installing them
+  #+BEGIN_SRC emacs-lisp
+    (use-package try
+      :ensure t)  
+  #+END_SRC
+* Which-key package
+  Used with C-x command. Helps finding some useful commands from mini-buffer
+  #+BEGIN_SRC emacs-lisp
+    (use-package which-key
+      :ensure t
+      :config (which-key-mode)) ; :init sets things before, :config sets
+                                ; things after it loads package.
+  #+END_SRC
+* Org-mode stuff
+  Org is included as built-in package in Emacs. To re-install org-mode "use package-install R org"
+  #+BEGIN_SRC emacs-lisp
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  #+END_SRC
+* Buffers and Buffer Listing
+  List buffer in an other window
+  #+BEGIN_SRC emacs-lisp
+    (defalias 'list-buffers 'ibuffer-other-window)  
+  #+END_SRC
+* Window State Managment and Jump windows
+  Using ace-window package to jump between windows
+  #+BEGIN_SRC emacs-lisp
+    (use-package ace-window
+      :ensure t
+      :config
+      (progn
+        (global-set-key [remap other-window] 'ace-window)
+        (custom-set-faces
+         '(aw-leading-char-face
+           ((t (:inherit ace-jump-face-foreground :height 3.0 :foreground "deep sky blue")))))
+        ))
+  #+END_SRC
+* Swiper and searching
+** Counsel package
+   This package is necessary for the swiper package
+   #+BEGIN_SRC emacs-lisp
+     (use-package counsel
+       :ensure t)
+   #+END_SRC
+** Ivy package
+   Switching buffers with the fancy ivy
+   #+BEGIN_SRC emacs-lisp
+     (use-package ivy
+       :ensure t
+       :diminish (ivy-mode)
+       :bind (("C-x b" . ivy-switch-buffer))
+       :config
+       (ivy-mode 1)
+       (setq ivy-use-virtual-buffers t)
+       (setq ivy-display-style 'fancy)
+     )   
+   #+END_SRC
+** Swiper package
+   Using swiper for search and using counsel for find-file
+   #+BEGIN_SRC emacs-lisp
+     (use-package swiper
+       :ensure t
+       :bind (("C-s" . swiper)
+              ("C-r" . swiper)
+              ("C-c C-r" . ivy-resume)
+              ("M-x" . counsel-M-x)
+              ("C-x C-f" . counsel-find-file))
+       :config
+       (progn
+         (ivy-mode 1)
+         (setq ivy-use-virtual-buffers t)
+         (setq ivy-display-style 'fancy)
+         (setq enable-recursive-minibuffers t)
+         (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+       )
+     )   
+   #+END_SRC
+** Avy package
+   Used to jump to chars, words, or lines in the screen easily
+   #+BEGIN_SRC emacs-lisp
+     (use-package avy
+       :ensure t
+       :bind (("M-s" . avy-goto-char)
+              ("M-g w" . avy-goto-word-1)
+              ("M-g f" . avy-goto-line))
+       )   
+   #+END_SRC
+** Auto-complete package
+   #+BEGIN_SRC emacs-lisp
+     (use-package auto-complete
+       :ensure t
+       :init
+       (progn
+         (ac-config-default)
+         (global-auto-complete-mode t)
+         ))
+   #+END_SRC
+* Theme
+  #+BEGIN_SRC emacs-lisp
+    (use-package tangotango-theme
+      :ensure t
+      :config
+      (load-theme 'tangotango t))  
+  #+END_SRC
+* Powerline
+  #+BEGIN_SRC emacs-lisp
+    (use-package powerline
+      :ensure t
+      :config (powerline-center-theme))  
+  #+END_SRC
+* UndoTree
+  #+BEGIN_SRC emacs-lisp
+    (use-package undo-tree
+      :ensure t
+      :init (global-undo-tree-mode))  
+  #+END_SRC
+* Auctex
+  Auctex is used in emacs to edit latex files
+  #+BEGIN_SRC emacs-lisp
+        ;; (use-package auctex
+        ;;  :ensure t
+        ;;   :config
+        ;;  (progn
+        ;;    (setq TeX-auto-save t)
+        ;;    (setq TeX-parse-self t)
+        ;;    (setq-default TeX-master nil)
+        ;;    (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+        ;;    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+        ;;    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+        ;;    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+        ;;    (setq reftex-plug-into-AUCTeX t)
+        ;;    (TeX-global-PDF-mode t)
+        ;;    )
+        ;;  )
+  #+END_SRC

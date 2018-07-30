@@ -40,8 +40,10 @@ some plugins to be used in .zshrc file:
 git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions (this is a custom plugin)
 then add zsh-autosuggestions to plugins section
 
+add the following line for autosuggestion colors to be seen as grey
+export TERM=xterm-256color
 
-################### Installing tmux #############################
+################## #Installing tmux #############################
 
 -> sudo apt-get install tmux
 

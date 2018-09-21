@@ -6,7 +6,7 @@
    #+END_SRC
 ** Main window title
    #+BEGIN_SRC emacs-lisp
-     (setq frame-title-format "emacs")
+     (setq frame-title-format "Orcans emacs")
    #+END_SRC
 ** Other modes
 *** Tool bar
@@ -219,3 +219,10 @@
        (setq pdf-view-resize-factor 1.10))
         
    #+END_SRC
+* Evil-Mode
+  Evil-Mode is the extensible VI layer for emacs
+  #+BEGIN_SRC emacs-lisp
+    ;; (use-package evil
+    ;;    :ensure t
+    ;;    :config (evil-mode 1))
+  #+END_SRC

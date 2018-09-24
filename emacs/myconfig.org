@@ -220,9 +220,34 @@
         
    #+END_SRC
 * Evil-Mode
-  Evil-Mode is the extensible VI layer for emacs
+  Evil-Mode is the extensible VI layer for emacs.(M-x evil-mode for activation)
   #+BEGIN_SRC emacs-lisp
-    ;; (use-package evil
-    ;;    :ensure t
-    ;;    :config (evil-mode 1))
+    (use-package evil
+       :ensure t
+       :config (evil-mode 0))
   #+END_SRC
+* Cheatsheet
+  To create your own cheat-sheet
+  #+BEGIN_SRC emacs-lisp
+    (use-package cheatsheet
+      :ensure t)
+  #+END_SRC
+** Adding cheats
+   Add cheats as below in this area
+   #+BEGIN_SRC emacs-lisp
+     (cheatsheet-add :group 'Common :key "C-x C-c" :description "leave Emacs.")
+     (cheatsheet-add :group 'Common :key "C-S _ & C-x u" :description "undo & undo tree (q for quit undotree")
+     (cheatsheet-add :group 'OrgMode :key "C-c '" :description "goto(quit) edit mode in source")
+     (cheatsheet-add :group 'OrgMode :key "M-;" :description "uncomment or comment region in edit mode")
+     (cheatsheet-add :group 'Cheatsheet :key "C-q" :description "quit from cheat sheet")
+     (cheatsheet-add :group 'Common :key "C-x C-f" :description "open file")
+     (cheatsheet-add :group 'Common :key "M-x evil-mode" :description "vim mode")
+     (cheatsheet-add :group 'Common :key "M-x global-auto-complete-mode" :description "enable/disable autocomplete")
+     (cheatsheet-add :group 'Common :key "C-x b" :description "switch buffer")
+     (cheatsheet-add :group 'Common :key "C-x k" :description "kill buffer")
+     (cheatsheet-add :group 'Common :key "C-x C-b" :description "list buffers")
+     (cheatsheet-add :group 'Common :key "M-g g" :description "goto line number")
+     (cheatsheet-add :group 'Common :key "M-g w" :description "goto word")
+     (cheatsheet-add :group 'Common :key "M-g f" :description "goto line")
+     (cheatsheet-add :group 'Common :key "M-s" :description "goto character")
+   #+END_SRC

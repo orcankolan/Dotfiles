@@ -236,7 +236,7 @@
    Add cheats as below in this area
    #+BEGIN_SRC emacs-lisp
      (cheatsheet-add :group 'Common :key "C-x C-c" :description "leave Emacs.")
-     (cheatsheet-add :group 'Common :key "C-S _ & C-x u" :description "undo & undo tree (q for quit undotree")
+     (cheatsheet-add :group 'Common :key "C-S _ & C-x u" :description "undo & undo tree (q for quit undotree)")
      (cheatsheet-add :group 'OrgMode :key "C-c '" :description "goto(quit) edit mode in source")
      (cheatsheet-add :group 'OrgMode :key "M-;" :description "uncomment or comment region in edit mode")
      (cheatsheet-add :group 'Cheatsheet :key "C-q" :description "quit from cheat sheet")
@@ -250,4 +250,5 @@
      (cheatsheet-add :group 'Common :key "M-g w" :description "goto word")
      (cheatsheet-add :group 'Common :key "M-g f" :description "goto line")
      (cheatsheet-add :group 'Common :key "M-s" :description "goto character")
+     (cheatsheet-add :group 'Common :key "C-z" :description "makes emacs sleep (fg from terminal to recover)")
    #+END_SRC

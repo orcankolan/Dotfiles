@@ -251,4 +251,7 @@
      (cheatsheet-add :group 'Common :key "M-g f" :description "goto line")
      (cheatsheet-add :group 'Common :key "M-s" :description "goto character")
      (cheatsheet-add :group 'Common :key "C-z" :description "makes emacs sleep (fg from terminal to recover)")
+     (cheatsheet-add :group 'Common :key "C-h k key" :description "description for the inserted key")
+     (cheatsheet-add :group 'Common :key "C-h c key" :description "description for the inserted key in the echo area")
+     (cheatsheet-add :group 'VIM :key "d i (" :description "delete inside parenthesis (also c for change)")
    #+END_SRC

@@ -18,3 +18,9 @@ Mode-Shift-Arrow keys : shift windows in between
 Mode-0,1,2.. : navigate in workspaces
 Mode-Shift- 0,1,2.. : move current window to the workspace
 Mode-Shift-e : log out
+* Using some apps with i3
+** feh for wallpapers
+use this program to install wallpapers on i3
+   #+BEGIN_SRC sh
+     sudo apt install feh   
+   #+END_SRC

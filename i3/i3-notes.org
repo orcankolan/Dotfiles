@@ -1,0 +1,19 @@
+* Installing i3 window manager
+  Every system has a window manager. i3 is a tiling window manager. It does not have
+  any maximize button or so. On a clean Ubuntu installation:
+  #+BEGIN_SRC sh
+    sudo apt-get install i3
+  #+END_SRC
+  
+  While installing don't forget to generate a config file when prompted. This will also install
+  some key bindings. Use windows key for mode key (recommended)
+* First-load key-bindings
+Mode-Enter : Terminal window
+Mode-Shift-q : Quit window
+Mode-d : dmenu app
+Mode-v : vertical mode for the next opened window
+Mode-Arrow keys : move between windows
+Mode-r : resize mode (ESC to escape resive mode), use arrow keys to make wider or narrower
+Mode-Shift-Arrow keys : shift windows in between
+Mode-0,1,2.. : navigate in workspaces
+Mode-Shift- 0,1,2.. : move current window to the workspace

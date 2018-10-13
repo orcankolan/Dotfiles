@@ -9,6 +9,7 @@
   some key bindings. Use windows key for mode key (recommended)
 * Config file
 - Config file is: ~/.config/i3/config
+- You might need to change i3-sensible-terminal to mate-terminal (or gnome-terminal)
 * Built-in key-bindings
 - Mode-Enter : Terminal window
 - Mode-Shift-q : Quit window

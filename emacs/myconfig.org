@@ -248,8 +248,10 @@
      (cheatsheet-add :group 'Common :key "M-x evil-mode" :description "vim mode")
      (cheatsheet-add :group 'Common :key "M-x global-auto-complete-mode" :description "enable/disable autocomplete")
      (cheatsheet-add :group 'Common :key "C-x b" :description "switch buffer")
+     (cheatsheet-add :group 'Common :key "C-x 4 b" :description "open buffer in other window")
      (cheatsheet-add :group 'Common :key "C-x k" :description "kill buffer")
      (cheatsheet-add :group 'Common :key "C-x C-b" :description "list buffers")
+     (cheatsheet-add :group 'Common :key "C-c left" :description "undo window layout")
      (cheatsheet-add :group 'Common :key "M-g g" :description "goto line number")
      (cheatsheet-add :group 'Common :key "M-g w" :description "goto word")
      (cheatsheet-add :group 'Common :key "M-g f" :description "goto line")
@@ -266,7 +268,10 @@
    #+END_SRC
 
 * Spelling
-  You must install hunspell with apt-get
+  You must install hunspell with apt-get. Dictionaries (such as tr_TR.aff and tr_TR.dic)
+should be copied into /usr/share/hunspell. 
+- By using "M-x ispell-change-dictionary" dictionaries can be
+changed and also be viewed.
 #+BEGIN_SRC emacs-lisp
   (cond
    ;; try hunspell at first
@@ -281,3 +286,8 @@
     ;; Please note ispell-extra-args contains ACTUAL parameters passed to aspell
     (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
 #+END_SRC
+
+- Use 'M-x flyspell-buffer' to underline unknown words
+- Use 'M-x flyspell-mode' to toggle flyspell
+- Added words with ispell are located in the ~/.hunspell_{dictionary name}
+

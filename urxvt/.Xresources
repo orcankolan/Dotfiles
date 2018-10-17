@@ -38,6 +38,6 @@
 URxvt.intensityStyles:	false
 URxvt.background:       [70]#000000
 URxvt.depth:		32
-URxvt.font: 		xft:monospace:size=11
+URxvt.font: xft:Inconsolata\ for\ Powerline:size=13
 URxvt.scrollBar:	false
 URxvt.cursorColor: white

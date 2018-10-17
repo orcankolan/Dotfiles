@@ -9,6 +9,7 @@
   some key bindings. Use windows key for mode key (recommended)
 * Config file
 - Config file is: ~/.config/i3/config
+- You might need to change i3-sensible-terminal to mate-terminal (or gnome-terminal)
 * Built-in key-bindings
 - Mode-Enter : Terminal window
 - Mode-Shift-q : Quit window
@@ -26,10 +27,7 @@ use this program to install wallpapers on i3
    #+BEGIN_SRC sh
      sudo apt install feh   
    #+END_SRC
-** Font Awesome (for icons)
+** fonts
 - Download Font Awesome from https://github.com/FortAwesome/Font-Awesome/releases.
 - Unzip it and copy it to the ~/.fonts/ folder
-** Font for i3 windows  
-- Download San Francisco font from https://github.com/supermarin/YosemiteSanFranciscoFont
-- Unzip it and copy it to the ~/.fonts/ folder
- 
+   

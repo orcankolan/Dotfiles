@@ -1,0 +1,24 @@
+* Install rxvt-unicode
+rxvt-unicode is a terminal emulator program (like gnome-terminal) with lots of configurable options
+#+BEGIN_SRC sh
+  sudo apt install rxvt-unicode
+#+END_SRC
+* Using with i3 window manager
+Inorder to use urxvt (rxvt-unicode) with i3. You need to set $TERMINAL variable inside ~/.profile. This will
+change the i3-senesible-terminal to urxvt.
+#+BEGIN_SRC sh
+  export TERMINAL="urxvt"
+#+END_SRC
+* Configuration
+- Create .Xresources file in the home folder
+#+BEGIN_SRC sh
+  touch .Xresources
+#+END_SRC
+- When you change .Xresouces, run the following:
+#+BEGIN_SRC sh
+  xrdb ~/.Xresources
+#+END_SRC
+** Color palette of terminal
+- You can use  https://terminal.sexy/ to create palletes and then export it!
+** Fonts
+- Download Inconsolata Fonts for Powerline from https://github.com/powerline/fonts/tree/master/Inconsolata 

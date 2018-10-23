@@ -35,8 +35,9 @@ filetype plugin indent on    " required
 
 " vim-airline theme selection:
 
-let g:airline_theme='wombat'
+let g:airline_theme='dark'
 let g:airline_powerline_fonts = 1
+let g:airline_solarized_bg ='light'
 
 " solarized setups:
 syntax enable
@@ -44,7 +45,7 @@ set t_Co=256 "for tmux to run on 256 colors
 set t_ut= "for tmux to disable Background Color Erase (BCE)
 set background=light
 let g:solarized_termcolors=256
-colorscheme solarized
+colorscheme murphy
 
 " NERDTree command binding
 map <C-n> :NERDTreeToggle<CR>

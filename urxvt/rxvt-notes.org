@@ -3,6 +3,10 @@ rxvt-unicode is a terminal emulator program (like gnome-terminal) with lots of c
 #+BEGIN_SRC sh
   sudo apt install rxvt-unicode
 #+END_SRC
+In order to use vim colorschemes (such as solarized) you have to install rxvt-unicode-256color
+#+BEGIN_SRC sh
+  sudo apt install rxvt-unicode-256color
+#+END_SRC
 * Using with i3 window manager
 Inorder to use urxvt (rxvt-unicode) with i3. You need to set $TERMINAL variable inside ~/.profile.
 This will change the i3-senesible-terminal to urxvt.

@@ -41,3 +41,12 @@ URxvt.depth:		32
 URxvt.font: xft:Inconsolata\ for\ Powerline:size=13
 URxvt.scrollBar:	false
 !URxvt.cursorColor: white
+
+!Extentions
+URxvt.perl-ext-common: selection-to-clipboard,resize-font
+
+URxvt.keysym.C-minus:     resize-font:smaller                                                      
+URxvt.keysym.C-plus:      resize-font:bigger                                                       
+URxvt.keysym.C-equal:     resize-font:reset                                                        
+URxvt.keysym.C-question:  resize-font:show
+

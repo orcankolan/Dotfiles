@@ -5,6 +5,10 @@ lsb_release -a
 kernel version:
 uname -a
 
+when you messed with keyboard settings:
+sudo dpkg-reconfigure keyboard-configuration
+to set keyboard again.. you need to resdtart the machine
+
 Listing all enabled locales
 locale -a
 

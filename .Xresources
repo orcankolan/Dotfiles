@@ -54,13 +54,13 @@ rofi.sidebar-mode:                   true
 rofi.terminal:                       termite
 rofi.ssh-client:                     ssh
 rofi.ssh-command:                    {terminal} -e "{ssh-client} {host}"
-rofi.opacity:                        100
+rofi.opacity:                        70
 rofi.width:                          50
 rofi.lines:                          8
 rofi.columns:                        1
-rofi.font:                           Inconsolata 24
+rofi.font:                           Inconsolata 20
 rofi.fg:                             #5294E2
-rofi.bg:                             #5d729f
+rofi.bg:                             #5d729f70
 rofi.fg-active:                      #34405a
 rofi.fg-urgent:                      #34405a
 rofi.hlfg-active:                    #5e73a0
@@ -74,12 +74,10 @@ rofi.hlfg:                           #34405a
 rofi.hlbg:                           #34405a
 rofi.bc:                             #789ee1
 ! State:           'bg',     'fg',     'bgalt',  'hlbg',   'hlfg'
-rofi.color-normal: #353944,  #FFFFFF,  #353944,  #5294E2,  #FFFFFF
-rofi.color-normal: #353944,  #FFFFFF,  #353944,  #5294E2,  #FFFFFF
-rofi.color-normal: #353944,  #FFFFFF,  #353944,  #5294E2,  #FFFFFF
+rofi.color-normal: #35394433,  #FFFFFF,  #353944,  #5294E2,  #FFFFFF
 
 !                  'background', 'border'
-rofi.color-window: #353944,      #404552
+rofi.color-window: #35394480,      #404552
 rofi.bw:                             10
 rofi.location:                       0
 rofi.padding:                        20

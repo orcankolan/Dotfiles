@@ -43,4 +43,15 @@ use this program to install wallpapers on i3
 ** Font for i3 windows  
 - Download San Francisco font from https://github.com/supermarin/YosemiteSanFranciscoFont
 - Unzip it and copy it to the ~/.fonts/ folder
- 
+* GTK Themes and Fonts
+- Download lxappearance from apt
+- Once you open lxappearance, change something, and a file called .gtkrc-2.0 is created in home
+- Change the font in .gtkrc-2.0 to System San Francisco Display
+#+BEGIN_SRC sh
+  gtk-font-name="System San Francisco Display 10"  
+#+END_SRC 
+- You may also change the gtk theme from lxappearence
+** Arc theme
+- https://github.com/horst3180/arc-theme
+- from above link follow instructions
+- get libgtk-3-dev with apt install

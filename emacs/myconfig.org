@@ -150,9 +150,36 @@
 * Powerline
   #+BEGIN_SRC emacs-lisp
     (use-package powerline
+      :ensure t)  
+
+    ;; to use smart mode line and its powerline theme
+
+    ;; (use-package smart-mode-line
+    ;;   :ensure t)
+
+    ;; (use-package smart-mode-line-powerline-theme
+    ;;    :ensure t
+    ;;    :after powerline
+    ;;    :after smart-mode-line
+    ;;    :config
+    ;;     (setq sml/no-confirm-load-theme t)
+    ;;     (sml/setup)
+    ;;     (sml/apply-theme 'powerline)
+    ;; )
+
+    ;; to use airline theme (see https://github.com/AnthonyDiGirolamo/airline-themes)
+    ;; to see airline theme (https://github.com/vim-airline/vim-airline/wiki/Screenshots)
+
+    (use-package airline-themes
       :ensure t
-      :config (powerline-center-theme))  
+      :config
+      (load-theme 'airline-hybridline :no-confirm)
+    )
   #+END_SRC
+
+  #+RESULTS:
+  : t
+
 * UndoTree
   #+BEGIN_SRC emacs-lisp
     (use-package undo-tree

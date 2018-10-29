@@ -23,4 +23,4 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export TERMINAL="urxvt"
 
 # swap caps and escape key
-setxkbmap -option caps:swapescape
+# setxkbmap -option caps:swapescape

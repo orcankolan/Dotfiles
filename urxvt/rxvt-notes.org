@@ -26,8 +26,21 @@ This will change the i3-senesible-terminal to urxvt.
 - You can use  https://terminal.sexy/ to create palletes and then export it!
 ** Fonts
 - Download Inconsolata Fonts for Powerline from https://github.com/powerline/fonts/tree/master/Inconsolata 
+- https://nerdfonts.com/ is a place to download fonts
+- https://github.com/ryanoasis/nerd-fonts is another place
+- Downloaded fonts must be copied into either your system font folder (often /usr/share/fonts/) or user font folder (often ~/.local/share/fonts/ or /usr/local/share/fonts)
+- users .fonts/ folder will not be used in the future (
+- fonts can be recached like:
+#+BEGIN_SRC sh
+  fc-cache -fv
+#+END_SRC
+- fonts that are loaded can be found by:
+#+BEGIN_SRC sh
+  fc-list | grep "Awesome"
+#+END_SRC
 ** Extentions
-- Extensions are written in perl language and resides in /usr/lib/urxvt/perl folder
+- Extensions are written in perl language and resides in /usr/lib/urxvt/perl or 
+/usr/lib/x86_64-linux-gnu/urxvt/perl folder
 - You can download some extensions from https://github.com/bookercodes/awesome-urxvt 
 - Copy the link location of the extention and use wget to copy the file into perl folder 
 #+BEGIN_SRC sh

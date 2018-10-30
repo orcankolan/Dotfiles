@@ -148,6 +148,10 @@
       (load-theme 'tangotango t))  
   #+END_SRC
 * Powerline
+** Where to find Airline themes
+- to use airline theme (see https://github.com/AnthonyDiGirolamo/airline-themes)
+- to see airline theme (https://github.com/vim-airline/vim-airline/wiki/Screenshots)
+
   #+BEGIN_SRC emacs-lisp
     (use-package powerline
       :ensure t)  
@@ -166,9 +170,6 @@
     ;;     (sml/setup)
     ;;     (sml/apply-theme 'powerline)
     ;; )
-
-    ;; to use airline theme (see https://github.com/AnthonyDiGirolamo/airline-themes)
-    ;; to see airline theme (https://github.com/vim-airline/vim-airline/wiki/Screenshots)
 
     (use-package airline-themes
       :ensure t

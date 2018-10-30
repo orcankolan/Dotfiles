@@ -46,3 +46,4 @@ This will change the i3-senesible-terminal to urxvt.
 #+BEGIN_SRC sh
   sudo wget 'link location'
 #+END_SRC
+- For keyboard-select visit: https://github.com/muennich/urxvt-perls/blob/master/keyboard-select

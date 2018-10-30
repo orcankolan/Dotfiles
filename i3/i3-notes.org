@@ -56,6 +56,7 @@ use this program to install wallpapers on i3
 - from above link follow instructions
 - get libgtk-3-dev with apt install
 * Using scripts with i3
+- You need to download scripts to below folders before you copy configure file of i3 from git
 - First, mkdir ~/.i3 and ~/.i3/scripts 
 - Put scripts in there
 - Scripts must be executable (chmod to 755)

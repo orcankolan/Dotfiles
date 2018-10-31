@@ -210,9 +210,14 @@ bar {
 #exec_always xmodmap -e "clear lock" #disable caps lock switch
 #exec_always xmodmap -e "keysym Caps_Lock = Escape" #set caps_lock as escape
 
-# Set a Wallpaper
+# For transparency
 exec --no-startup-id compton
+# Set wallpaper with feh
 exec_always --no-startup-id feh --bg-scale /home/orcan/Pictures/wallpaper.jpg
+# Startup programs
 exec --no-startup-id urxvt
 exec --no-startup-id firefox
 exec --no-startup-id emacs
+# volume control with pactl
+#bindsym $mod+Ctrl+o exec --no-startup-id pactl set-sink-volume 0 -- +10% && killall -SIGUSR1 i3status
+#bindsym $mod+Ctrl+k exec --no-startup-id pactl set-sink-volume 0 -- -10% && killall -SIGUSR1 i3status

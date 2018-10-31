@@ -40,6 +40,11 @@
    #+BEGIN_SRC emacs-lisp
      (global-set-key (kbd "<f5>") 'revert-buffer)
    #+END_SRC
+* Fonts
+  - Add an ‘emacs.font’ X resource setting to your X resource file, like this:
+#+BEGIN_SRC
+emacs.font: Hack-10
+#+END_SRC
 * Try package
   Used to try packages on emacs without permenantly installing them
   #+BEGIN_SRC emacs-lisp
@@ -174,7 +179,7 @@
     (use-package airline-themes
       :ensure t
       :config
-      (load-theme 'airline-hybridline :no-confirm)
+      (load-theme 'airline-wombat :no-confirm)
     )
   #+END_SRC
 

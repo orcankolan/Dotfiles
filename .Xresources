@@ -35,6 +35,10 @@
 *.color7:       #e6e1dc
 *.color15:      #f9f7f3
 
+! === Emacs ===
+emacs.font: Hack-10
+
+! === URxvt ===
 URxvt.intensityStyles:	false
 URxvt.background:       [70]#000000
 URxvt.depth:		32
@@ -46,6 +50,11 @@ URxvt.cursorColor: magenta
 
 !Extentions
 URxvt.perl-ext-common: selection-to-clipboard,font-size,keyboard-select
+
+! === dmenu ===
+!-nb '#151515' -nf '#999999' -sb '#f00060' -sf '#000000' -fn '-*-*-medium-r-normal-*-*-*-*-*-*-100-*-*'
+!-nb '#2f343f' -nf '#f3f4f5' -sb '#9575cd' -sf '#f3f4f5' -fn '-*-*-medium-r-normal-*-*-*-*-*-*-100-*-*'
+
 
 ! === rofi ===
 

@@ -9,6 +9,12 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+#Needed for i3-gaps
+for_window [class="^.*"] border pixel 2
+gaps inner 10
+gaps outer 10
+
+
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -201,8 +207,8 @@ bar {
 }
 
 # Keys
-exec_always xmodmap -e "clear lock" #disable caps lock switch
-exec_always xmodmap -e "keysym Caps_Lock = Escape" #set caps_lock as escape
+#exec_always xmodmap -e "clear lock" #disable caps lock switch
+#exec_always xmodmap -e "keysym Caps_Lock = Escape" #set caps_lock as escape
 
 # Set a Wallpaper
 exec --no-startup-id compton

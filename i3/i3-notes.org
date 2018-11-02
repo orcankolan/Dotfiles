@@ -97,7 +97,7 @@ gaps also needs to be installed from source so run these commands:
   cd /tmp
   git clone https://www.github.com/Airblader/i3 i3-gaps
   cd i3-gaps
-  git checkout gaps && git pull //if you do this it will go to gaps branch instead of next branch. next is next / gaps-next are the development branches
+  git checkout gaps && git pull //if you do this it will go to gaps branch instead of next branch. next / gaps-next are the development branches. You have next-gaps in your home pc
   autoreconf --force --install
   rm -rf build
   mkdir build

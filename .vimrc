@@ -1,3 +1,7 @@
+" if vim --version command on terminal or :echo has('clipboard') returns zero
+" on vim, you have to install vim-gtk3 which will give clipboard support and
+" others as well
+
 set number
 
 set nocompatible              " be iMproved, required

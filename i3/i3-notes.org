@@ -125,10 +125,11 @@ Refresh i3 and you're good to go!
 - check https://github.com/Airblader/
 - you may use /tmp folder for the git clone commmand
 - this This repository is a fork of i3blocks made to be compatible with i3-gaps, itself a fork of i3wm.
+- copy i3blocks config file into ~/.config/i3blocks/ 
 - scripts come with the repository. Copy them to the ~/.i3/i3blocks-scripts ($ cp /tmp/i3blocks/scripts/* ~/.i3/i3blocks-script)
 - use ~/.i3/i3blocks-scripts as SCRIPT_DIR in i3 config file bar section:
 #+BEGIN_SRC sh
   bar {
-  status_command SCRIPT_DIR=/home/orcan/.i3/scripts i3blocks
+  status_command SCRIPT_DIR=/home/orcan/.i3/i3blocks-scripts i3blocks
   }
 #+END_SRC

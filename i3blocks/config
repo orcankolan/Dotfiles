@@ -26,7 +26,7 @@
 #
 # The top properties below are applied to every block, but can be overridden.
 # Each block command defaults to the script name to avoid boilerplate.
-#SCRIPT_DIR=/home/orcan/.i3/scripts/
+#SCRIPT_DIR=/home/orcan/.i3/i3blocks-scripts/
 command=$SCRIPT_DIR/$BLOCK_NAME
 separator_block_width=15
 markup=none
@@ -36,8 +36,8 @@ markup=none
 # The first parameter sets the step (and units to display)
 # The second parameter overrides the mixer selection
 # See the script for details.
-[volume]
-label=VOL
+[i3volume]
+#label=VOL
 label=♪
 instance=Master
 #instance=PCM
@@ -52,11 +52,11 @@ label=MEM
 separator=false
 interval=30
 
-[memory]
-label=SWAP
-instance=swap
-separator=false
-interval=30
+#[memory]
+#label=SWAP
+#instance=swap
+#separator=false
+#interval=30
 
 # Disk usage
 #

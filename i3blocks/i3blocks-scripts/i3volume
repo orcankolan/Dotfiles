@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DEVICE="default"
+# to see all devices cat /proc/asound/cards
+# device variable can be used as hw:n where n is the number of the card
+
+SCONTROL="$BLOCK_INSTANCE"
+
+VOLUME=$(amixer -D $DEVICE sget $SCONTROL | grep 'Right:' | awk -F'[][]' '{ print $2 }')
+
+
+printf "%s %s\\n" "$BLOCK_LABEL" "$VOLUME"

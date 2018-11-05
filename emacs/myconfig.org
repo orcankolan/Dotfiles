@@ -36,6 +36,11 @@
     #+BEGIN_SRC emacs-lisp
       (winner-mode t)    
     #+END_SRC
+*** Line wrapping
+    Line wrapping for the window edges
+    #+BEGIN_SRC emacs-lisp
+      (global-visual-line-mode t)
+    #+END_SRC
 ** Revert buffer key-binding
    #+BEGIN_SRC emacs-lisp
      (global-set-key (kbd "<f5>") 'revert-buffer)

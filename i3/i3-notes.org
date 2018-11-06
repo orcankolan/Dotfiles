@@ -133,3 +133,6 @@ Refresh i3 and you're good to go!
   status_command SCRIPT_DIR=/home/orcan/.i3/i3blocks-scripts i3blocks
   }
 #+END_SRC
+* Installing Ranger
+- Install it from apt: sudo apt install ranger
+- Then copy the config file: ranger --copy-config=all

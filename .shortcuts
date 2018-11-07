@@ -1,0 +1,2 @@
+alias myclone="cd ~/cloned-repos/Dotfiles && ls -la"
+alias lukeclone="cd ~/cloned-repos/voidrice && ls -la"

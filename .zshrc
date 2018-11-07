@@ -97,6 +97,8 @@ source $ZSH/oh-my-zsh.sh
 
 export TERM=xterm-256color
 
+# set some aliases from the ~/bin/aliases script
+source aliases
 
-source /opt/ros/kinetic/setup.zsh
-source ~/catkin_ws/devel/setup.zsh
+#source /opt/ros/kinetic/setup.zsh
+#source ~/catkin_ws/devel/setup.zsh

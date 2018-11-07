@@ -1,0 +1,2 @@
+alias gclone="cd ~/clonedRepos/Dotfiles && ls -la"
+alias gsc="cd ~/bin && ls -la"

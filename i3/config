@@ -145,14 +145,14 @@ set $inactive-bg-color   #2f343f
 set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
 set $urgent-bg-color     #E53935
-
+set_from_resource $green color10 #000000
 
 # exit i3 (logs you out of your X session)
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 #bindsym $mod+Shift+e exec rofi -dmenu -lines 3 -font "System San Francisco Display 12" < ~/.i3/scripts/dmenu-exit
 
-bindsym $mod+Shift+e exec /home/orcan/.i3/scripts/exit_menu
+bindsym $mod+Shift+e exec /home/orcan/.scripts/i3cmds/exit_menu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -184,8 +184,8 @@ bindsym $mod+r mode "resize"
 #hide_edge_borders both
 
 # window colors
-#                       border              background         text                 indicator
-client.focused          $bg-color           $bg-color          $text-color          #00ff00
+#                       border              background         text                 indicator   child_border
+client.focused          $green	 	    $bg-color          $text-color          $green	$green
 client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
 client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
 client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #00ff00
@@ -195,7 +195,7 @@ client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color      
 bar {
 	
         font pango:System San Francisco Display, Font Awesome 9
-        status_command SCRIPT_DIR=/home/orcan/.i3/i3blocks-scripts i3blocks
+        status_command i3blocks
 	colors {
 		background $bg-color
 	    	separator #757575
@@ -210,19 +210,9 @@ bar {
 #exec_always xmodmap -e "clear lock" #disable caps lock switch
 #exec_always xmodmap -e "keysym Caps_Lock = Escape" #set caps_lock as escape
 
-# For transparency
+# Set a Wallpaper
 exec --no-startup-id compton
-# Set wallpaper with feh
 exec_always --no-startup-id feh --bg-scale /home/orcan/Pictures/wallpaper.jpg
-# Startup programs
 exec --no-startup-id urxvt
 exec --no-startup-id firefox
 exec --no-startup-id emacs
-# volume control with pactl
-bindsym $mod+Ctrl+o exec --no-startup-id "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 +5% ; pkill -RTMIN+10 i3blocks" 
-bindsym $mod+Ctrl+k exec --no-startup-id "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 -5% ; pkill -RTMIN+10 i3blocks" 
-bindsym $mod+Ctrl+m exec --no-startup-id "pactl set-sink-mute 0 toggle ; pkill -RTMIN+10 i3blocks"  
-
-#bindsym $mod+Ctrl+m exec --no-startup-id "amixer -q set Master toggle"
-#bindsym $mod+Ctrl+o exec --no-startup-id "amixer -q set Master 5%+ unmute"
-#bindsym $mod+Ctrl+k exec --no-startup-id "amixer -q set Master 5%- unmute"

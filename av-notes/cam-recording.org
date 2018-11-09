@@ -1,0 +1,37 @@
+#+TITLE: USB cam recording and using ffmpeg for screencasts
+* Pre-installed software
+- Cheese: somehow does not work with some webcams
+- guvcview: you have to install from repo. Works
+* List usb devices:
+#+BEGIN_SRC sh
+  lsusb
+#+END_SRC
+or to see the device name
+#+BEGIN_SRC sh
+  ls -ltrh /dev/video*
+#+END_SRC
+* Webcam recording
+- The name of the device to grab is a file device node, usually Linux systems tend to automatically create such nodes when the device (e.g. an USB webcam) is plugged into the system, and has a name of the kind /dev/videoN, where N is a number associated to the device.
+
+Video4Linux2 devices usually support a limited set of widthxheight sizes and frame rates. You can check which are supported using -list_formats all for Video4Linux2 devices. Some devices, like TV cards, support one or more standards. It is possible to list all the supported standards using -list_standards all
+- List supported formats for a video4linux2 device:
+#+BEGIN_SRC sh
+  ffplay -f video4linux2 -list_formats all /dev/video0
+#+END_SRC
+- Grab and show the input of a video4linux2 device:
+#+BEGIN_SRC sh
+  ffplay -f video4linux2 -framerate 30 -video_size hd720 /dev/video0
+#+END_SRC
+- Grab and record the input of a video4linux2 device, leave the frame rate and size as previously set:
+#+BEGIN_SRC sh
+  ffmpeg -f video4linux2 -input_format mjpeg -i /dev/video0 out.mpeg
+#+END_SRC
+* Screencasting
+** Find out screen size:
+   #+BEGIN_SRC sh
+       xdpyinfo  | grep 'dimensions:' 
+   #+END_SRC   
+** Record screen with ffmpeg.
+   #+BEGIN_SRC sh
+       ffmpeg -f x11grab -s 1920x1080 -i :0.0 out.mkv 
+   #+END_SRC

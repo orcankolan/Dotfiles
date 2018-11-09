@@ -23,7 +23,12 @@
     #+END_SRC
 *** Line numbers
     #+BEGIN_SRC emacs-lisp
-      (global-linum-mode t)
+      ;(global-linum-mode t)
+      (use-package nlinum-relative
+        :ensure t
+        :config
+	(global-nlinum-relative-mode 1)
+        )
     #+END_SRC
 *** Parenthesis highlighting
     #+BEGIN_SRC emacs-lisp

@@ -27,29 +27,37 @@
 # The top properties below are applied to every block, but can be overridden.
 # Each block command defaults to the script name to avoid boilerplate.
 #SCRIPT_DIR=/home/orcan/.i3/i3blocks-scripts/
-command=$SCRIPT_DIR/$BLOCK_NAME
+command=/usr/local/libexec/i3blocks/$BLOCK_NAME
 separator_block_width=15
-markup=none
+markup=pango
 
 # Volume indicator
 #
 # The first parameter sets the step (and units to display)
 # The second parameter overrides the mixer selection
 # See the script for details.
-[i3volume]
-#label=VOL
-label=♪
-instance=Master
+#[volume]
+#label=♪
+#instance=Master
 #instance=PCM
+#interval=once
+#signal=10
+
+# volume instace can be pulse, jack, or default. you cannot set 
+# arbitrary variables under a blocklet. instance is used to send
+# strings to the script executed by command.
+[volume]
+command=i3volume
+label=♪
 interval=once
 signal=10
-
+instance=pulse
 # Memory usage
 #
 # The type defaults to "mem" if the instance is not specified.
 [memory]
 label=MEM
-separator=false
+#separator=false
 interval=30
 
 #[memory]
@@ -76,7 +84,7 @@ interval=30
 #instance=wlan0
 color=#00FF00
 interval=10
-separator=false
+#separator=false
 
 [wifi]
 #instance=wlp3s0

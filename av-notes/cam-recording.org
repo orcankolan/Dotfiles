@@ -39,3 +39,7 @@ Video4Linux2 devices usually support a limited set of widthxheight sizes and fra
  #+BEGIN_SRC sh
    ffmpeg -f alsa -ac 1 -i default -f x11grab -s 1920x1080 -i :0.0 out.mkv 
  #+END_SRC 
+- -f -> for alsa device
+- -ac -> for audio channel 1 (mono), Usually the default value is "1" (mono) for Mic input and "2" (stereo) for Line-In input
+- -i -> for input (may be arbitrary number of input "files" (which can be regular files, pipes, network streams, grabbing devices, etc.),
+- default device is the device that you set in the Cadence. Also with the jack connections set by Catia.

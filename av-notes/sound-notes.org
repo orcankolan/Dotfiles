@@ -44,3 +44,16 @@
 - -ac -> for audio channel 1 (mono), Usually the default value is "1" (mono) for Mic input and "2" (stereo) for Line-In input
 - -i -> for input (may be arbitrary number of input "files" (which can be regular files, pipes, network streams, grabbing devices, etc.),
 - default device is the device that you set in the Cadence. Also with the jack connections set by Catia.
+* Listing play or record devices
+- To list all recording or playing (including the default) device to be used with alsa:
+  #+BEGIN_SRC sh
+    aplay -L
+    #or
+    arecord -L
+  #+END_SRC
+- To list all the sound cards with card numbers: 
+   #+BEGIN_EXAMPLE
+     aplay -l
+     or
+     arecord -l
+   #+END_EXAMPLE

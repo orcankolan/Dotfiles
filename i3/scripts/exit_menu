@@ -1,9 +1,0 @@
-#!/bin/bash
-while [ "$select" = ""  ]; do
-    select=$(echo -e 'BACK\nSUSPEND\nPOWER OFF\nLOG-OUT' | dmenu -i -p "How do you wanna exit?")
-    [ -z "$select" ] && exit 0
-done
-[ "$select" = "BACK" ] && exit 0
-[ "$select" = "LOG-OUT" ] && i3-msg exit
-[ "$select" = "SUSPEND" ] && systemctl suspend
-[ "$select" = "POWER OFF" ] && systemctl poweroff

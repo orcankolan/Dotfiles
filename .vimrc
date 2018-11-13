@@ -13,7 +13,9 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
-
+" map the leader
+let mapleader="-"
+nnoremap <leader><Space> /<++><CR><ESC>ci<
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'

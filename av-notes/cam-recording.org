@@ -35,3 +35,7 @@ Video4Linux2 devices usually support a limited set of widthxheight sizes and fra
    #+BEGIN_SRC sh
        ffmpeg -f x11grab -s 1920x1080 -i :0.0 out.mkv 
    #+END_SRC
+* Adding sound from sound card
+ #+BEGIN_SRC sh
+   ffmpeg -f alsa -ac 1 -i default -f x11grab -s 1920x1080 -i :0.0 out.mkv 
+ #+END_SRC 

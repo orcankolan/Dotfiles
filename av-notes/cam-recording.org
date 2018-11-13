@@ -12,20 +12,39 @@ or to see the device name
 #+END_SRC
 * Webcam recording
 - The name of the device to grab is a file device node, usually Linux systems tend to automatically create such nodes when the device (e.g. an USB webcam) is plugged into the system, and has a name of the kind /dev/videoN, where N is a number associated to the device.
-
+** Video4Linux2 for webcams
 Video4Linux2 devices usually support a limited set of widthxheight sizes and frame rates. You can check which are supported using -list_formats all for Video4Linux2 devices. Some devices, like TV cards, support one or more standards. It is possible to list all the supported standards using -list_standards all
-- List supported formats for a video4linux2 device:
-#+BEGIN_SRC sh
-  ffplay -f video4linux2 -list_formats all /dev/video0
-#+END_SRC
-- Grab and show the input of a video4linux2 device:
-#+BEGIN_SRC sh
-  ffplay -f video4linux2 -framerate 30 -video_size hd720 /dev/video0
-#+END_SRC
-- Grab and record the input of a video4linux2 device, leave the frame rate and size as previously set:
-#+BEGIN_SRC sh
-  ffmpeg -f video4linux2 -input_format mjpeg -i /dev/video0 out.mpeg
-#+END_SRC
+** FFMpeg
+    - List supported formats for a video4linux2 device:
+    #+BEGIN_SRC sh
+    ffplay -f video4linux2 -list_formats all /dev/video0
+    #+END_SRC
+    - Grab and show the input of a video4linux2 device:
+    #+BEGIN_SRC sh
+    ffplay -f video4linux2 -framerate 30 -video_size hd720 /dev/video0
+    #+END_SRC
+    - Grab and record the input of a video4linux2 device, leave the frame rate and size as previously set:
+    #+BEGIN_SRC sh
+    ffmpeg -f video4linux2 -input_format mjpeg -i /dev/video0 out.mpeg
+    #+END_SRC
+** MPlayer
+    - To play webcam with mplayer:
+    #+BEGIN_SRC sh
+    mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0 -fps 15 
+    #+END_SRC
+    - You can also give -geometry option
+** mpv
+    - To play webcam with mpv:
+    #+BEGIN_SRC sh
+    mpv av://v4l2:/dev/video0
+    #+END_SRC
+** VLC
+   - To play webcam with VLC:
+    #+BEGIN_SRC sh
+    vlc v4l:// :v4l-vdev="/dev/video0" 
+    #+END_SRC
+** Links
+   - https://wiki.archlinux.org/index.php/webcam_setup
 * Screencasting
 ** Find out screen size:
    #+BEGIN_SRC sh

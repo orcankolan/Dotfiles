@@ -230,7 +230,9 @@ emacs.font: Hack-10
 
     ;; to use pdfview with auctex
     (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
-    (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
+    (add-hook 'pdf-view-mode-hook (lambda() (linum-mode 0)))
+    (add-hook 'pdf-view-mode-hook (lambda() (nlinum-mode 0)))
+    (add-hook 'pdf-view-mode-hook (lambda() (nlinum-relative-mode 0)))
 
     ;; to use pdfview with auctex
     (setq TeX-view-program-selection '((output-pdf "pdf-tools"))

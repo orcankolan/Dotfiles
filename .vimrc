@@ -56,3 +56,14 @@ colorscheme murphy
 " NERDTree command binding
 map <C-n> :NERDTreeToggle<CR>
 
+" changing cursors for insert mode:
+"
+"    1 is the blinky block cursor
+"    2 is the default (non-blinky) block cursor
+"    3 is blinky underscore
+"    4 fixed underscore
+"    5 pipe bar (blinking)
+"    6 fixed pipe bar
+let &t_SI = "\<esc>[5 q"
+let &t_SR = "\<esc>[5 q"
+let &t_EI = "\<esc>[2 q"

@@ -36,7 +36,7 @@
 *.color15:      #f9f7f3
 
 ! === Emacs ===
-emacs.font: Hack-10
+Emacs.font: Hack-10
 
 ! === URxvt ===
 URxvt.intensityStyles:	false

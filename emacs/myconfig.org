@@ -231,6 +231,7 @@ emacs.font: Hack-10
     ;; to use pdfview with auctex
     (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
     (add-hook 'LaTeX-mode-hook (lambda() (flyspell-mode 1)))
+    (add-hook 'LaTeX-mode-hook #'flyspell-buffer)
     (add-hook 'pdf-view-mode-hook (lambda() (linum-mode 0)))
     (add-hook 'pdf-view-mode-hook (lambda() (nlinum-mode 0)))
     (add-hook 'pdf-view-mode-hook (lambda() (nlinum-relative-mode 0)))
@@ -340,4 +341,12 @@ changed and also be viewed.
 - Use 'M-x flyspell-buffer' to underline unknown words
 - Use 'M-x flyspell-mode' to toggle flyspell
 - Added words with ispell are located in the ~/.hunspell_{dictionary name}
+- See Auctex section, which adds to hooks to latex-mode 
+- Also with the below code after saving a new word to personal dictionary (.hunspell_tr_TR etc.), flyspell-beffer is re-activated
+#+BEGIN_SRC emacs-lisp
+  (defun flyspell-buffer-after-pdict-save (&rest _)
+    (flyspell-buffer))
+
+  (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save)
+#+END_SRC
 

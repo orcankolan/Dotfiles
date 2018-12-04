@@ -365,6 +365,7 @@ Projectile provides easy project management and navigation. Some of Projectile's
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     (projectile-mode +1)
     (setq projectile-completion-system 'ivy)
+    (setq projectile-indexing-method 'native)
     )
 
   (use-package counsel-projectile

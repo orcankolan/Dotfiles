@@ -350,3 +350,25 @@ changed and also be viewed.
   (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save)
 #+END_SRC
 
+* Projectile
+Projectile provides easy project management and navigation. Some of Projectile's features:
+- jump to a file in project
+- jump to files at point in project
+- jump to a directory in project
+- jump to a file in a directory
+- jump to a project buffer
+- jump to a test in project
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1)
+    (setq projectile-completion-system 'ivy)
+    )
+
+  (use-package counsel-projectile
+    :ensure t
+    :config
+    (counsel-projectile-mode +1))
+#+END_SRC

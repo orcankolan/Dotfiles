@@ -384,3 +384,13 @@ Projectile provides easy project management and navigation. Some of Projectile's
     :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
     :ensure)
 #+END_SRC
+* Horizontal-line on cursor
+#+BEGIN_SRC emacs-lisp
+  ;; (global-hl-line-mode t)
+
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1)
+    )
+#+END_SRC

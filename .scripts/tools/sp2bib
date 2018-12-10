@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This scripts searchs pdfs for doi number. If finds 
+i=1
+for file in *.pdf
+do
+	if pdftotext $file - | grep -i -q "doi"; then
+	echo "$i : $file" 
+	i=$((i+1))
+	pdftotext $file - | grep -i "doi"
+	echo
+	fi
+done

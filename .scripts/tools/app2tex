@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This scripts appends the contents of a file to another file
+
+for file in *.tex
+do
+	if ! grep -q "TeX-master" $file ; then
+	echo $file
+	echo >> $file
+	cat $1 >> $file
+	fi
+done

@@ -2,7 +2,8 @@
 " on vim, you have to install vim-gtk3 which will give clipboard support and
 " others as well
 
-set number
+set number relativenumber
+set nu rnu
 
 set nocompatible              " be iMproved, required
 filetype off                  " required

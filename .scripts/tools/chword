@@ -3,7 +3,7 @@
 # Thsi script changes all the specified word with the other in all files in folders recursively
 
 i=1
-for file in $(find ~/test/ -name '*.tex')
+for file in $(find $(pwd) -name '*.tex')
 do
 	echo "$i : $file"
 	i=$((i+1))

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This script recursively converts tex files from dos to unix
+i=1
+for file in $(find $(pwd) -name '*.tex')
+do
+	#base=${file%.*}
+	#ext=${file##*.}
+	#basefile=$(basename "$file" "$ext")
+	echo "$i : $file"
+	dos2unix $file
+	i=$((i+1))
+done

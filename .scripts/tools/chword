@@ -5,7 +5,11 @@
 i=1
 for file in $(find $(pwd) -name '*.tex')
 do
+	if ! grep -q "${1}" $file ; then
+		continue
+	fi
 	echo "$i : $file"
 	i=$((i+1))
 	sed -i "s/${1}/${2}/g" "$file"
 done
+

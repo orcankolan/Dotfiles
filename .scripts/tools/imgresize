@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This script resize images recursively in the currrent folder as defined by size belo
+# If the size of width is larger than arg 1 but not height, then width is resized to 820 with keeping aspect ratio
+# If the size of height is larger than arg 1 but not width, then height is resized to 820 with keeping aspect ratio
+
+for file in $(find . -type f -regextype egrep -regex '.*/*\.jpg$|.*/*\.png$'); do
+	echo $file
+	mogrify -strip $file
+	mogrify -resize ''${1}'x'${1}'>' $file
+done
+

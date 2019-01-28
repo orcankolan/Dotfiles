@@ -1,0 +1,24 @@
+#!/bin/bash
+
+qsize_file () {
+	grep -n 'end.solution.' $1 | cut -d: -f 1 | wc -l
+}
+
+
+i=0
+qsize_total=0
+
+total () {
+	for file in $(find $(pwd) -type f -name '*.tex')
+	do
+		qsize_f=$( qsize_file $file )
+		qsize_total=$(( qsize_total+qsize_f ))
+		i=$((i+1))
+	done
+
+}
+
+total
+
+echo total size in folder: $qsize_total
+

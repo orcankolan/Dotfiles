@@ -1,0 +1,117 @@
+#!/bin/bash
+
+# This script is used to generate general and specific questions from question bank
+
+## to get the line numbers of the '\begin{question}' pattern:
+#grep -n 'begin.question.' all-questions.tex | cut -d: -f 1
+#
+## to get the line numbers of the '\end{solution}' pattern:
+#grep -n 'end.solution.' all-questions.tex | cut -d: -f 1
+#
+## to count the number of occurence 
+#grep -n 'end.solution.' all-questions.tex | cut -d: -f 1 | wc -l
+#
+## to get text between 2 line numbers:
+#sed -n '1,12p' all-questions.tex
+#sed -n "${a},${b}p" all-questions.tex
+#
+## to put one question in to a file:
+#sed -n "14,25p" all-questions.tex >> rand-question.tex
+#
+##to create array:
+#declare -a array=( $(for i in {1..4}; do echo ${i}; done) )
+#
+#start_array=()
+#end_array=()
+#
+## array size:
+#echo "Qustion number: ${#array[*]}"
+#
+## array index and array value:
+#echo "Array items and indexes:"
+#for index in ${!array[*]}
+#do
+#    printf "%4d: %s\n" $index ${array[$index]}
+#done
+#
+##to shuffle an array:
+#myarray=( $(shuf -e "${myarray[@]}") )
+#
+##using python:
+#echo  'print int(round(float(10)*30/49))' | python
+
+# Function, getting the question number from a .tex file:
+
+#declare -a dfile_array=( $(for ((i=1;i<$((f+1));i+=1)); do echo ${i}; done) )
+
+#echo ${dfile_array[$((f-1))]}
+
+#t=4
+#for tfile in $(find . -type f -regextype egrep -regex ".*/o?n?_?(${t}).*\.tex$"); do
+#	echo ${tfile[0]}
+#done
+
+
+#file_array=(`find . -type f -regextype egrep -regex ".*/o?n?_?(${t}).*\.tex$" | sort`)
+
+#base=${file_array[0]%.*}
+
+#filebase=$(basename "$base" ".tex")
+#echo $filebase
+
+
+#cat ${file_array[0]}>u_${filebase}.tex
+#echo >> u_${filebase}.tex
+#cat ${file_array[1]}>>u_${filebase}.tex
+
+
+chapter_array=(1 2 4 5 6 7 8 9)
+#echo ${chapter_array[*]}
+
+for index in ${!chapter_array[*]}
+do
+	f_array=(`find . -type f -regextype egrep -regex ".*/o?n?_?(${chapter_array[index]}).*\.tex$" | sort`)
+	printf "%4d: %s ; %s\n" $index ${f_array[0]} ${f_array[1]} 
+
+	base=${f_array[0]%.*}
+	filebase=$(basename "$base" ".tex")
+	uni_name=./unified/u_${filebase}.tex
+
+	cat ${f_array[0]}>$uni_name
+	echo >> $uni_name
+	cat ${f_array[1]}>>$uni_name
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

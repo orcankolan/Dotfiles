@@ -1,0 +1,10 @@
+#!/bin/bash
+
+qsize_file () {
+	grep -n 'end.solution.' $1 | cut -d: -f 1 | wc -l
+}
+
+file_t=$(pwd)/$1
+qsize_t=$( qsize_file $file_t )
+
+echo size of file is : $qsize_t

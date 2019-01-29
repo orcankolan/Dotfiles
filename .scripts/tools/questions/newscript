@@ -2,12 +2,19 @@
 
 #generate array of begin line numbers:
 
-
+#two dimensional arrays (first dimension is file, second is position)
 declare -Ag begin_arrays
+declare -Ag end_arrays
 
 #echo ${begin_arrays[1,2]}
 
-search_begins () {
+#file size in current directory:
+file_num=$(find . -type f -name 'u_*.tex' | wc -l)
+
+echo "First index length: $((file_num-1))"
+
+list_begins () {
+	echo "Listing Begin Positions:"
 	i=1
 	for file in $(find . -type f -name 'u_*.tex' | sort)
 	do
@@ -19,6 +26,18 @@ search_begins () {
 	done
 }
 
+list_ends () {
+	echo "Listing End Positions:"
+	i=1
+	for file in $(find . -type f -name 'u_*.tex' | sort)
+	do
+		declare -g "end_array_$i=( $(grep -n 'end.question' $file | cut -d: -f 1) )"
+		var="end_array_$i"
+		t=${!var}
+		echo $t	
+		i=$((i+1))
+	done
+}
 
 create_begins () {
 	i=0
@@ -35,7 +54,54 @@ create_begins () {
 	done
 	}
 
-search_begins
+create_ends () {
+	i=0
+	for file in $(find . -type f -name 'u_*.tex' | sort)
+	do
+		j=0
+		for value in $(grep -n 'end.question' $file | cut -d: -f 1)
+		do	
+			end_arrays[$i,$j]=$value
+			j=$((j+1))
+		done
+
+		i=$((i+1))
+	done
+	}
+
+list_begins
+
+list_ends
+
 create_begins
 
 echo ${begin_arrays[7,2]} 
+
+echo "total number of general questions: ${#begin_arrays[@]}"
+
+
+
+
+#n0=0
+#n1=0
+#for key in "${!begin_arrays[@]}"; do
+#    [[ $key == 0,* ]] && ((n0++))
+#    [[ $key == 1,* ]] && ((n1++))
+#done
+#echo $n0
+#echo $n1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

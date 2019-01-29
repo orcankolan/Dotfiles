@@ -77,23 +77,20 @@ create_begins
 
 echo ${begin_arrays[7,2]} 
 
-echo "total number of general questions: ${#begin_arrays[@]}"
 
+n=$( qsize u_9_donanim_kontrol.tex | cut -d: -f 2)
+echo "size of donanim:$((n))"
+temp_array=( $(for ((i=0;i<$((n));i+=1)); do echo ${i}; done) )
+shuff_array=( $(shuf -e "${temp_array[@]}") )
+echo ${shuff_array[*]}
 
+total_questions=${#begin_arrays[@]}	
+echo "total number of general questions:$total_questions"
 
+nq=$( echo "print int(round(float($n)*40/$total_questions))" | python )
+echo "Needed questions (weighed) for 40 General Qs: $nq"
 
-#n0=0
-#n1=0
-#for key in "${!begin_arrays[@]}"; do
-#    [[ $key == 0,* ]] && ((n0++))
-#    [[ $key == 1,* ]] && ((n1++))
-#done
-#echo $n0
-#echo $n1
-
-
-
-
+#sed -n "14,25p" all-questions.tex >> rand-question.tex
 
 
 

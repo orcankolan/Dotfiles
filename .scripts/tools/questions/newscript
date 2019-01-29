@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#generate array of begin line numbers:
+
+
+declare -Ag begin_arrays
+
+#echo ${begin_arrays[1,2]}
+
+search_begins () {
+	i=1
+	for file in $(find . -type f -name 'u_*.tex' | sort)
+	do
+		declare -g "begin_array_$i=( $(grep -n 'begin.question' $file | cut -d: -f 1) )"
+		var="begin_array_$i"
+		t=${!var}
+		echo $t	
+		i=$((i+1))
+	done
+}
+
+
+create_begins () {
+	i=0
+	for file in $(find . -type f -name 'u_*.tex' | sort)
+	do
+		j=0
+		for value in $(grep -n 'begin.question' $file | cut -d: -f 1)
+		do	
+			begin_arrays[$i,$j]=$value
+			j=$((j+1))
+		done
+
+		i=$((i+1))
+	done
+	}
+
+search_begins
+create_begins
+
+echo ${begin_arrays[7,2]} 

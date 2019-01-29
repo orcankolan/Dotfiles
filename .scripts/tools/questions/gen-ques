@@ -40,8 +40,6 @@
 ##using python:
 #echo  'print int(round(float(10)*30/49))' | python
 
-# Function, getting the question number from a .tex file:
-
 #declare -a dfile_array=( $(for ((i=1;i<$((f+1));i+=1)); do echo ${i}; done) )
 
 #echo ${dfile_array[$((f-1))]}
@@ -52,45 +50,100 @@
 #done
 
 
-#file_array=(`find . -type f -regextype egrep -regex ".*/o?n?_?(${t}).*\.tex$" | sort`)
+g_chapter_array=(1 2 4 5 6 7 8 9)
+#echo ${g_chapter_array[*]}
 
-#base=${file_array[0]%.*}
+unify_general() {
 
-#filebase=$(basename "$base" ".tex")
-#echo $filebase
+if [ ! -d "./unified" ]; then
+	mkdir ./unified
+else
+	rm -rf ./unified
+	mkdir ./unified
+fi
 
-
-#cat ${file_array[0]}>u_${filebase}.tex
-#echo >> u_${filebase}.tex
-#cat ${file_array[1]}>>u_${filebase}.tex
-
-
-chapter_array=(1 2 4 5 6 7 8 9)
-#echo ${chapter_array[*]}
-
-for index in ${!chapter_array[*]}
+for index in ${!g_chapter_array[*]}
 do
-	f_array=(`find . -type f -regextype egrep -regex ".*/o?n?_?(${chapter_array[index]}).*\.tex$" | sort`)
-	printf "%4d: %s ; %s\n" $index ${f_array[0]} ${f_array[1]} 
+	f_array=(`find . -type f -regextype egrep -regex ".*/o?n?_?(${g_chapter_array[index]}).*\.tex$" | sort`)
 
-	base=${f_array[0]%.*}
-	filebase=$(basename "$base" ".tex")
-	uni_name=./unified/u_${filebase}.tex
+	if [[ -n ${f_array[*]} ]]; then #if file array is not empty
+		echo "Unifying below files and moving them into unified directory..."
+		printf "%4d: %s ; %s\n" $index ${f_array[0]} ${f_array[1]} 
 
-	cat ${f_array[0]}>$uni_name
-	echo >> $uni_name
-	cat ${f_array[1]}>>$uni_name
+		base=${f_array[0]%.*}
+		filebase=$(basename "$base" ".tex")
+		uni_name=./unified/u_${filebase}.tex
+
+		cat ${f_array[0]}>$uni_name
+		echo >> $uni_name
+		cat ${f_array[1]}>>$uni_name
+	else
+		echo "General Question unification is not done..."
+		break
+	fi
+done
+}
+
+s_chapter_array=(3)
+
+unify_specific() {
+
+if [ ! -d "./unified" ]; then
+	mkdir ./unified
+else
+	rm -rf ./unified
+	mkdir ./unified
+fi
+
+for index in ${!s_chapter_array[*]}
+do
+	f_array=(`find . -type f -regextype egrep -regex ".*/o?n?_?(${s_chapter_array[index]}).*\.tex$" | sort`)
+
+	if [[ -n ${f_array[*]} ]]; then #if file array is not empty
+		echo "Unifying below files and moving them into unified directory..."
+		printf "%4d: %s ; %s\n" $index ${f_array[0]} ${f_array[1]} 
+
+		base=${f_array[0]%.*}
+		filebase=$(basename "$base" ".tex")
+		uni_name=./unified/u_${filebase}.tex
+
+		cat ${f_array[0]}>$uni_name
+		echo >> $uni_name
+		cat ${f_array[1]}>>$uni_name
+	else
+		echo "Specific Question unification is not done..."
+		break
+	fi
 done
 
+gather_specific
 
+}
 
+gather_specific () {
+	echo "Gathering other below specific files into unified directory:"
+	for file in $(find $(pwd) -type f -name 'p*.tex' | sort)
+	do
+		echo $file
 
+		base=${file%.*}
+		filebase=$(basename "$base" ".tex")
+		uni_name=./unified/u_${filebase}.tex
 
+		cp $file $uni_name
+	done
 
+}
 
+cd ..
 
+echo "Going to General Directory..."
+cd /home/ndtrd/.scripts/tools/questions/general
+unify_general
 
-
+echo "Going to Specific Directory..."
+cd /home/ndtrd/.scripts/tools/questions/specific 
+unify_specific
 
 
 

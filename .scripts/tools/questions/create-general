@@ -6,10 +6,19 @@
 declare -Ag begin_arrays
 declare -Ag end_arrays
 
-#file size in current directory:
-file_num=$(find . -type f -name 'u_*.tex' | wc -l)
+#quesbook folder location:
+declare -g qbl=~/supplement/test-questions/quesbook
 
-echo "Total files to be processed: $((file_num-1))"
+#questions folder location:
+declare -g ql=$qbl/questions
+
+#unified questions folder location:
+declare -g uqf=$ql/general/unified
+
+#file size in general directory:
+file_num=$(find $uqf -type f -name 'u_*.tex' | wc -l)
+printf "Total general quesiton files: %s\n" "$((file_num))"
+
 
 first_round(){
 	python3 -c "from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_DOWN, ROUND_DOWN;number=Decimal('$1');rounded = number.quantize(Decimal('0.1'), rounding='ROUND_HALF_DOWN');print(rounded)"
@@ -22,7 +31,7 @@ second_round(){
 list_begins () {
 	echo "Listing Begin Positions:"
 	i=1
-	for file in $(find . -type f -name 'u_*.tex' | sort)
+	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
 	do
 		declare -g "begin_array_$i=( $(grep -n 'begin.question' $file | cut -d: -f 1) )"
 		var="begin_array_$i"
@@ -35,7 +44,7 @@ list_begins () {
 list_ends () {
 	echo "Listing End Positions:"
 	i=1
-	for file in $(find . -type f -name 'u_*.tex' | sort)
+	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
 	do
 		declare -g "end_array_$i=( $(grep -n 'end.solution' $file | cut -d: -f 1) )"
 		var="end_array_$i"
@@ -47,7 +56,7 @@ list_ends () {
 
 create_begins () {
 	i=0
-	for file in $(find . -type f -name 'u_*.tex' | sort)
+	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
 	do
 		j=0
 		for value in $(grep -n 'begin.question' $file | cut -d: -f 1)
@@ -62,7 +71,7 @@ create_begins () {
 
 create_ends () {
 	i=0
-	for file in $(find . -type f -name 'u_*.tex' | sort)
+	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
 	do
 		j=0
 		for value in $(grep -n 'end.solution' $file | cut -d: -f 1)
@@ -81,22 +90,20 @@ create_ends () {
 create_begins
 create_ends
 
-cd ~/test-questions/quesbook/questions/general/unified
-
-output_general=./general-questions.tex
-if [ -f $output_general ]; then
-   echo "File $output_general exists.So removing it for the new one..."
-   rm $output_general
+output=$uqf/general-questions.tex
+if [ -f $output ]; then
+   echo "File $output exists.So removing it for the new one..."
+   rm $output
 else
-   echo "File $output_general does not exist. Creating new one..."
-   touch $output_general
+   echo "File $output does not exist. Creating new one..."
+   touch $output
 fi
 
-create_general_questions () {
+create_questions () {
 
 	total_questions=${#begin_arrays[@]}
 	i=0
-	for file in $(find . -type f -name 'u_*.tex' | sort)
+	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
 	do
 		echo "Processed file is: $file"
 
@@ -116,15 +123,15 @@ create_general_questions () {
 				
 				begin=${begin_arrays[$i,${shuff_array[$j]}]}
 				end=${end_arrays[$i,${shuff_array[$j]}]} 
-				sed -n "${begin},${end}p" $file >> $output_general
+				sed -n "${begin},${end}p" $file >> $output
 			done
 		
 		i=$((i+1))
 	done
 }
 
-create_general_questions
+create_questions
 
-cp $output_general ~/test-questions/quesbook/genel/
+cp $output $qbl/genel/
 
 

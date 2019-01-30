@@ -81,14 +81,15 @@ create_ends () {
 create_begins
 create_ends
 
-cd ~/.scripts/tools/questions/general/unified
+cd ~/test-questions/quesbook/questions/general/unified
 
-output_file=./general-questions.tex
-if [ -f $output_file ]; then
-   echo "File $output_file exists.So removing it for the new one..."
-   rm $output_file
+output_general=./general-questions.tex
+if [ -f $output_general ]; then
+   echo "File $output_general exists.So removing it for the new one..."
+   rm $output_general
 else
-   echo "File $output_file does not exist. Creating new one..."
+   echo "File $output_general does not exist. Creating new one..."
+   touch $output_general
 fi
 
 create_general_questions () {
@@ -115,7 +116,7 @@ create_general_questions () {
 				
 				begin=${begin_arrays[$i,${shuff_array[$j]}]}
 				end=${end_arrays[$i,${shuff_array[$j]}]} 
-				sed -n "${begin},${end}p" $file >> general-questions.tex
+				sed -n "${begin},${end}p" $file >> $output_general
 			done
 		
 		i=$((i+1))
@@ -124,5 +125,6 @@ create_general_questions () {
 
 create_general_questions
 
+cp $output_general ~/test-questions/quesbook/genel/
 
 

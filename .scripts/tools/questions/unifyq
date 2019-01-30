@@ -138,12 +138,12 @@ gather_specific () {
 cd ..
 
 echo "Going to General Directory..."
-cd ~/supplement/test-questions/quesbook/questions/general
+cd ~/test-questions/quesbook/questions/general
 #cd /home/ndtrd/.scripts/tools/questions/general
 unify_general
 
 echo "Going to Specific Directory..."
-cd ~/supplement/test-questions/quesbook/questions/specific
+cd ~/test-questions/quesbook/questions/specific
 #cd /home/ndtrd/.scripts/tools/questions/specific 
 unify_specific
 

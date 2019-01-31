@@ -14,7 +14,7 @@ declare -g qbl=~/test-questions/quesbook
 declare -g ql=$qbl/questions
 
 #unified questions folder location:
-declare -g uqf=$ql/general/unified
+declare -g uqf=$ql/specific/unified
 
 #file size in general directory:
 file_num=$(find $uqf -type f -name 'u_*.tex' | wc -l)
@@ -91,7 +91,7 @@ create_ends () {
 create_begins
 create_ends
 
-output=$uqf/general-questions.tex
+output=$uqf/specific-questions.tex
 if [ -f $output ]; then
    echo "File $output exists.So removing it for the new one..."
    rm $output
@@ -115,7 +115,7 @@ create_questions () {
 		shuff_array=( $(shuf -e "${temp_array[@]}") )
 		echo "shuffled array of this file is : ${shuff_array[*]}"		
 		
-		needed_float=$( echo "print($file_size*40/$total_questions)" | python3 )
+		needed_float=$( echo "print($file_size*30/$total_questions)" | python3 )
 		needed_tmp=$( first_round $needed_float )
 		needed=$( second_round $needed_tmp )
 		echo "Needed questions (weighed over total) is: $needed"
@@ -132,7 +132,8 @@ create_questions () {
 }
 
 create_questions
+#rm-subtitles
 
-cp $output $qbl/genel/
+cp $output $qbl/ozel/
 
 

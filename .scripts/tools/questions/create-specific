@@ -5,10 +5,11 @@
 #two dimensional arrays (first dimension is file, second is position)
 declare -Ag begin_arrays
 declare -Ag end_arrays
+declare -g qneed=30
 
 #quesbook folder location:
 #declare -g qbl=~/supplement/test-questions/quesbook
-declare -g qbl=~/test-questions/quesbook
+declare -g qbl=~/online-edu/vt/quesbook
 
 #questions folder location:
 declare -g ql=$qbl/questions
@@ -17,7 +18,7 @@ declare -g ql=$qbl/questions
 declare -g uqf=$ql/specific/unified
 
 #file size in general directory:
-file_num=$(find $uqf -type f -name 'u_*.tex' | wc -l)
+declare -g file_num=$(find $uqf -type f -name 'u_*.tex' | wc -l)
 printf "Total general quesiton files: %s\n" "$((file_num))"
 
 
@@ -90,8 +91,9 @@ create_ends () {
 
 create_begins
 create_ends
+echo "Total questions for general is: ${#begin_arrays[@]}"
 
-output=$uqf/specific-questions.tex
+declare -g output=$uqf/specific-questions.tex
 if [ -f $output ]; then
    echo "File $output exists.So removing it for the new one..."
    rm $output
@@ -100,9 +102,34 @@ else
    touch $output
 fi
 
+gen_ques_size() {
+	total_need=0
+	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
+	do
+		file_size=$( qsize $file | cut -d: -f 2 )
+
+		temp_array=( $(for ((k=0;k<$((file_size));k+=1)); do echo ${k}; done) )		
+		shuff_array=( $(shuf -e "${temp_array[@]}") )
+		
+		needed_float=$( echo "print($file_size*$qneed/$total_questions)" | python3 )
+		needed_tmp=$( first_round $needed_float )
+		needed=$( second_round $needed_tmp )
+		total_need=$((total_need+needed))
+	done
+	echo "$total_need"
+}
+
 create_questions () {
 
-	total_questions=${#begin_arrays[@]}
+	declare -g total_questions=${#begin_arrays[@]}
+	
+	created_question_size=$( gen_ques_size )
+	diff_questions=$((qneed-created_question_size))
+	qfiles_array=( $(for ((k=0;k<$((file_num));k+=1)); do echo ${k}; done) )
+	shuff_qfiles_array=( $(shuf -e "${qfiles_array[@]}") )
+	echo ${shuff_qfiles_array[@]}
+	echo "difference between generated and needed: $diff_questions"
+
 	i=0
 	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
 	do
@@ -115,21 +142,75 @@ create_questions () {
 		shuff_array=( $(shuf -e "${temp_array[@]}") )
 		echo "shuffled array of this file is : ${shuff_array[*]}"		
 		
-		needed_float=$( echo "print($file_size*30/$total_questions)" | python3 )
+		needed_float=$( echo "print($file_size*$qneed/$total_questions)" | python3 )
 		needed_tmp=$( first_round $needed_float )
 		needed=$( second_round $needed_tmp )
+
+		rnd_bin=$((RANDOM%2))
+
 		echo "Needed questions (weighed over total) is: $needed"
 
-			for (( j=0 ; j<$needed ; j++ )); do
+		if [ $diff_questions -gt 0 ];then
+			if [ $rnd_bin -eq 1 ]; then
+				for (( j=0 ; j<$((needed+1)) ; j++ )); do
+				
+					begin=${begin_arrays[$i,${shuff_array[$j]}]}
+					end=${end_arrays[$i,${shuff_array[$j]}]} 
+					sed -n "${begin},${end}p" $file >> $output
+				done
+			diff_questions=$((diff_questions-1))
+
+			else
+				for (( j=0 ; j<$((needed)) ; j++ )); do
+				
+					begin=${begin_arrays[$i,${shuff_array[$j]}]}
+					end=${end_arrays[$i,${shuff_array[$j]}]} 
+					sed -n "${begin},${end}p" $file >> $output
+				done
+			fi
+		else
+			for (( j=0 ; j<$((needed)) ; j++ )); do
 				
 				begin=${begin_arrays[$i,${shuff_array[$j]}]}
 				end=${end_arrays[$i,${shuff_array[$j]}]} 
 				sed -n "${begin},${end}p" $file >> $output
 			done
-		
+
+		fi
+
 		i=$((i+1))
 	done
 }
+#create_questions () {
+#
+#	total_questions=${#begin_arrays[@]}
+#	i=0
+#	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
+#	do
+#		echo "Processed file is: $file"
+#
+#		file_size=$( qsize $file | cut -d: -f 2 )
+#		echo "File size is: $file_size"
+#
+#		temp_array=( $(for ((k=0;k<$((file_size));k+=1)); do echo ${k}; done) )		
+#		shuff_array=( $(shuf -e "${temp_array[@]}") )
+#		echo "shuffled array of this file is : ${shuff_array[*]}"		
+#		
+#		needed_float=$( echo "print($file_size*30/$total_questions)" | python3 )
+#		needed_tmp=$( first_round $needed_float )
+#		needed=$( second_round $needed_tmp )
+#		echo "Needed questions (weighed over total) is: $needed"
+#
+#			for (( j=0 ; j<$needed ; j++ )); do
+#				
+#				begin=${begin_arrays[$i,${shuff_array[$j]}]}
+#				end=${end_arrays[$i,${shuff_array[$j]}]} 
+#				sed -n "${begin},${end}p" $file >> $output
+#			done
+#		
+#		i=$((i+1))
+#	done
+#}
 
 create_questions
 #rm-subtitles

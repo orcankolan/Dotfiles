@@ -50,6 +50,11 @@
    #+BEGIN_SRC emacs-lisp
      (global-set-key (kbd "<f5>") 'revert-buffer)
    #+END_SRC
+** Stop craeting backup files...
+   #+BEGIN_SRC emacs-lisp
+     (setq make-backup-files nil) ; stop creating backup~ files
+     (setq auto-save-default nil) ; stop creating #autosave# files 
+   #+END_SRC
 * Fonts
   - Add an ‘emacs.font’ X resource setting to your X resource file, like this:
 #+BEGIN_SRC
@@ -230,8 +235,8 @@ emacs.font: Hack-10
 
     ;; to use pdfview with auctex
     (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
-    (add-hook 'LaTeX-mode-hook (lambda() (flyspell-mode 1)))
-    (add-hook 'LaTeX-mode-hook #'flyspell-buffer)
+    ; (add-hook 'LaTeX-mode-hook (lambda() (flyspell-mode 1)))
+    ; (add-hook 'LaTeX-mode-hook #'flyspell-buffer)
     (add-hook 'pdf-view-mode-hook (lambda() (linum-mode 0)))
     (add-hook 'pdf-view-mode-hook (lambda() (nlinum-mode 0)))
     (add-hook 'pdf-view-mode-hook (lambda() (nlinum-relative-mode 0)))

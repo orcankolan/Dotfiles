@@ -9,7 +9,7 @@ declare -g qneed=40
 
 #quesbook folder location:
 #declare -g qbl=~/supplement/test-questions/quesbook
-declare -g qbl=~/online-edu/vt/quesbook
+declare -g qbl=~/online-edu/pt/quesbook
 
 #questions folder location:
 declare -g ql=$qbl/questions
@@ -211,6 +211,6 @@ create_questions () {
 
 create_questions
 
-#cp $output $qbl/genel/
+cp $output $qbl/genel/
 
 

@@ -168,7 +168,34 @@ create_questions () {
 					sed -n "${begin},${end}p" $file >> $output
 				done
 			fi
-		else
+		
+		i=$((i+1))
+		continue
+		fi
+
+		if [ $diff_questions -lt 0 ];then
+			if [ $rnd_bin -eq 1 ]; then
+				for (( j=0 ; j<$((needed-1)) ; j++ )); do
+				
+					begin=${begin_arrays[$i,${shuff_array[$j]}]}
+					end=${end_arrays[$i,${shuff_array[$j]}]} 
+					sed -n "${begin},${end}p" $file >> $output
+				done
+			diff_questions=$((diff_questions+1))
+
+			else
+				for (( j=0 ; j<$((needed)) ; j++ )); do
+				
+					begin=${begin_arrays[$i,${shuff_array[$j]}]}
+					end=${end_arrays[$i,${shuff_array[$j]}]} 
+					sed -n "${begin},${end}p" $file >> $output
+				done
+			fi
+		i=$((i+1))
+		continue
+		fi
+
+		if [ $diff_questions -eq 0 ];then
 			for (( j=0 ; j<$((needed)) ; j++ )); do
 				
 				begin=${begin_arrays[$i,${shuff_array[$j]}]}
@@ -181,40 +208,9 @@ create_questions () {
 		i=$((i+1))
 	done
 }
-#create_questions () {
-#
-#	total_questions=${#begin_arrays[@]}
-#	i=0
-#	for file in $(find $uqf -type f -name 'u_*.tex' | sort)
-#	do
-#		echo "Processed file is: $file"
-#
-#		file_size=$( qsize $file | cut -d: -f 2 )
-#		echo "File size is: $file_size"
-#
-#		temp_array=( $(for ((k=0;k<$((file_size));k+=1)); do echo ${k}; done) )		
-#		shuff_array=( $(shuf -e "${temp_array[@]}") )
-#		echo "shuffled array of this file is : ${shuff_array[*]}"		
-#		
-#		needed_float=$( echo "print($file_size*30/$total_questions)" | python3 )
-#		needed_tmp=$( first_round $needed_float )
-#		needed=$( second_round $needed_tmp )
-#		echo "Needed questions (weighed over total) is: $needed"
-#
-#			for (( j=0 ; j<$needed ; j++ )); do
-#				
-#				begin=${begin_arrays[$i,${shuff_array[$j]}]}
-#				end=${end_arrays[$i,${shuff_array[$j]}]} 
-#				sed -n "${begin},${end}p" $file >> $output
-#			done
-#		
-#		i=$((i+1))
-#	done
-#}
 
 create_questions
-#rm-subtitles
 
-cp $output $qbl/ozel/
+# cp $output $qbl/ozel/
 
 

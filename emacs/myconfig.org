@@ -399,3 +399,21 @@ Projectile provides easy project management and navigation. Some of Projectile's
     (beacon-mode 1)
     )
 #+END_SRC
+* Auto parenthesis
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+      :ensure t
+      :config
+      (smartparens-global-mode t)
+      )
+
+  (use-package evil-smartparens
+    :ensure t
+    :config
+    (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+      )
+#+END_SRC
+
+#+RESULTS:
+
+

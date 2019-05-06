@@ -1,0 +1,7 @@
+# key : colorenum
+# group: environments
+# name : \begin{colorenum} ... \end{colorenum}
+# --
+\begin{colorenum}
+\item $0
+\end{colorenum}

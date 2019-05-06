@@ -1,0 +1,7 @@
+# key : color
+# group: environments
+# name : \begin{coloreitemize} ... \end{coloritemize}
+# --
+\begin{coloritemize}
+\item $0
+\end{coloritemize}

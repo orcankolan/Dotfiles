@@ -413,7 +413,13 @@ Projectile provides easy project management and navigation. Some of Projectile's
     (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
       )
 #+END_SRC
-
-#+RESULTS:
-
-
+* Yasnippets (auto snippets)
+  Keeping snippets in the .emacs.d/snippets/text-mode
+  #+BEGIN_SRC emacs-lisp
+         (use-package yasnippet
+           :ensure t
+           :config
+           (setq yas-snippet-dirs '("~/.emacs.d/snippets/text-mode"))
+           (yas-global-mode 1)
+           )
+  #+END_SRC

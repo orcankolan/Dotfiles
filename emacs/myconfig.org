@@ -277,12 +277,23 @@ emacs.font: Hack-10
   Evil-Mode is the extensible VI layer for emacs.(M-x evil-mode for activation)
   #+BEGIN_SRC emacs-lisp
     (use-package evil
-       :ensure t
-       :config (evil-mode 1))
-    (evil-set-initial-state 'pdf-view-mode 'emacs)
-    (add-hook 'pdf-view-mode-hook
+      :ensure t
+      :init
+      (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+      (setq evil-want-keybinding nil)
+
+      :config (evil-mode 1)
+      (evil-set-initial-state 'pdf-view-mode 'emacs)
+      (add-hook 'pdf-view-mode-hook
       (lambda ()
-        (set (make-local-variable 'evil-emacs-state-cursor) (list nil))))
+        (set (make-local-variable 'evil-emacs-state-cursor) (list nil)))))
+
+
+    (use-package evil-collection
+      :after evil
+      :ensure t
+      :config
+      (evil-collection-init))
   #+END_SRC
 * Cheatsheet
   To create your own cheat-sheet
@@ -423,3 +434,9 @@ Projectile provides easy project management and navigation. Some of Projectile's
            (yas-global-mode 1)
            )
   #+END_SRC
+* Auto-yasnippets
+  #+BEGIN_SRC emacs-lisp
+     (use-package auto-yasnippet
+       :ensure t) 
+  #+END_SRC
+

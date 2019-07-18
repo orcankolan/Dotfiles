@@ -9,10 +9,10 @@ declare -g qneed=40
 
 #quesbook folder location:
 #declare -g qbl=~/supplement/test-questions/quesbook
-declare -g qbl=~/online-edu/pt/quesbook
+declare -g qbl=~/online-edu/vt/quesbook
 
 #questions folder location:
-declare -g ql=$qbl/questions
+declare -g ql=$qbl/questions/$1
 
 #unified questions folder location:
 declare -g uqf=$ql/general/unified
@@ -211,6 +211,12 @@ create_questions () {
 
 create_questions
 
-cp $output $qbl/genel/
+echo >> $output
+echo "%%% Local Variables:" >> $output
+echo "%%% mode: latex" >> $output
+echo "%%% TeX-master: \"ndtbook\"" >> $output
+echo "%%% End:" >> $output
+
+cp $output $qbl/genel/test/
 
 

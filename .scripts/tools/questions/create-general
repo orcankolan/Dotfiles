@@ -217,6 +217,6 @@ echo "%%% mode: latex" >> $output
 echo "%%% TeX-master: \"ndtbook\"" >> $output
 echo "%%% End:" >> $output
 
-cp $output $qbl/genel/test/
+cp $output $qbl/genel
 
 

@@ -22,6 +22,11 @@ set smtp_pass = "`gpg --batch -q --decrypt ~/.config/mutt/account.gpg`"
 # Remember to `mkdir -p ~/.neomutt/hcache` first:
 set header_cache= "~/.config/mutt/hcache"
 
+# Sidebar and other stuff
+set sidebar_visible
+set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+
 set spoolfile = "+INBOX"
 
 unset record                # Gmail auto-stores in "+[Gmail].Sent Mail"

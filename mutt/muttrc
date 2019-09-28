@@ -28,13 +28,21 @@ unset record                # Gmail auto-stores in "+[Gmail].Sent Mail"
 unset trash                 # Unset, deletion will remove labels
 set postponed = "+[Gmail].Drafts"
 
+#################
+# Mailboxes
+# You can use any gmail imap mailboxes
+mailboxes =INBOX =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash
+
 set mail_check = 60
 
 ###############
 # Index settings
 #
 set quit = ask-yes
-set sort = reverse-threads
+set sort=reverse-date   # default sorting by date
+# When sorting by threads, this variable controls how threads are sorted
+# in relation to other threads, and how the branches of the thread trees are sorted.
+set sort_aux=last-date-received
 
 ###############
 # Editor

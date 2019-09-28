@@ -1,0 +1,46 @@
+###############
+# Identity
+#
+set realname = "Orcan Kolankaya"
+set from = "orcankolankaya@gmail.com"
+
+###############
+# Example: Gmail over IMAP
+#
+set folder = "imaps://orcankolankaya@gmail.com@imap.gmail.com:993"
+set smtp_url = "smtp://orcankolankaya@gmail.com@smtp.gmail.com:587"
+
+################
+# Password
+#
+# To avoid storing your password in the .neomuttrc:
+# echo -n 'mypassword' | gpg --encrypt -r orcankolankaya@gmail.com > ~/.config/mutt/account.gpg
+
+set imap_pass = "`gpg --batch -q --decrypt ~/.config/mutt/account.gpg`"
+set smtp_pass = "`gpg --batch -q --decrypt ~/.config/mutt/account.gpg`" 
+
+# Remember to `mkdir -p ~/.neomutt/hcache` first:
+set header_cache= "~/.config/mutt/hcache"
+
+set spoolfile = "+INBOX"
+
+unset record                # Gmail auto-stores in "+[Gmail].Sent Mail"
+unset trash                 # Unset, deletion will remove labels
+set postponed = "+[Gmail].Drafts"
+
+set mail_check = 60
+
+###############
+# Index settings
+#
+set quit = ask-yes
+set sort = reverse-threads
+
+###############
+# Editor
+#
+set editor = "vim"
+
+################
+#Colors
+source colors.muttrc

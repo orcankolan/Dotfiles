@@ -16,6 +16,7 @@ set smtp_url = "smtp://orcankolankaya@gmail.com@smtp.gmail.com:587"
 # To avoid storing your password in the .neomuttrc:
 # echo -n 'mypassword' | gpg --encrypt -r orcankolankaya@gmail.com > ~/.config/mutt/account.gpg
 
+
 set imap_pass = "`gpg --batch -q --decrypt ~/.config/mutt/account.gpg`"
 set smtp_pass = "`gpg --batch -q --decrypt ~/.config/mutt/account.gpg`" 
 

@@ -45,6 +45,7 @@ set mail_check = 60
 #
 set quit = ask-yes
 set sort=reverse-date   # default sorting by date
+
 # When sorting by threads, this variable controls how threads are sorted
 # in relation to other threads, and how the branches of the thread trees are sorted.
 set sort_aux=last-date-received

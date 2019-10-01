@@ -44,9 +44,16 @@ URxvt.background:       [70]#000000
 URxvt.depth:		32
 URxvt.font: xft:Hack:size=10
 URxvt.letterSpace:-1
+URxvt.iso14755: false
+URxvt.iso14755_52: false
 !URxvt.font: xft:monaco:size=10
 URxvt.scrollBar:	false
 URxvt.cursorColor: magenta
+
+! === St (simple Terminal) ===
+st.alpha: 0.70
+st.cursorColor: magenta
+st.background: #000000
 
 !Extentions
 URxvt.perl-ext-common: default,selection-to-clipboard,font-size,keyboard-select

@@ -22,32 +22,46 @@ set smtp_pass = "`gpg --batch -q --decrypt ~/.config/mutt/account.gpg`"
 # Remember to `mkdir -p ~/.neomutt/hcache` first:
 set header_cache= "~/.config/mutt/hcache"
 
+##################
 # Sidebar and other stuff
 set sidebar_visible
-set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
+set sidebar_width = 28
+set sidebar_format="%D%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
 
+#################
+#INBOX Trash, Other labels etc.
 set spoolfile = "+INBOX"
 
-unset record                # Gmail auto-stores in "+[Gmail].Sent Mail"
-unset trash                 # Unset, deletion will remove labels
+set delete = yes
+
+unset record             # Gmail auto-stores in "+[Gmail].Sent Mail"
+set trash = "+[Gmail].Trash"               
 set postponed = "+[Gmail].Drafts"
 
 #################
 # Mailboxes
 # You can use any gmail imap mailboxes
-mailboxes =INBOX =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash
-
+mailboxes ="-----GMail-----" 
+mailboxes =INBOX
+set imap_check_subscribed
 set mail_check = 60
 
 ###############
 # Index settings
 #
+set sort = reverse-threads
+set sort_browser = alpha
+set sort_aux = last-date-received
 set quit = ask-yes
-set sort=reverse-date   # default sorting by date
-# When sorting by threads, this variable controls how threads are sorted
-# in relation to other threads, and how the branches of the thread trees are sorted.
-set sort_aux=last-date-received
+#set sort=reverse-date   # default sorting by date
+#set sort_aux=last-date-received
+set forward_format      = "Fwd: %s"
+set date_format = "%d/%m/%y•%H:%M"
+set index_format = "%Z ⌈%D⌋ %-20.20F %s"
+set implicit_autoview
+alternative_order text/plain text/html text/encriched
+auto_view text/html
 
 ###############
 # Editor
@@ -57,3 +71,33 @@ set editor = "vim"
 ################
 #Colors
 source colors.muttrc
+
+################
+#Bindings
+bind index,pager \CP sidebar-prev                 # Ctrl-p to select next folder
+bind index,pager \CN sidebar-next                 # Ctrl-n to select previous folder
+bind index,pager \CO sidebar-open                 # Ctrl-o to open selected folder
+bind index,pager \CB sidebar-toggle-visible       # Ctrl-b to toggle visibility of the sidebar
+
+# Macros and Bindings
+bind index,pager g noop
+bind index,pager i noop
+bind index,pager f noop
+bind index,pager,browser . noop
+
+# reload muttrc!
+macro index,browser \Cr "<enter-command>source ~/.config/mutt/muttrc<enter>"
+
+macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+
+bind index gg  first-entry
+bind index G   last-entry
+
+macro index,pager ga "<change-folder>=[Gmail]/All%20Mail<enter>" "Go to All Mail"
+macro index,pager gs "<change-folder>=[Gmail]/Sent%20Mail<enter>" "Go to All Mail"
+macro index,pager gd "<change-folder>=[Gmail]/Drafts<enter>" "Go to Drafts"
+macro index,pager gt "<change-folder>=[Gmail]/Trash<enter>" "Go to Drafts"
+macro index,pager gi "<change-folder>=INBOX<enter>" "Open Inbox"
+
+macro attach W <save-entry><kill-line>~/Downloads/attachments/<enter>
+bind index fm imap-fetch-mail

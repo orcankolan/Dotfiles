@@ -1,0 +1,56 @@
+# vim: filetype=neomuttrc
+
+###############
+# Identity
+#
+set realname = "Orcan Kolankaya"
+set from = "koorcan@metu.edu.tr"
+
+###############
+# Example: Gmail over IMAP
+#
+set folder = "imaps://koorcan@imap.metu.edu.tr:993"
+set smtp_url = "smtp://koorcan@smtp.metu.edu.tr:465"
+
+################
+# Password
+#
+# To avoid storing your password in the .neomuttrc:
+# echo -n 'mypassword' | gpg --encrypt -r orcankolankaya@gmail.com > ~/.config/mutt/account.gpg
+
+set imap_pass = "`gpg --batch -q --decrypt ~/.config/mutt/metu-account.gpg`"
+set smtp_pass = "`gpg --batch -q --decrypt ~/.config/mutt/metu-account.gpg`" 
+
+# Remember to `mkdir -p ~/.neomutt/hcache` first:
+set header_cache= "~/.config/mutt/metu/cache/headers"
+set certificate_file = ~/.config/mutt/metu/certificates 
+
+##################
+# Sidebar and other stuff
+set sidebar_visible = yes
+set sidebar_width = 28
+set sidebar_short_path = yes
+set sidebar_next_new_wrap = yes
+set mail_check_stats
+set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+
+#################
+#INBOX Trash, Other labels etc.
+set spoolfile = "+INBOX"
+
+set delete = yes
+
+unset record             # Gmail auto-stores in "+[Gmail].Sent Mail"
+set trash = "+Trash"               
+set postponed = "+drafts"
+
+#################
+# Mailboxes
+# You can use any gmail imap mailboxes
+unmailboxes *
+mailboxes ="-----METU-Mail-----" 
+mailboxes =INBOX =Sent =Trash =drafts
+#set imap_check_subscribed
+set mail_check = 60
+

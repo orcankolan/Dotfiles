@@ -1,51 +1,20 @@
-###############
-# Identity
-#
-set realname = "Orcan Kolankaya"
-set from = "orcankolankaya@gmail.com"
+# Folder hooks
+folder-hook 'gmail' 'source ~/.config/mutt/gmail/gmailrc'
+folder-hook 'metu' 'source ~/.config/mutt/metu/meturc'
 
-###############
-# Example: Gmail over IMAP
-#
-set folder = "imaps://orcankolankaya@gmail.com@imap.gmail.com:993"
-set smtp_url = "smtp://orcankolankaya@gmail.com@smtp.gmail.com:587"
+# Macros and Bindings (these should be come before gmailrc source)
+bind index,pager g noop
+bind index,pager i noop
+bind index,pager f noop
+bind index,pager,browser . noop
 
-################
-# Password
-#
-# To avoid storing your password in the .neomuttrc:
-# echo -n 'mypassword' | gpg --encrypt -r orcankolankaya@gmail.com > ~/.config/mutt/account.gpg
+# Default account - Gmail
+source ~/.config/mutt/gmail/gmailrc
+#source ~/.config/mutt/metu/meturc
 
-set imap_pass = "`gpg --batch -q --decrypt ~/.config/mutt/account.gpg`"
-set smtp_pass = "`gpg --batch -q --decrypt ~/.config/mutt/account.gpg`" 
-
-# Remember to `mkdir -p ~/.neomutt/hcache` first:
-set header_cache= "~/.config/mutt/hcache"
-
-##################
-# Sidebar and other stuff
-set sidebar_visible
-set sidebar_width = 28
-set sidebar_format="%D%B%?F? [%F]?%* %?N?%N/?%S"
-set mail_check_stats
-
-#################
-#INBOX Trash, Other labels etc.
-set spoolfile = "+INBOX"
-
-set delete = yes
-
-unset record             # Gmail auto-stores in "+[Gmail].Sent Mail"
-set trash = "+[Gmail].Trash"               
-set postponed = "+[Gmail].Drafts"
-
-#################
-# Mailboxes
-# You can use any gmail imap mailboxes
-mailboxes ="-----GMail-----" 
-mailboxes =INBOX
-set imap_check_subscribed
-set mail_check = 60
+# Macros for switching accounts
+macro index <f2> '<enter-command>source ~/.config/mutt/gmail/gmailrc<enter><change-folder>!<enter>'
+macro index <f3> '<enter-command>source ~/.config/mutt/metu/meturc<enter><change-folder>!<enter>'
 
 ###############
 # Index settings
@@ -79,11 +48,6 @@ bind index,pager \CN sidebar-next                 # Ctrl-n to select previous fo
 bind index,pager \CO sidebar-open                 # Ctrl-o to open selected folder
 bind index,pager \CB sidebar-toggle-visible       # Ctrl-b to toggle visibility of the sidebar
 
-# Macros and Bindings
-bind index,pager g noop
-bind index,pager i noop
-bind index,pager f noop
-bind index,pager,browser . noop
 
 # reload muttrc!
 macro index,browser \Cr "<enter-command>source ~/.config/mutt/muttrc<enter>"
@@ -92,12 +56,6 @@ macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folde
 
 bind index gg  first-entry
 bind index G   last-entry
-
-macro index,pager ga "<change-folder>=[Gmail]/All%20Mail<enter>" "Go to All Mail"
-macro index,pager gs "<change-folder>=[Gmail]/Sent%20Mail<enter>" "Go to All Mail"
-macro index,pager gd "<change-folder>=[Gmail]/Drafts<enter>" "Go to Drafts"
-macro index,pager gt "<change-folder>=[Gmail]/Trash<enter>" "Go to Drafts"
-macro index,pager gi "<change-folder>=INBOX<enter>" "Open Inbox"
 
 macro attach W <save-entry><kill-line>~/Downloads/attachments/<enter>
 bind index fm imap-fetch-mail

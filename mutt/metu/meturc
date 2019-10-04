@@ -10,7 +10,7 @@ set from = "koorcan@metu.edu.tr"
 # Example: Gmail over IMAP
 #
 set folder = "imaps://koorcan@imap.metu.edu.tr:993"
-set smtp_url = "smtp://koorcan@smtp.metu.edu.tr:465"
+set smtp_url = "smtp://koorcan@smtp.metu.edu.tr:587"
 
 ################
 # Password
@@ -50,7 +50,7 @@ set postponed = "+drafts"
 # You can use any gmail imap mailboxes
 unmailboxes *
 mailboxes ="-----METU-Mail-----" 
-mailboxes =INBOX =Sent =Trash =drafts
+mailboxes =INBOX =Trash =drafts =sent-mail
 #set imap_check_subscribed
 set mail_check = 60
 

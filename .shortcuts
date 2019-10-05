@@ -1,2 +1,6 @@
 alias dt="cd ~/cloned-repos/Dotfiles && ls -la"
 alias lk="cd ~/cloned-repos/voidrice && ls -la"
+alias oe="cd ~/online-edu && ls -la"
+alias gq="cd ~/supplement/test-questions/quesbook/questions && la"
+alias mac="cd ~/cloned-repos/macOS-Simple-KVM/ && sudo ./basic.sh"
+alias em="emacsclient -n"

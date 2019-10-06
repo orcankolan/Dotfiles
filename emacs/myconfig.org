@@ -1,5 +1,9 @@
 
 * Built-in modes and variables
+** Start serve for emacsclient 
+   #+BEGIN_SRC emacs-lisp
+       (server-start) 
+   #+END_SRC
 ** Startup message
    #+BEGIN_SRC emacs-lisp
      (setq inhibit-startup-message t)
@@ -181,10 +185,10 @@ emacs.font: Hack-10
    #+END_SRC
 * Theme
   #+BEGIN_SRC emacs-lisp
-    (use-package tangotango-theme
+    (use-package dracula-theme
       :ensure t
       :config
-      (load-theme 'tangotango t))  
+      (load-theme 'dracula t))  
   #+END_SRC
 * Powerline
 ** Where to find Airline themes
@@ -500,4 +504,16 @@ Projectile provides easy project management and navigation. Some of Projectile's
   #+END_SRC
 
 
+
+* Dired extensions
+** dired-subtree: tab and shift-tab for tree view
+   #+BEGIN_SRC emacs-lisp
+       (use-package dired-subtree
+       :ensure t
+       :after dired
+       :bind (:map dired-mode-map
+                   ("<tab>" . dired-subtree-toggle)
+                   ("<C-tab>" . dired-subtree-cycle)
+                   ("<S-iso-lefttab>" . dired-subtree-remove))) 
+   #+END_SRC
 

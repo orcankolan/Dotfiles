@@ -22,7 +22,8 @@ nnoremap <leader><Space> /<++><CR><ESC>ci<
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'dracula/vim'
+"Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdtree'
 
 " All of your Plugins must be added before the following line
@@ -42,17 +43,18 @@ filetype plugin indent on    " required
 
 " vim-airline theme selection:
 
-let g:airline_theme='dark'
+let g:airline_theme='dracula'
 let g:airline_powerline_fonts = 1
 let g:airline_solarized_bg ='light'
+let g:dracula_colorterm = 1
 
 " solarized setups:
 syntax enable
 set t_Co=256 "for tmux to run on 256 colors
 set t_ut= "for tmux to disable Background Color Erase (BCE)
-set background=light
-let g:solarized_termcolors=256
-colorscheme murphy
+"set background=light
+"let g:solarized_termcolors=256
+color dracula
 
 " NERDTree command binding
 map <C-n> :NERDTreeToggle<CR>

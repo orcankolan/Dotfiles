@@ -524,3 +524,21 @@ Projectile provides easy project management and navigation. Some of Projectile's
                    ("<S-iso-lefttab>" . dired-subtree-remove))) 
    #+END_SRC
 
+* Engine-mode
+  Define search engines, bind them to keybindings, and query them from the comfort of your editor.
+  #+BEGIN_SRC emacs-lisp
+    (use-package engine-mode
+      :config
+      (engine-mode t)
+      
+      (engine/set-keymap-prefix (kbd "C-c s"))
+
+      (defengine github
+      "https://github.com/search?ref=simplesearch&q=%s")
+
+      (defengine google
+      "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+      :keybinding "g")
+
+      ) 
+  #+END_SRC

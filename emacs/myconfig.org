@@ -189,6 +189,9 @@ emacs.font: Hack-10
       :ensure t
       :config
       (load-theme 'dracula t))  
+    ;; (use-package spacemacs-common
+    ;;     :ensure spacemacs-theme
+    ;;     :config (load-theme 'spacemacs-dark t))
   #+END_SRC
 * Powerline
 ** Where to find Airline themes
@@ -196,33 +199,40 @@ emacs.font: Hack-10
 - to see airline theme (https://github.com/vim-airline/vim-airline/wiki/Screenshots)
 
   #+BEGIN_SRC emacs-lisp
-    (use-package powerline
-      :ensure t)  
+    ;; (use-package powerline
+    ;;   :ensure t)  
 
-    ;; to use smart mode line and its powerline theme
-
-    ;; (use-package smart-mode-line
-    ;;   :ensure t)
-
-    ;; (use-package smart-mode-line-powerline-theme
-    ;;    :ensure t
-    ;;    :after powerline
-    ;;    :after smart-mode-line
-    ;;    :config
-    ;;     (setq sml/no-confirm-load-theme t)
-    ;;     (sml/setup)
-    ;;     (sml/apply-theme 'powerline)
+    ;; (use-package airline-themes
+    ;;   :ensure t
+    ;;   :config
+    ;;   (load-theme 'airline-wombat :no-confirm)
     ;; )
 
-    (use-package airline-themes
-      :ensure t
+    (use-package telephone-line :ensure t
       :config
-      (load-theme 'airline-wombat :no-confirm)
-    )
-  #+END_SRC
+        (setq telephone-line-lhs
+              '((evil   . (telephone-line-evil-tag-segment))
+                (accent . (telephone-line-vc-segment
+                           telephone-line-erc-modified-channels-segment
+                           telephone-line-process-segment))
+                (nil    . (telephone-line-minor-mode-segment
+                           telephone-line-buffer-segment))))
 
-  #+RESULTS:
-  : t
+        (setq telephone-line-rhs
+              '((nil    . (telephone-line-misc-info-segment))
+                (accent . (telephone-line-major-mode-segment))
+                (evil   . (telephone-line-airline-position-segment))))
+        
+        (setq telephone-line-primary-left-separator 'telephone-line-cubed-left
+              telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
+              telephone-line-primary-right-separator 'telephone-line-cubed-right
+              telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+
+        (setq telephone-line-height 24
+              telephone-line-evil-use-short-tag t)
+        (telephone-line-evil-config)
+        )
+  #+END_SRC
 
 * UndoTree
   #+BEGIN_SRC emacs-lisp
@@ -502,9 +512,6 @@ Projectile provides easy project management and navigation. Some of Projectile's
 
     (add-hook 'term-exec-hook 'set-no-process-query-on-exit)
   #+END_SRC
-
-
-
 * Dired extensions
 ** dired-subtree: tab and shift-tab for tree view
    #+BEGIN_SRC emacs-lisp

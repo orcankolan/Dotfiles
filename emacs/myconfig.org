@@ -115,8 +115,13 @@ emacs.font: Hack-10
   #+BEGIN_SRC emacs-lisp
     (setenv "FZF_DEFAULT_COMMAND"
     (string-trim (shell-command-to-string ". ~/.zshrc; echo -n $FZF_DEFAULT_COMMAND")))
-    (setenv "PATH" (concat (getenv "PATH") ":/home/orcan/.fzf/bin"))
-    (setq exec-path (append exec-path '("/home/orcan/.fzf/bin")))
+
+    ;; (concat ":" (concat (getenv "HOME") "/.fzf/bin"))
+    (setq fzf-bin-directory (concat (getenv "HOME") "/.fzf/bin"))
+
+    (setenv "PATH" (concat (getenv "PATH") (concat ":" fzf-bin-directory)))
+    (setq exec-path (append exec-path (list fzf-bin-directory)))
+
     ;; (setq counsel-fzf-cmd "/home/orcan/.fzf/bin/fzf -f %s")
   #+END_SRC
 * Swiper and searching

@@ -190,13 +190,13 @@ emacs.font: Hack-10
    #+END_SRC
 * Theme
   #+BEGIN_SRC emacs-lisp
-    (use-package dracula-theme
-      :ensure t
-      :config
-      (load-theme 'dracula t))  
-    ;; (use-package spacemacs-common
-    ;;     :ensure spacemacs-theme
-    ;;     :config (load-theme 'spacemacs-dark t))
+    ;; (use-package tangotango-theme
+    ;;   :ensure t
+    ;;   :config
+    ;;   (load-theme 'tangotango t))  
+    (use-package spacemacs-common
+        :ensure spacemacs-theme
+        :config (load-theme 'spacemacs-dark t))
   #+END_SRC
 * Powerline
 ** Where to find Airline themes
@@ -448,10 +448,19 @@ Projectile provides easy project management and navigation. Some of Projectile's
     (beacon-mode 1)
     )
 #+END_SRC
-* Auto parenthesis
+* Auto parenthesis (smartparens)
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
       :ensure t
+      :bind (("C-M-f" . sp-forward-sexp)
+           ("C-M-b" . sp-backward-sexp)
+           ("C-)" . sp-forward-slurp-sexp)
+           ("C-(" . sp-backward-slurp-sexp)
+           ("M-)" . sp-forward-barf-sexp)
+           ("M-(" . sp-backward-barf-sexp)
+           ("C-S-s" . sp-splice-sexp)
+           ("C-M-<backspace>" . backward-kill-sexp)
+           ("C-M-S-<SPC>" . (lambda () (interactive) (mark-sexp -1))))
       :config
       (require 'smartparens-config)
       (smartparens-global-mode t)

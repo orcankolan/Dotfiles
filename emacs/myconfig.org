@@ -616,6 +616,7 @@ Projectile provides easy project management and navigation. Some of Projectile's
   Define search engines, bind them to keybindings, and query them from the comfort of your editor.
   #+BEGIN_SRC emacs-lisp
     (use-package engine-mode
+      :ensure t
       :config
       (engine-mode t)
       

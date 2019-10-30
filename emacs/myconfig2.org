@@ -1,0 +1,770 @@
+
+* Built-in modes and variables
+** Start serve for emacsclient 
+   #+BEGIN_SRC emacs-lisp
+       (server-start) 
+   #+END_SRC
+** Startup message
+   #+BEGIN_SRC emacs-lisp
+     (setq inhibit-startup-message t)
+   #+END_SRC
+** Main window title
+   #+BEGIN_SRC emacs-lisp
+     (setq frame-title-format "Orcans emacs")
+   #+END_SRC
+** Other modes
+*** Tool bar
+    #+BEGIN_SRC emacs-lisp
+      (tool-bar-mode -1)
+    #+END_SRC
+*** Scroll bar
+    #+BEGIN_SRC emacs-lisp
+      (scroll-bar-mode -1)    
+    #+END_SRC
+*** Column number
+    #+BEGIN_SRC emacs-lisp
+      (column-number-mode)    
+    #+END_SRC
+*** Line numbers
+    #+BEGIN_SRC emacs-lisp
+      ;(global-linum-mode t)
+      (use-package nlinum-relative
+        :ensure t
+        :config
+        (global-nlinum-relative-mode 1)
+        )
+    #+END_SRC
+*** Parenthesis highlighting
+    #+BEGIN_SRC emacs-lisp
+      (show-paren-mode)                
+    #+END_SRC
+*** Winner mode
+    When activated, it allows you to “undo” (and “redo”) changes in
+    the window configuration with the key commands ‘C-c left’ and ‘C-c
+    right’
+    #+BEGIN_SRC emacs-lisp
+      (winner-mode t)    
+    #+END_SRC
+*** Line wrapping
+    Line wrapping for the window edges
+    #+BEGIN_SRC emacs-lisp
+      (global-visual-line-mode t)
+    #+END_SRC
+** Revert buffer key-binding
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "<f5>") 'revert-buffer)
+   #+END_SRC
+** Stop craeting backup files...
+   #+BEGIN_SRC emacs-lisp
+     (setq make-backup-files nil) ; stop creating backup~ files
+     (setq auto-save-default nil) ; stop creating #autosave# files 
+   #+END_SRC
+* Fonts
+  - Add an ‘emacs.font’ X resource setting to your X resource file, like this:
+#+BEGIN_SRC
+emacs.font: Hack-10
+#+END_SRC
+* Try package
+  Used to try packages on emacs without permenantly installing them
+  #+BEGIN_SRC emacs-lisp
+    (use-package try
+      :ensure t)  
+  #+END_SRC
+* Which-key package
+  Used with C-x command. Helps finding some useful commands from mini-buffer
+  #+BEGIN_SRC emacs-lisp
+    (use-package which-key
+      :ensure t
+      :config (which-key-mode)) ; :init sets things before, :config sets
+                                ; things after it loads package.
+  #+END_SRC
+* Org-mode stuff
+  Org is included as built-in package in Emacs. To re-install org-mode "use package-install R org"
+  #+BEGIN_SRC emacs-lisp
+    (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  #+END_SRC
+* Buffers and Buffer Listing
+  List buffer in an other window
+  #+BEGIN_SRC emacs-lisp
+    (defalias 'list-buffers 'ibuffer-other-window)  
+  #+END_SRC
+* Window State Managment and Jump windows
+  Using ace-window package to jump between windows
+  #+BEGIN_SRC emacs-lisp
+    (use-package ace-window
+      :ensure t
+      :config
+      (progn
+        (global-set-key [remap other-window] 'ace-window)
+        (custom-set-faces
+         '(aw-leading-char-face
+           ((t (:inherit ace-jump-face-foreground :height 3.0 :foreground "deep sky blue")))))
+        ))
+  #+END_SRC
+* GPG key Update
+  #+BEGIN_SRC emacs-lisp
+    (use-package gnu-elpa-keyring-update
+      :ensure t
+      ) 
+  #+END_SRC
+* Path Settings for fzf (fuzzy finder)
+  Path settings for fzf:
+  #+BEGIN_SRC emacs-lisp
+    (setenv "FZF_DEFAULT_COMMAND"
+    (string-trim (shell-command-to-string ". ~/.zshrc; echo -n $FZF_DEFAULT_COMMAND")))
+
+    ;; (concat ":" (concat (getenv "HOME") "/.fzf/bin"))
+    (setq fzf-bin-directory (concat (getenv "HOME") "/.fzf/bin"))
+
+    (setenv "PATH" (concat (getenv "PATH") (concat ":" fzf-bin-directory)))
+    (setq exec-path (append exec-path (list fzf-bin-directory)))
+
+    ;; (setq counsel-fzf-cmd "/home/orcan/.fzf/bin/fzf -f %s")
+  #+END_SRC
+* Swiper and searching
+** Counsel package
+   This package is necessary for the swiper package
+   #+BEGIN_SRC emacs-lisp
+     (use-package counsel
+       :ensure t
+       :bind (
+              ("C-x C-o" . counsel-fzf)
+              )
+       )
+   #+END_SRC
+** Ivy package
+   Switching buffers with the fancy ivy
+   #+BEGIN_SRC emacs-lisp
+     (use-package ivy
+       :ensure t
+       :diminish (ivy-mode)
+       :bind (("C-x b" . ivy-switch-buffer))
+       :config
+       (ivy-mode 1)
+       (setq ivy-use-virtual-buffers t)
+       (setq ivy-display-style 'fancy)
+     )   
+   #+END_SRC
+** Swiper package
+   Using swiper for search and using counsel for find-file
+   #+BEGIN_SRC emacs-lisp
+     (use-package swiper
+       :ensure t
+       :bind (("C-s" . swiper)
+              ("C-r" . swiper)
+              ("C-c C-r" . ivy-resume)
+              ("M-x" . counsel-M-x)
+              ("C-x C-f" . counsel-find-file))
+       :config
+       (progn
+         (ivy-mode 1)
+         (setq ivy-use-virtual-buffers t)
+         (setq ivy-display-style 'fancy)
+         (setq enable-recursive-minibuffers t)
+         (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+       )
+     )   
+   #+END_SRC
+** Avy package
+   Used to jump to chars, words, or lines in the screen easily
+   #+BEGIN_SRC emacs-lisp
+     (use-package avy
+       :ensure t
+       :bind (("M-s" . avy-goto-char)
+              ("M-g w" . avy-goto-word-1)
+              ("M-g f" . avy-goto-line))
+       )   
+   #+END_SRC
+* Flycheck (check for errors in programming)
+  #+BEGIN_SRC emacs-lisp
+    (use-package flycheck
+     :ensure t
+     :init
+     (global-flycheck-mode t)) 
+  #+END_SRC
+* Lsp-mode (language support mode)
+  #+BEGIN_SRC emacs-lisp
+     (use-package lsp-mode
+      :ensure t
+      :commands lsp
+      :custom
+      (lsp-auto-guess-root nil)
+      (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+      :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+      :hook ((python-mode c-mode c++-mode) . lsp))
+
+
+    (use-package lsp-ui
+      :after lsp-mode
+      :diminish
+      :commands lsp-ui-mode
+      :custom-face
+      (lsp-ui-doc-background ((t (:background nil))))
+      (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+      :bind (:map lsp-ui-mode-map
+                  ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+                  ([remap xref-find-references] . lsp-ui-peek-find-references)
+                  ("C-c u" . lsp-ui-imenu))
+      :custom
+      (lsp-ui-doc-enable t)
+      (lsp-ui-doc-header t)
+      (lsp-ui-doc-include-signature t)
+      (lsp-ui-doc-position 'top)
+      (lsp-ui-doc-border (face-foreground 'default))
+      (lsp-ui-sideline-enable nil)
+      (lsp-ui-sideline-ignore-duplicate t)
+      (lsp-ui-sideline-show-code-actions nil)
+      :config
+      ;; Use lsp-ui-doc-webkit only in GUI
+      (setq lsp-ui-doc-use-webkit t)
+      ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+      ;; https://github.com/emacs-lsp/lsp-ui/issues/243
+      (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+        (setq mode-line-format nil))) 
+  #+END_SRC
+* Auto-complete package (company)
+   #+BEGIN_SRC emacs-lisp
+     ;; (use-package auto-complete
+     ;;   :ensure t
+     ;;   :init
+     ;;   (progn
+     ;;     (ac-config-default)
+     ;;     (global-auto-complete-mode t)
+     ;;     ))
+
+     (use-package company
+     :ensure t
+     :config
+     (setq company-idle-delay 0)
+     (setq company-minimum-prefix-length 3)
+
+     (global-company-mode t)
+     )
+
+     (use-package company-lsp
+       :ensure t
+       :config
+      (push 'company-lsp company-backends)
+     )
+   #+END_SRC
+* C++ configs
+  You have to install "clang-tools-6.0" "clang" "cmake" "libclang" with apt
+  #+BEGIN_SRC emacs-lisp
+    (setq lsp-clangd-executable "clangd-6.0")
+    (setq lsp-clients-clangd-executable "clangd-6.0") 
+  #+END_SRC
+* Rainbow delimiters
+  #+BEGIN_SRC emacs-lisp
+    (use-package rainbow-delimiters
+      :ensure t
+      :config
+      (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+      )  
+  #+END_SRC
+* Theme
+  #+BEGIN_SRC emacs-lisp
+    (use-package doom-themes
+      :ensure t
+      :config
+      (load-theme 'doom-dracula t)
+      (doom-themes-org-config)
+      )
+
+    ;; (use-package spacemacs-common
+    ;;     :ensure spacemacs-theme
+    ;;     :config (load-theme 'spacemacs-dark t))
+  #+END_SRC
+
+  #+RESULTS:
+  : t
+
+* Modeline
+** Where to find Airline themes
+- to use airline theme (see https://github.com/AnthonyDiGirolamo/airline-themes)
+- to see airline theme (https://github.com/vim-airline/vim-airline/wiki/Screenshots)
+
+  #+BEGIN_SRC emacs-lisp
+    ;; (use-package powerline
+    ;;   :ensure t)  
+
+    ;; (use-package airline-themes
+    ;;   :ensure t
+    ;;   :config
+    ;;   (load-theme 'airline-wombat :no-confirm)
+    ;; )
+
+    ;; (use-package telephone-line :ensure t
+    ;;   :config
+    ;;     (setq telephone-line-lhs
+    ;;           '((evil   . (telephone-line-evil-tag-segment))
+    ;;             (accent . (telephone-line-vc-segment
+    ;;                        telephone-line-erc-modified-channels-segment
+    ;;                        telephone-line-process-segment))
+    ;;             (nil    . (telephone-line-minor-mode-segment
+    ;;                        telephone-line-buffer-segment))))
+
+    ;;     (setq telephone-line-rhs
+    ;;           '((nil    . (telephone-line-misc-info-segment))
+    ;;             (accent . (telephone-line-major-mode-segment))
+    ;;             (evil   . (telephone-line-airline-position-segment))))
+        
+    ;;     (setq telephone-line-primary-left-separator 'telephone-line-cubed-left
+    ;;           telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
+    ;;           telephone-line-primary-right-separator 'telephone-line-cubed-right
+    ;;           telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+
+    ;;     (setq telephone-line-height 24
+    ;;           telephone-line-evil-use-short-tag t)
+    ;;     (telephone-line-evil-config)
+    ;;     )
+
+    (use-package all-the-icons
+      :ensure t
+      ;; You have to call the function M-x all-the-icons-install-fonts
+      )
+
+    (use-package doom-modeline
+          :ensure t
+          :hook (after-init . doom-modeline-mode)
+          :config
+          (setq doom-modeline-height 25)
+
+          ;; How wide the mode-line bar should be. It's only respected in GUI.
+          (setq doom-modeline-bar-width 3)
+          
+          (setq doom-modeline-project-detection 'project)
+          
+          (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+          
+          ;; Whether display icons in mode-line. It respects `all-the-icons-color-icons'.
+          (setq doom-modeline-icon (display-graphic-p))
+          
+          ;; Whether display the icon for `major-mode'. It respects `doom-modeline-icon'.
+          (setq doom-modeline-major-mode-icon t)
+          
+          ;; Whether display the colorful icon for `major-mode'.
+          ;; It respects `doom-modeline-major-mode-icon'.
+          (setq doom-modeline-major-mode-color-icon t)
+          
+          ;; Whether display the icon for the buffer state. It respects `doom-modeline-icon'.
+          (setq doom-modeline-buffer-state-icon t)
+          
+          ;; Whether display the modification icon for the buffer.
+          ;; It respects `doom-modeline-icon' and `doom-modeline-buffer-state-icon'.
+          (setq doom-modeline-buffer-modification-icon t)
+          
+          ;; Whether to use unicode as a fallback (instead of ASCII) when not using icons.
+          (setq doom-modeline-unicode-fallback t)
+          
+          ;; Whether display minor modes in mode-line.
+          (setq doom-modeline-minor-modes (featurep 'minions))
+          
+          ;; If non-nil, a word count will be added to the selection-info modeline segment.
+          (setq doom-modeline-enable-word-count nil)
+          
+          ;; Whether display buffer encoding.
+          (setq doom-modeline-buffer-encoding t)
+          
+          ;; Whether display indentation information.
+          (setq doom-modeline-indent-info nil)
+          
+          ;; If non-nil, only display one number for checker information if applicable.
+          (setq doom-modeline-checker-simple-format t)
+          
+          ;; The maximum number displayed for notifications.
+          (setq doom-modeline-number-limit 99)
+          
+          ;; The maximum displayed length of the branch name of version control.
+          (setq doom-modeline-vcs-max-length 12)
+          
+          ;; Whether display perspective name. Non-nil to display in mode-line.
+          (setq doom-modeline-persp-name t)
+          
+          ;; Whether display `lsp' state. Non-nil to display in mode-line.
+          (setq doom-modeline-lsp t)
+          
+          ;; Whether display GitHub notifications. It requires `ghub` package.
+          (setq doom-modeline-github nil)
+          
+          ;; The interval of checking GitHub.
+          (setq doom-modeline-github-interval (* 30 60))
+          
+          ;; Whether display mu4e notifications. It requires `mu4e-alert' package.
+          (setq doom-modeline-mu4e t)
+          
+          ;; Whether display irc notifications. It requires `circe' package.
+          (setq doom-modeline-irc t)
+          
+          ;; Function to stylize the irc buffer names.
+          (setq doom-modeline-irc-stylize 'identity)
+          
+          ;; Whether display environment version.
+          (setq doom-modeline-env-version t)
+          ;; Or for individual languages
+          (setq doom-modeline-env-enable-python t)
+          (setq doom-modeline-env-enable-ruby t)
+          (setq doom-modeline-env-enable-perl t)
+          (setq doom-modeline-env-enable-go t)
+          (setq doom-modeline-env-enable-elixir t)
+          (setq doom-modeline-env-enable-rust t)
+          
+          ;; Change the executables to use for the language version string
+          (setq doom-modeline-env-python-executable "python") ; or `python-shell-interpreter'
+          (setq doom-modeline-env-ruby-executable "ruby")
+          (setq doom-modeline-env-perl-executable "perl")
+          (setq doom-modeline-env-go-executable "go")
+          (setq doom-modeline-env-elixir-executable "iex")
+          (setq doom-modeline-env-rust-executable "rustc")
+          
+          ;; What to dispaly as the version while a new one is being loaded
+          (setq doom-modeline-env-load-string "...")
+          
+          ;; Hooks that run before/after the modeline version string is updated
+          (setq doom-modeline-before-update-env-hook nil)
+          (setq doom-modeline-after-update-env-hook nil)
+      )
+  #+END_SRC
+
+* UndoTree
+  #+BEGIN_SRC emacs-lisp
+    (use-package undo-tree
+      :ensure t
+      :init (global-undo-tree-mode))  
+  #+END_SRC
+* Auctex and PDF-Tools
+** Pdf-tools
+   A package for viewing and interacting with pdf within emacs
+   #+BEGIN_SRC emacs-lisp
+     (use-package pdf-tools
+       :ensure t
+       :mode ("\\.pdf\\'" . pdf-tools-install)
+       :bind ("C-c C-g" . pdf-sync-forward-search)
+       :defer t
+       :config
+       (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
+       (add-hook 'pdf-view-mode-hook (lambda() (nlinum-mode -1)))
+       (add-hook 'pdf-view-mode-hook (lambda() (nlinum-relative-mode -1)))
+
+       (setq mouse-wheel-follow-mouse t)
+       (setq pdf-view-resize-factor 1.10))
+   #+END_SRC
+** Auctex
+  Auctex is used in emacs to edit latex files
+  #+BEGIN_SRC emacs-lisp
+    (use-package tex-site
+      :ensure auctex
+      :mode ("\\.tex\\'" . latex-mode)
+      :config
+      (setq TeX-auto-save t)
+      (setq TeX-parse-self t)
+      (setq-default TeX-master nil)
+      (add-hook 'LaTeX-mode-hook
+                (lambda ()
+                  (rainbow-delimiters-mode)
+                  (company-mode)
+                  (smartparens-mode)
+                  (turn-on-reftex)
+                  (setq reftex-plug-into-AUCTeX t)
+                  (reftex-isearch-minor-mode)
+                  (setq TeX-PDF-mode t)
+                  (setq TeX-source-correlate-method 'synctex)
+                  (setq TeX-source-correlate-start-server t)
+                  ))
+
+    ;; Update PDF buffers after successful LaTeX runs
+    (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+
+    ;; to use pdfview with auctex
+    (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
+    ; (add-hook 'LaTeX-mode-hook (lambda() (flyspell-mode 1)))
+    ; (add-hook 'LaTeX-mode-hook #'flyspell-buffer)
+
+    ;; to use pdfview with auctex
+    (setq TeX-view-program-selection '((output-pdf "pdf-tools"))
+           TeX-source-correlate-start-server t)
+    (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+    (add-hook 'pdf-view-mode-hook 'TeX-source-correlate-mode)
+    )
+  #+END_SRC
+** Reftex
+   Helps inserting labels, references and citations
+   #+BEGIN_SRC emacs-lisp
+     (use-package reftex
+       :ensure t
+       :defer t
+       :config
+       (setq reftex-cite-prompt-optional-args t)); Prompt for empty optional arguments in cite
+        
+   #+END_SRC
+* Evil-Mode
+  Evil-Mode is the extensible VI layer for emacs.(M-x evil-mode for activation)
+  #+BEGIN_SRC emacs-lisp
+    (use-package evil
+      :ensure t
+      :init
+      (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+      (setq evil-want-keybinding nil)
+
+      :config (evil-mode 1)
+      (evil-set-initial-state 'pdf-view-mode 'emacs)
+      (add-hook 'pdf-view-mode-hook
+      (lambda ()
+        (set (make-local-variable 'evil-emacs-state-cursor) (list nil)))))
+
+
+    (use-package evil-collection
+      :after evil
+      :ensure t
+      :config
+      (evil-collection-init))
+  #+END_SRC
+* Cheatsheet
+  To create your own cheat-sheet
+  #+BEGIN_SRC emacs-lisp
+    (use-package cheatsheet
+      :ensure t)
+  #+END_SRC
+** Adding cheats
+   Add cheats as below in this area
+   #+BEGIN_SRC emacs-lisp
+     (cheatsheet-add :group 'Common :key "C-x C-c" :description "leave Emacs.")
+     (cheatsheet-add :group 'Common :key "C- _ & C-x u" :description "undo & undo tree (q for quit undotree)")
+     (cheatsheet-add :group 'Common :key "M- _" :description "redo")
+     (cheatsheet-add :group 'OrgMode :key "C-c '" :description "goto(quit) edit mode in source")
+     (cheatsheet-add :group 'OrgMode :key "M-;" :description "uncomment or comment region in edit mode")
+     (cheatsheet-add :group 'OrgMode :key "<s TAB" :description "start a source block")
+     (cheatsheet-add :group 'OrgMode :key "C-c C-e" :description "open org export menu page (html, latex etc.")
+     (cheatsheet-add :group 'Cheatsheet :key "C-q" :description "quit from cheat sheet")
+     (cheatsheet-add :group 'Common :key "C-x C-f" :description "open file")
+     (cheatsheet-add :group 'Common :key "M-x evil-mode" :description "vim mode")
+     (cheatsheet-add :group 'Common :key "M-x global-auto-complete-mode" :description "enable/disable autocomplete")
+     (cheatsheet-add :group 'Common :key "C-x b" :description "switch buffer")
+     (cheatsheet-add :group 'Common :key "C-x 4 b" :description "open buffer in other window")
+     (cheatsheet-add :group 'Common :key "C-x k" :description "kill buffer")
+     (cheatsheet-add :group 'Common :key "C-x C-b" :description "list buffers")
+     (cheatsheet-add :group 'Common :key "C-c left" :description "undo window layout")
+     (cheatsheet-add :group 'Common :key "M-g g" :description "goto line number")
+     (cheatsheet-add :group 'Common :key "M-g w" :description "goto word")
+     (cheatsheet-add :group 'Common :key "M-g f" :description "goto line")
+     (cheatsheet-add :group 'Common :key "M-s" :description "goto character")
+     (cheatsheet-add :group 'Common :key "C-z" :description "makes emacs sleep (fg from terminal to recover)")
+     (cheatsheet-add :group 'Common :key "C-h k key" :description "description for the inserted key")
+     (cheatsheet-add :group 'Common :key "C-h c key" :description "description for the inserted key in the echo area")
+     (cheatsheet-add :group 'Common :key "M-$" :description "spell check for the current word")
+     (cheatsheet-add :group 'VIM :key "d i (" :description "delete inside parenthesis (also c for change)")
+     (cheatsheet-add :group 'Auctex :key "C-c _" :description "ask for the master tex file for compilitaion")
+     (cheatsheet-add :group 'Auctex :key "M-x normal-mode" :description "after you saved your tex file with new master use this before compilation with Latex (C-c C-c)")
+     (cheatsheet-add :group 'Auctex :key "C-c C-c" :description "To compile with Latex")
+     (cheatsheet-add :group 'Auctex :key "C-c C-v" :description "To view as pdf. (When the master tex file opened use this for the first view. Then use q to quit view. Then use the C-c C-v again for the tex-source-correlate-mode to work")
+   #+END_SRC
+
+* Spelling
+  You must install hunspell with apt-get. Dictionaries (such as tr_TR.aff and tr_TR.dic)
+should be copied into /usr/share/hunspell. 
+- By using "M-x ispell-change-dictionary" dictionaries can be
+changed and also be viewed.
+#+BEGIN_SRC emacs-lisp
+  (cond
+   ;; try hunspell at first
+    ;; if hunspell does NOT exist, use aspell
+   ((executable-find "hunspell")
+    (setq ispell-program-name "hunspell")
+    (setq ispell-dictionary "tr_TR")
+    )
+
+    ((executable-find "aspell")
+    (setq ispell-program-name "aspell")
+    ;; Please note ispell-extra-args contains ACTUAL parameters passed to aspell
+    (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
+#+END_SRC
+
+- Use 'M-x flyspell-buffer' to underline unknown words
+- Use 'M-x flyspell-mode' to toggle flyspell
+- Added words with ispell are located in the ~/.hunspell_{dictionary name}
+- See Auctex section, which adds to hooks to latex-mode 
+- Also with the below code after saving a new word to personal dictionary (.hunspell_tr_TR etc.), flyspell-beffer is re-activated
+#+BEGIN_SRC emacs-lisp
+  (defun flyspell-buffer-after-pdict-save (&rest _)
+    (flyspell-buffer))
+
+  (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save)
+#+END_SRC
+
+* Projectile
+Projectile provides easy project management and navigation. Some of Projectile's features:
+- jump to a file in project
+- jump to files at point in project
+- jump to a directory in project
+- jump to a file in a directory
+- jump to a project buffer
+- jump to a test in project
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1)
+    (setq projectile-completion-system 'ivy)
+    (setq projectile-indexing-method 'native)
+    )
+
+  (use-package counsel-projectile
+    :ensure t
+    :config
+    (counsel-projectile-mode +1))
+#+END_SRC
+* DumpJump (Jump to definitions)
+#+BEGIN_SRC emacs-lisp
+  (use-package dumb-jump
+    :bind (("M-g o" . dumb-jump-go-other-window)
+           ("M-g j" . dumb-jump-go)
+           ("M-g i" . dumb-jump-go-prompt)
+           ("M-g x" . dumb-jump-go-prefer-external)
+           ("M-g z" . dumb-jump-go-prefer-external-other-window))
+    :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
+    :ensure)
+#+END_SRC
+* Horizontal-line on cursor
+#+BEGIN_SRC emacs-lisp
+  ;; (global-hl-line-mode t)
+
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1)
+    )
+#+END_SRC
+* Auto parenthesis (smartparens)
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+      :ensure t
+      :bind (("C-M-f" . sp-forward-sexp)
+           ("C-M-b" . sp-backward-sexp)
+           ("C-)" . sp-forward-slurp-sexp)
+           ("C-(" . sp-backward-slurp-sexp)
+           ("M-)" . sp-forward-barf-sexp)
+           ("M-(" . sp-backward-barf-sexp)
+           ("C-S-s" . sp-splice-sexp)
+           ("C-M-<backspace>" . backward-kill-sexp)
+           ("C-M-S-<SPC>" . (lambda () (interactive) (mark-sexp -1))))
+      :config
+      (require 'smartparens-config)
+      (smartparens-global-mode t)
+      )
+
+   (use-package evil-smartparens
+     :ensure t
+     :config
+     (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+       )
+#+END_SRC
+
+* Yasnippets (auto snippets)
+  Keeping snippets in the .emacs.d/snippets/text-mode
+  #+BEGIN_SRC emacs-lisp
+    (use-package yasnippet
+       
+      :config
+      (setq yas-snippet-dirs '("~/.emacs.d/snippets/text-mode"))
+      :init
+      (yas-global-mode 1)
+      )
+
+    (use-package yasnippet-snippets
+      :ensure t)
+    (use-package yasnippet-classic-snippets
+      :ensure t)
+  #+END_SRC
+* Auto-yasnippets (create the snippet on the go)
+  #+BEGIN_SRC emacs-lisp
+    (use-package auto-yasnippet
+      :ensure t) 
+  #+END_SRC
+
+* Eshell
+#+BEGIN_SRC emacs-lisp
+    (setq eshell-prompt-function (lambda nil
+      (concat
+       (propertize (eshell/pwd) 'face `(:foreground "blue"))
+       (propertize " $ " 'face `(:foreground "green")))))
+    (setq eshell-highlight-prompt nil)
+#+END_SRC
+
+* Colors for terminals (ansi-term)
+  #+BEGIN_SRC emacs-lisp
+    (use-package xterm-color
+     :ensure t) 
+
+    ;; This package uses xterm-color to add customizable 256 color support to term and ansi-term
+
+    (use-package eterm-256color
+      :ensure t
+      :config
+      (add-hook 'term-mode-hook #'eterm-256color-mode)
+      )
+  #+END_SRC
+
+  #+RESULTS:
+  : t
+
+* Choosing and starting\closing terminal
+  #+BEGIN_SRC emacs-lisp
+    (global-set-key "\C-x\C-a" '(lambda ()(interactive)(ansi-term "/bin/zsh"))) 
+
+    (defun set-no-process-query-on-exit ()
+      (let ((proc (get-buffer-process (current-buffer))))
+        (when (processp proc)
+          (set-process-query-on-exit-flag proc nil))))
+
+    (add-hook 'term-exec-hook 'set-no-process-query-on-exit)
+  #+END_SRC
+* Dired extensions
+** dired-subtree: tab and shift-tab for tree view
+   #+BEGIN_SRC emacs-lisp
+       (use-package dired-subtree
+       :ensure t
+       :after dired
+       :bind (:map dired-mode-map
+                   ("<tab>" . dired-subtree-toggle)
+                   ("<C-tab>" . dired-subtree-cycle)
+                   ("<S-iso-lefttab>" . dired-subtree-remove))) 
+   #+END_SRC
+
+* Engine-mode
+  Define search engines, bind them to keybindings, and query them from the comfort of your editor.
+  #+BEGIN_SRC emacs-lisp
+    (use-package engine-mode
+      :ensure t
+      :config
+      (engine-mode t)
+      
+      (engine/set-keymap-prefix (kbd "C-c s"))
+
+      (defengine github
+        "https://github.com/search?ref=simplesearch&q=%s"
+        :keybinding "h")
+
+      (defengine google
+        "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+        :keybinding "g")
+
+      (defengine wikipedia
+        "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+        :keybinding "w"
+        :docstring "Searchin' the wikis.")
+
+      (defengine wiktionary
+        "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
+
+      (defengine wolfram-alpha
+        "http://www.wolframalpha.com/input/?i=%s")
+
+      (defengine youtube
+        "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+        :keybinding "y")
+
+      ) 
+  #+END_SRC

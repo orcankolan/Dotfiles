@@ -194,7 +194,7 @@ emacs.font: Hack-10
       (lsp-auto-guess-root nil)
       (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
       :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
-      :hook ((python-mode c-mode c++-mode) . lsp))
+      :hook ((python-mode c-mode c++-mode XXX-mode) . lsp))
 
 
     (use-package lsp-ui
@@ -256,20 +256,33 @@ emacs.font: Hack-10
     (setq lsp-clangd-executable "clangd-6.0")
     (setq lsp-clients-clangd-executable "clangd-6.0") 
   #+END_SRC
+* Rainbow delimiters
+  #+BEGIN_SRC emacs-lisp
+    (use-package rainbow-delimiters
+      :ensure t
+      :config
+      (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+      )  
+  #+END_SRC
 * Theme
   #+BEGIN_SRC emacs-lisp
-    ;; (use-package tangotango-theme
-    ;;   :ensure t
-    ;;   :config
-    ;;   (load-theme 'tangotango t))  
+    (use-package doom-themes
+      :ensure t
+      :config
+      ;; (load-theme 'doom-dracula t)
+      ;; Enable flashing mode-line on errors
+      (doom-themes-visual-bell-config)
+      ;; Enable custom neotree theme (all-the-icons must be installed!)
+      (doom-themes-neotree-config)
+      (doom-themes-org-config)
+      )
+
     (use-package spacemacs-common
         :ensure spacemacs-theme
         :config (load-theme 'spacemacs-dark t))
   #+END_SRC
-* Powerline
-** Where to find Airline themes
-- to use airline theme (see https://github.com/AnthonyDiGirolamo/airline-themes)
-- to see airline theme (https://github.com/vim-airline/vim-airline/wiki/Screenshots)
+
+* Modeline
 
   #+BEGIN_SRC emacs-lisp
     ;; (use-package powerline
@@ -281,30 +294,134 @@ emacs.font: Hack-10
     ;;   (load-theme 'airline-wombat :no-confirm)
     ;; )
 
-    (use-package telephone-line :ensure t
-      :config
-        (setq telephone-line-lhs
-              '((evil   . (telephone-line-evil-tag-segment))
-                (accent . (telephone-line-vc-segment
-                           telephone-line-erc-modified-channels-segment
-                           telephone-line-process-segment))
-                (nil    . (telephone-line-minor-mode-segment
-                           telephone-line-buffer-segment))))
+    ;; (use-package telephone-line :ensure t
+    ;;   :config
+    ;;     (setq telephone-line-lhs
+    ;;           '((evil   . (telephone-line-evil-tag-segment))
+    ;;             (accent . (telephone-line-vc-segment
+    ;;                        telephone-line-erc-modified-channels-segment
+    ;;                        telephone-line-process-segment))
+    ;;             (nil    . (telephone-line-minor-mode-segment
+    ;;                        telephone-line-buffer-segment))))
 
-        (setq telephone-line-rhs
-              '((nil    . (telephone-line-misc-info-segment))
-                (accent . (telephone-line-major-mode-segment))
-                (evil   . (telephone-line-airline-position-segment))))
+    ;;     (setq telephone-line-rhs
+    ;;           '((nil    . (telephone-line-misc-info-segment))
+    ;;             (accent . (telephone-line-major-mode-segment))
+    ;;             (evil   . (telephone-line-airline-position-segment))))
         
-        (setq telephone-line-primary-left-separator 'telephone-line-cubed-left
-              telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
-              telephone-line-primary-right-separator 'telephone-line-cubed-right
-              telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+    ;;     (setq telephone-line-primary-left-separator 'telephone-line-cubed-left
+    ;;           telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
+    ;;           telephone-line-primary-right-separator 'telephone-line-cubed-right
+    ;;           telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
 
-        (setq telephone-line-height 24
-              telephone-line-evil-use-short-tag t)
-        (telephone-line-evil-config)
-        )
+    ;;     (setq telephone-line-height 24
+    ;;           telephone-line-evil-use-short-tag t)
+    ;;     (telephone-line-evil-config)
+    ;;     )
+
+    (use-package all-the-icons
+      :ensure t
+      ;; You have to call the function M-x all-the-icons-install-fonts
+      )
+
+    (use-package doom-modeline
+          :ensure t
+          :hook (after-init . doom-modeline-mode)
+          :config
+          (setq doom-modeline-height 20)
+
+          ;; How wide the mode-line bar should be. It's only respected in GUI.
+          (setq doom-modeline-bar-width 3)
+          
+          (setq doom-modeline-project-detection 'project)
+          
+          (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+          
+          ;; Whether display icons in mode-line. It respects `all-the-icons-color-icons'.
+          (setq doom-modeline-icon (display-graphic-p))
+          
+          ;; Whether display the icon for `major-mode'. It respects `doom-modeline-icon'.
+          (setq doom-modeline-major-mode-icon t)
+          
+          ;; Whether display the colorful icon for `major-mode'.
+          (setq doom-modeline-major-mode-color-icon t)
+          
+          ;; Whether display the icon for the buffer state. It respects `doom-modeline-icon'.
+          (setq doom-modeline-buffer-state-icon t)
+          
+          ;; Whether display the modification icon for the buffer.
+          (setq doom-modeline-buffer-modification-icon t)
+          
+          ;; Whether to use unicode as a fallback (instead of ASCII) when not using icons.
+          (setq doom-modeline-unicode-fallback t)
+          
+          ;; Whether display minor modes in mode-line.
+          (setq doom-modeline-minor-modes (featurep 'minions))
+          
+          ;; If non-nil, a word count will be added to the selection-info modeline segment.
+          (setq doom-modeline-enable-word-count nil)
+          
+          ;; Whether display buffer encoding.
+          (setq doom-modeline-buffer-encoding t)
+          
+          ;; Whether display indentation information.
+          (setq doom-modeline-indent-info nil)
+          
+          ;; If non-nil, only display one number for checker information if applicable.
+          (setq doom-modeline-checker-simple-format t)
+          
+          ;; The maximum number displayed for notifications.
+          (setq doom-modeline-number-limit 99)
+          
+          ;; The maximum displayed length of the branch name of version control.
+          (setq doom-modeline-vcs-max-length 12)
+          
+          ;; Whether display perspective name. Non-nil to display in mode-line.
+          (setq doom-modeline-persp-name t)
+          
+          ;; Whether display `lsp' state. Non-nil to display in mode-line.
+          (setq doom-modeline-lsp t)
+          
+          ;; Whether display GitHub notifications. It requires `ghub` package.
+          (setq doom-modeline-github nil)
+          
+          ;; The interval of checking GitHub.
+          (setq doom-modeline-github-interval (* 30 60))
+          
+          ;; Whether display mu4e notifications. It requires `mu4e-alert' package.
+          (setq doom-modeline-mu4e t)
+          
+          ;; Whether display irc notifications. It requires `circe' package.
+          (setq doom-modeline-irc t)
+          
+          ;; Function to stylize the irc buffer names.
+          (setq doom-modeline-irc-stylize 'identity)
+          
+          ;; Whether display environment version.
+          (setq doom-modeline-env-version t)
+          ;; Or for individual languages
+          (setq doom-modeline-env-enable-python t)
+          (setq doom-modeline-env-enable-ruby t)
+          (setq doom-modeline-env-enable-perl t)
+          (setq doom-modeline-env-enable-go t)
+          (setq doom-modeline-env-enable-elixir t)
+          (setq doom-modeline-env-enable-rust t)
+          
+          ;; Change the executables to use for the language version string
+          (setq doom-modeline-env-python-executable "python") ; or `python-shell-interpreter'
+          (setq doom-modeline-env-ruby-executable "ruby")
+          (setq doom-modeline-env-perl-executable "perl")
+          (setq doom-modeline-env-go-executable "go")
+          (setq doom-modeline-env-elixir-executable "iex")
+          (setq doom-modeline-env-rust-executable "rustc")
+          
+          ;; What to dispaly as the version while a new one is being loaded
+          (setq doom-modeline-env-load-string "...")
+          
+          ;; Hooks that run before/after the modeline version string is updated
+          (setq doom-modeline-before-update-env-hook nil)
+          (setq doom-modeline-after-update-env-hook nil)
+      )
   #+END_SRC
 
 * UndoTree
@@ -342,7 +459,7 @@ emacs.font: Hack-10
       (setq-default TeX-master nil)
       (add-hook 'LaTeX-mode-hook
                 (lambda ()
-                  (rainbow-delimiters-mode)
+                  ;; (rainbow-delimiters-mode)
                   (company-mode)
                   (smartparens-mode)
                   (turn-on-reftex)
@@ -646,4 +763,20 @@ Projectile provides easy project management and navigation. Some of Projectile's
         :keybinding "y")
 
       ) 
+  #+END_SRC
+* Custom Functions
+  #+BEGIN_SRC emacs-lisp
+    (defun o/swap-windows ()
+      (interactive)
+      (ace-swap-window)
+      (aw-flip-window)
+    ) 
+  #+END_SRC
+* Personal Keymap
+  #+BEGIN_SRC emacs-lisp
+    (define-prefix-command 'o-map)
+
+    (global-set-key (kbd "C-1") 'o-map)
+
+    (define-key o-map (kbd "w") 'o/swap-windows)
   #+END_SRC

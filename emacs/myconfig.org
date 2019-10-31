@@ -643,6 +643,7 @@ Projectile provides easy project management and navigation. Some of Projectile's
            ("C-(" . sp-backward-slurp-sexp)
            ("M-)" . sp-forward-barf-sexp)
            ("M-(" . sp-backward-barf-sexp)
+           ("C-M-8" . sp-add-to-next-sexp)
            ("C-S-s" . sp-splice-sexp)
            ("C-M-<backspace>" . backward-kill-sexp)
            ("C-M-S-<SPC>" . (lambda () (interactive) (mark-sexp -1))))

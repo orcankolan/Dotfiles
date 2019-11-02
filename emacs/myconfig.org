@@ -193,7 +193,11 @@ emacs.font: Hack-10
       :custom
       (lsp-auto-guess-root nil)
       (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-      :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+      :bind (:map lsp-mode-map
+                  ("C-c C-f" . lsp-format-buffer)
+                  ("M-g d" . lsp-find-definition)
+                  ("M-g C-d" . lsp-find-declaration)
+                  )
       :hook ((python-mode c-mode c++-mode XXX-mode) . lsp))
 
 
@@ -249,12 +253,43 @@ emacs.font: Hack-10
        :config
       (push 'company-lsp company-backends)
      )
+
+     (use-package company-c-headers
+       :ensure t
+       :config
+       (add-to-list 'company-backends 'company-c-headers)
+       ;; Above line only add two include paths: /usr/include/ and /usr/local/include/
+       (add-to-list 'company-c-headers-path-system "/usr/include/c++/7.4.0/")
+       )
    #+END_SRC
 * C++ configs
-  You have to install "clang-tools-6.0" "clang" "cmake" "libclang" with apt
+  You have to install "clang-tools-8" "clang" "cmake" "libclang" with apt inorder to use clangd-8
+  i.e sudo apt remove clang-tools-6.0 and libclang-coomon-6.0-dev and autoremove 
+  Also you have to install ccls with snap "sudo snap install ccls -classic" to be able to use ccls server
+
   #+BEGIN_SRC emacs-lisp
-    (setq lsp-clangd-executable "clangd-6.0")
-    (setq lsp-clients-clangd-executable "clangd-6.0") 
+    (setq lsp-clangd-executable "clangd-8")
+    (setq lsp-clients-clangd-executable "clangd-8") 
+
+    (use-package ccls
+      :after projectile
+      :ensure t
+      :custom
+      (ccls-args nil)
+      (ccls-executable (executable-find "ccls"))
+      (projectile-project-root-files-top-down-recurring
+       (append '("compile_commands.json" ".ccls")
+               projectile-project-root-files-top-down-recurring))
+      :config (push ".ccls-cache" projectile-globally-ignored-directories))
+  #+END_SRC
+
+* Ivy-xref
+  #+BEGIN_SRC emacs-lisp 
+    (use-package ivy-xref
+      :ensure t
+      :init (if (< emacs-major-version 27)
+                (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+              (setq xref-show-definitions-function #'ivy-xref-show-defs)))
   #+END_SRC
 * Rainbow delimiters
   #+BEGIN_SRC emacs-lisp

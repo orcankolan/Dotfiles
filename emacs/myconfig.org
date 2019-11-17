@@ -268,11 +268,32 @@ emacs.font: Hack-10
     :after treemacs magit
     :ensure t)
 #+END_SRC
+* Auto-complete package (company)
+   #+BEGIN_SRC emacs-lisp
+     ;; (use-package auto-complete
+     ;;   :ensure t
+     ;;   :init
+     ;;   (progn
+     ;;     (ac-config-default)
+     ;;     (global-auto-complete-mode t)
+     ;;     ))
+
+     (use-package company
+     :ensure t
+     :config
+     (setq company-idle-delay 0)
+     (setq company-minimum-prefix-length 3)
+
+     (global-company-mode t)
+     )
+
+
+   #+END_SRC
 * Lsp-mode (language support mode)
   #+BEGIN_SRC emacs-lisp
      (use-package lsp-mode
       :ensure t
-      :commands lsp
+      :hook (prog-mode . lsp)
       :custom
       (lsp-auto-guess-root nil)
       (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
@@ -281,7 +302,7 @@ emacs.font: Hack-10
                   ("M-g d" . lsp-find-definition)
                   ("M-g C-d" . lsp-find-declaration)
                   )
-      :hook ((python-mode c-mode c++-mode XXX-mode) . lsp))
+      )
 
 
     (use-package lsp-ui
@@ -313,30 +334,10 @@ emacs.font: Hack-10
         (setq mode-line-format nil))) 
 
     (use-package lsp-treemacs
+      :after treemacs
       :ensure t
       )
   #+END_SRC
-* Auto-complete package (company)
-   #+BEGIN_SRC emacs-lisp
-     ;; (use-package auto-complete
-     ;;   :ensure t
-     ;;   :init
-     ;;   (progn
-     ;;     (ac-config-default)
-     ;;     (global-auto-complete-mode t)
-     ;;     ))
-
-     (use-package company
-     :ensure t
-     :config
-     (setq company-idle-delay 0)
-     (setq company-minimum-prefix-length 3)
-
-     (global-company-mode t)
-     )
-
-
-   #+END_SRC
 * C++ configs
   You have to install "clang-tools-8" "clang" "cmake" "libclang" with apt inorder to use clangd-8
   i.e sudo apt remove clang-tools-6.0 and libclang-coomon-6.0-dev and autoremove 
@@ -384,6 +385,41 @@ emacs.font: Hack-10
     ;; below package requires emacs26:
     ;; (use-package company-box
     ;;   :hook (company-mode . company-box-mode))
+  #+END_SRC
+* Cmake
+  #+BEGIN_SRC emacs-lisp
+    (use-package cmake-mode
+      :ensure t
+      :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+
+    (use-package cmake-font-lock
+      :ensure t
+      :after (cmake-mode)
+      :hook (cmake-mode . cmake-font-lock-activate))
+
+    (use-package cmake-ide
+      :after projectile
+      :hook (c++-mode . my/cmake-ide-find-project)
+      :preface
+      (defun my/cmake-ide-find-project ()
+        "Finds the directory of the project for cmake-ide."
+        (with-eval-after-load 'projectile
+          (setq cmake-ide-project-dir (projectile-project-root))
+          (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
+        (setq cmake-ide-compile-command 
+                (concat "cd " cmake-ide-build-dir " && cmake .. && make"))
+        (cmake-ide-load-db))
+
+      (defun my/switch-to-compilation-window ()
+        "Switches to the *compilation* buffer after compilation."
+        (other-window 1))
+      
+      :bind ([remap comment-region] . cmake-ide-compile)
+      :init (cmake-ide-setup)
+      :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
+      )
+
+     
   #+END_SRC
 * Debugger (dap-mode)
 Emacs client/library for Debug Adapter Protocol is a wire protocol for communication between client and Debug Server. It’s similar to the LSP but provides integration with debug server.

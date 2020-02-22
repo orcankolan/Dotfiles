@@ -402,41 +402,45 @@ emacs.font: Hack-10
       :hook (c++-mode . my/cmake-ide-find-project)
       :preface
       (defun my/cmake-ide-find-project ()
-        "Finds the directory of the project for cmake-ide."
-        (with-eval-after-load 'projectile
-          (setq cmake-ide-project-dir (projectile-project-root))
-          (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build"))
-          (defcustom my-executable-file
-            nil
-            "The executable file under build directory"
-            :group 'cmake-ide
-            :type 'string
-            :safe #'stringp
-            ))
-        (setq cmake-ide-compile-command 
-              (concat "cd " cmake-ide-build-dir " && cmake .. && make"))
+	"Finds the directory of the project for cmake-ide."
+	(with-eval-after-load 'projectile
+	  (setq cmake-ide-project-dir (projectile-project-root))
+	  (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build"))
+	  (defcustom my-executable-file
+	    nil
+	    "The executable file under build directory"
+	    :group 'cmake-ide
+	    :type 'string
+	    :safe #'stringp
+	    ))
+	(setq cmake-ide-compile-command 
+	      (concat "cd " cmake-ide-build-dir " && cmake .. && make"))
 
-        (defun my-executable-run ()
-          "Runs the executable under"
-          (setq my-executable-file (concat cmake-ide-project-dir "build/HelloWorld"))
-          )
-        (cmake-ide-load-db)
-        )
+	(defun my-executable-run ()
+	  "Runs the executable under"
+	  (setq my-executable-file (concat cmake-ide-project-dir "build/HelloWorld"))
+	  (shell-command my-executable-file)
+	  (setq command-output-buffer (get-buffer "*Shell Command Output*"))
+	  (switch-to-buffer-other-window command-output-buffer)
+	  (special-mode)
+	  )
+
+	(cmake-ide-load-db)
+	)
 
       (defun my/switch-to-compilation-window ()
-        "Switches to the *compilation* buffer after compilation."
-        (other-window 1))
-      
+	"Switches to the *compilation* buffer after compilation."
+	(other-window 1))
+
       :bind (([remap comment-region] . cmake-ide-compile)
-             ([remap c-macro-expand] . (lambda () (interactive) (my-executable-run))))
-      
+	     ([remap c-macro-expand] . (lambda () (interactive) (my-executable-run))))
+
       :init (cmake-ide-setup)
       :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
       )
   #+END_SRC
 
   #+RESULTS:
-  : cmake-ide-compile
 
 * Debugger (dap-mode)
 Emacs client/library for Debug Adapter Protocol is a wire protocol for communication between client and Debug Server. It’s similar to the LSP but provides integration with debug server.

@@ -298,10 +298,10 @@ emacs.font: Hack-10
       (lsp-auto-guess-root nil)
       (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
       :bind (:map lsp-mode-map
-                  ("C-c C-f" . lsp-format-buffer)
-                  ("M-g d" . lsp-find-definition)
-                  ("M-g C-d" . lsp-find-declaration)
-                  )
+		  ("C-c C-f" . lsp-format-buffer)
+		  ("M-g d" . lsp-find-definition)
+		  ("M-g C-d" . lsp-find-declaration)
+		  )
       )
 
 
@@ -313,25 +313,36 @@ emacs.font: Hack-10
       (lsp-ui-doc-background ((t (:background nil))))
       (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
       :bind (:map lsp-ui-mode-map
-                  ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-                  ([remap xref-find-references] . lsp-ui-peek-find-references)
-                  ("C-c u" . lsp-ui-imenu))
+		  ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+		  ([remap xref-find-references] . lsp-ui-peek-find-references)
+		  ("C-c u" . lsp-ui-imenu))
       :custom
-      (lsp-ui-doc-enable t)
-      (lsp-ui-doc-header t)
-      (lsp-ui-doc-include-signature t)
-      (lsp-ui-doc-position 'top)
-      (lsp-ui-doc-border (face-foreground 'default))
-      (lsp-ui-sideline-enable nil)
+      ;; lsp-ui-document
+      ;; (lsp-ui-doc-enable nil)
+      ;; (lsp-ui-doc-header nil)
+      ;; (lsp-ui-doc-include-signature nil)
+      ;; (lsp-ui-doc-position 'top)
+      ;; (lsp-ui-doc-border (face-foreground 'default))
+
+      ;; lsp-ui-sideline
+      (lsp-ui-sideline-enable t)
       (lsp-ui-sideline-ignore-duplicate t)
-      (lsp-ui-sideline-show-code-actions nil)
+      ;; (lsp-ui-sideline-show-symbol t)
+      ;; (lsp-ui-sideline-show-hover t)
+      (lsp-ui-sideline-show-code-actions t)
+
+      ;; lsp-ui-peek
+      ;; (lsp-ui-peek-enable t)
+      ;; (lsp-ui-peek-peek-height 20)
+      ;; (lsp-ui-peek-list-width 50)
       :config
       ;; Use lsp-ui-doc-webkit only in GUI
-      (setq lsp-ui-doc-use-webkit t)
+
+      ;; (setq lsp-ui-doc-use-webkit t)
       ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
       ;; https://github.com/emacs-lsp/lsp-ui/issues/243
       (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-        (setq mode-line-format nil))) 
+	(setq mode-line-format nil))) 
 
     (use-package lsp-treemacs
       :after treemacs
@@ -418,7 +429,7 @@ emacs.font: Hack-10
 
 	(defun my-executable-run ()
 	  "Runs the executable under"
-	  (setq my-executable-file (concat cmake-ide-project-dir "build/HelloWorld"))
+	  (setq my-executable-file (string-trim (shell-command-to-string (concat "find " cmake-ide-build-dir " -maxdepth 1 -type f -executable"))))
 	  (shell-command my-executable-file)
 	  (setq command-output-buffer (get-buffer "*Shell Command Output*"))
 	  (switch-to-buffer-other-window command-output-buffer)

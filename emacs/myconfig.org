@@ -744,6 +744,16 @@ Emacs client/library for Debug Adapter Protocol is a wire protocol for communica
         (interactive)
         (evil-delete (point-at-bol) (point))))
   #+END_SRC
+* Load other files
+  Load files from other locations if they exist
+  #+BEGIN_SRC emacs-lisp
+    (defun load-if-exists (f)
+      "load the elisp file only if it exists and is readable"
+      (if (file-readable-p f)
+	  (load-file f)))
+
+    (load-if-exists "~/.config/mu4e-conf/mu4econfig.el")
+  #+END_SRC
 * Cheatsheet
   To create your own cheat-sheet
   #+BEGIN_SRC emacs-lisp

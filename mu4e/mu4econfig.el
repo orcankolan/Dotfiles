@@ -15,9 +15,9 @@
 
 (setq mu4e-maildir (expand-file-name "~/Maildir"))
 
-(setq mu4e-drafts-folder "/mygmail/drafts")
-(setq mu4e-sent-folder   "/mygmail/sent")
-(setq mu4e-trash-folder  "/mygmail/trash")
+(setq mu4e-drafts-folder "/mygmail/Drafts")
+(setq mu4e-sent-folder   "/mygmail/Sent")
+(setq mu4e-trash-folder  "/mygmail/Trash")
 ; (setq message-signature-file "~/.emacs.d/.signature") ; put your signature in this file
 
 ; get mail
@@ -28,9 +28,9 @@
       mu4e-compose-signature-auto-include nil)
 
 (setq mu4e-maildir-shortcuts
-      '( ("/mygmail/inbox"               . ?i)
-         ("/mygmail/sent"   . ?s)
-         ("/mygmail/trash"       . ?t)
+      '( ("/mygmail/INBOX"               . ?i)
+         ("/mygmail/Sent"   . ?s)
+         ("/mygmail/Trash"       . ?t)
          ))
 
 ;; show images

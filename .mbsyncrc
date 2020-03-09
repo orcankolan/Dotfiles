@@ -1,0 +1,50 @@
+Create Both
+Expunge Both
+SyncState *
+
+# IMAPAccount personal
+# ...
+# To create encrypted password in a gpg file:
+# gpg --output .gaccount.gpg --encrypt -r orcankolankaya@gmail.com .gaccount
+
+IMAPAccount mygmail
+Host imap.gmail.com
+User orcankolankaya@gmail.com
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.gaccount.gpg"
+SSLType IMAPS
+AuthMechs LOGIN
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore mygmail-remote
+Account mygmail
+
+MaildirStore mygmail-local
+Path ~/Maildir/mygmail/
+Inbox ~/Maildir/mygmail/inbox
+
+Channel mygmail-inbox
+Master :mygmail-remote:
+Slave :mygmail-local:
+Patterns "INBOX"
+
+Channel mygmail-sent
+Master :mygmail-remote:"[Gmail]/Sent Mail"
+Slave :mygmail-local:sent
+
+Channel mygmail-trash
+Master :mygmail-remote:"[Gmail]/Trash"
+Slave :mygmail-local:trash
+
+Group mygmail
+Channel mygmail-inbox
+Channel mygmail-sent
+Channel mygmail-trash
+
+# Gmail mailboxes:
+# "All Mail"
+# "Drafts"
+# "Important"
+# "Sent Mail"
+# "Spam"
+# "Starred"
+# "Trash"

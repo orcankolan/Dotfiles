@@ -1,4 +1,4 @@
-(add-to-list 'load-path "/home/orcan/cloned-repos/mu/mu4e")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 (require 'smtpmail)
 
 ; smtp
@@ -17,7 +17,7 @@
 
 (setq mu4e-drafts-folder "/mygmail/drafts")
 (setq mu4e-sent-folder   "/mygmail/sent")
-(setq mu4e-trash-folder  "/mygamil/trash")
+(setq mu4e-trash-folder  "/mygmail/trash")
 ; (setq message-signature-file "~/.emacs.d/.signature") ; put your signature in this file
 
 ; get mail
@@ -29,7 +29,7 @@
 
 (setq mu4e-maildir-shortcuts
       '( ("/mygmail/inbox"               . ?i)
-         ("/mygmial/sent"   . ?s)
+         ("/mygmail/sent"   . ?s)
          ("/mygmail/trash"       . ?t)
          ))
 

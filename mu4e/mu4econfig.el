@@ -48,13 +48,3 @@
 
 ;; don't save message to Sent Messages, IMAP takes care of this
 ; (setq mu4e-sent-messages-behavior 'delete)
-
-;; personal keymaps
-(define-key o-map (kbd "m") 'mu4e)
-
-(global-unset-key (kbd "C-x m"))
-(global-set-key (kbd "C-x m") 'mu4e-compose-new)
-
-(define-key o-map (kbd "c") 'mu4e-compose-new)
-(define-key o-map (kbd "s") 'mu4e-headers-search)
-

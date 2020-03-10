@@ -86,11 +86,6 @@ emacs.font: Hack-10
       :config
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
   #+END_SRC
-* Personal keymap prefix setting
-#+BEGIN_SRC emacs-lisp
-    (define-prefix-command 'o-map)
-    (global-set-key (kbd "C-1") 'o-map)
-#+END_SRC
 * Buffers and Buffer Listing
   List buffer in an other window
   #+BEGIN_SRC emacs-lisp
@@ -749,7 +744,7 @@ Emacs client/library for Debug Adapter Protocol is a wire protocol for communica
         (interactive)
         (evil-delete (point-at-bol) (point))))
   #+END_SRC
-* Load other files (mu4e)
+* Load other files
   Load files from other locations if they exist
   #+BEGIN_SRC emacs-lisp
     (defun load-if-exists (f)
@@ -1017,5 +1012,9 @@ Projectile provides easy project management and navigation. Some of Projectile's
   #+END_SRC
 * Personal Keymap
   #+BEGIN_SRC emacs-lisp
+    (define-prefix-command 'o-map)
+
+    (global-set-key (kbd "C-1") 'o-map)
+
     (define-key o-map (kbd "w") 'o/swap-windows)
   #+END_SRC

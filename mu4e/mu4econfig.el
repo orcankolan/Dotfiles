@@ -36,9 +36,6 @@
 ;; show images
 (setq mu4e-show-images t)
 
-;; needed for mbsync
-(setq mu4e-change-filenames-when-moving t)
-
 ;; use imagemagick, if available
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))

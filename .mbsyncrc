@@ -1,3 +1,5 @@
+Create Both
+Expunge Both
 SyncState *
 
 # IMAPAccount personal
@@ -17,54 +19,26 @@ IMAPStore mygmail-remote
 Account mygmail
 
 MaildirStore mygmail-local
-# Below path should be created manually. i.e mkdir -p Maildir/mygmail
 Path ~/Maildir/mygmail/
-Inbox ~/Maildir/mygmail/INBOX
-SubFolders Verbatim
-
-MaildirStore mygmail-archive
-Path ~/Maildir/mygmail/
-
-Channel mygmail-archive
-Master ":mygmail-remote:[Gmail]/All Mail"
-Slave ":mygmail-archive:Archive"
-Create Slave
-SyncState *
-Sync Push Flags
-
-Channel mygmail-trash
-Master ":mygmail-remote:[Gmail]/Trash"
-Slave ":mygmail-archive:Trash"
-Create Slave
-Sync All
-
-Channel mygmail-drafts
-Master ":mygmail-remote:[Gmail]/Drafts"
-Slave ":mygmail-local:Drafts"
-Create Slave
-Sync All
-Expunge Both
-
-Channel mygmail-sent
-Master ":mygmail-remote:[Gmail]/Sent Mail"
-Slave ":mygmail-local:Sent"
-Create Slave
-Sync All
-Expunge Both
+Inbox ~/Maildir/mygmail/inbox
 
 Channel mygmail-inbox
-Master ":mygmail-remote:INBOX"
-Slave ":mygmail-local:INBOX"
-Create Slave
-Sync All
-Expunge Both
+Master :mygmail-remote:
+Slave :mygmail-local:
+Patterns "INBOX"
+
+Channel mygmail-sent
+Master :mygmail-remote:"[Gmail]/Sent Mail"
+Slave :mygmail-local:sent
+
+Channel mygmail-trash
+Master :mygmail-remote:"[Gmail]/Trash"
+Slave :mygmail-local:trash
 
 Group mygmail
-Channel mygmail-trash
 Channel mygmail-inbox
-Channel mygmail-drafts
 Channel mygmail-sent
-Channel mygmail-archive 
+Channel mygmail-trash
 
 # Gmail mailboxes:
 # "All Mail"

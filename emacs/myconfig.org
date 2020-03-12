@@ -312,37 +312,32 @@ emacs.font: Hack-10
 
     (use-package lsp-ui
       :after lsp-mode
-      :diminish
-      :commands lsp-ui-mode
-      :custom-face
-      (lsp-ui-doc-background ((t (:background nil))))
-      (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+      :hook (lsp-mode . lsp-ui-mode)
       :bind (:map lsp-ui-mode-map
 		  ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
 		  ([remap xref-find-references] . lsp-ui-peek-find-references)
 		  ("C-c u" . lsp-ui-imenu))
-      :custom
+      :config
       ;; lsp-ui-document
-      ;; (lsp-ui-doc-enable nil)
+      ;; (lsp-ui-doc-enable t)
       ;; (lsp-ui-doc-header nil)
       ;; (lsp-ui-doc-include-signature nil)
       ;; (lsp-ui-doc-position 'top)
       ;; (lsp-ui-doc-border (face-foreground 'default))
 
       ;; lsp-ui-sideline
-      (lsp-ui-sideline-enable t)
-      (lsp-ui-sideline-ignore-duplicate t)
+      ;; (lsp-ui-sideline-enable nil)
+      ;; (lsp-ui-sideline-ignore-duplicate t)
       ;; (lsp-ui-sideline-show-symbol t)
       ;; (lsp-ui-sideline-show-hover t)
-      (lsp-ui-sideline-show-code-actions t)
+      ;; (lsp-ui-sideline-show-code-actions t)
 
-      ;; lsp-ui-peek
-      ;; (lsp-ui-peek-enable t)
+      ;; ;; lsp-ui-peek
+      ;; (lsp-ui-peek-enable nil)
       ;; (lsp-ui-peek-peek-height 20)
       ;; (lsp-ui-peek-list-width 50)
-      :config
-      ;; Use lsp-ui-doc-webkit only in GUI
 
+      ;; Use lsp-ui-doc-webkit only in GUI
       ;; (setq lsp-ui-doc-use-webkit t)
       ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
       ;; https://github.com/emacs-lsp/lsp-ui/issues/243
@@ -733,7 +728,7 @@ Emacs client/library for Debug Adapter Protocol is a wire protocol for communica
       (evil-set-initial-state 'pdf-view-mode 'emacs)
       (add-hook 'pdf-view-mode-hook
       (lambda ()
-        (set (make-local-variable 'evil-emacs-state-cursor) (list nil)))))
+	(set (make-local-variable 'evil-emacs-state-cursor) (list nil)))))
 
 
     (use-package evil-collection
@@ -742,12 +737,12 @@ Emacs client/library for Debug Adapter Protocol is a wire protocol for communica
       :config
       (evil-collection-init))
 
-    (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-    (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
-    (define-key evil-insert-state-map (kbd "C-u")
-      (lambda ()
-        (interactive)
-        (evil-delete (point-at-bol) (point))))
+    ;; (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+    ;; (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+    ;; (define-key evil-insert-state-map (kbd "C-u")
+    ;;   (lambda ()
+    ;;     (interactive)
+    ;;     (evil-delete (point-at-bol) (point))))
   #+END_SRC
 * Load other files (mu4e)
   Load files from other locations if they exist

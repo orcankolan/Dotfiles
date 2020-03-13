@@ -958,13 +958,26 @@ Projectile provides easy project management and navigation. Some of Projectile's
 * Dired extensions
 ** dired-subtree: tab and shift-tab for tree view
    #+BEGIN_SRC emacs-lisp
-       (use-package dired-subtree
+     (use-package dired-subtree
+     :ensure t
+     :after dired
+     :bind (:map dired-mode-map
+		 ("<tab>" . dired-subtree-toggle)
+		 ("<C-tab>" . dired-subtree-cycle)
+		 ("<S-iso-lefttab>" . dired-subtree-remove))) 
+
+     (use-package dired-narrow
        :ensure t
-       :after dired
-       :bind (:map dired-mode-map
-                   ("<tab>" . dired-subtree-toggle)
-                   ("<C-tab>" . dired-subtree-cycle)
-                   ("<S-iso-lefttab>" . dired-subtree-remove))) 
+       :config
+       (bind-key "C-c C-n" #'dired-narrow)
+       (bind-key "C-c C-N" #'dired-narrow-regexp)
+       (bind-key "C-c C-f" #'dired-narrow-fuzzy)
+       )
+
+     (add-hook 'dired-mode-hook
+	   (lambda ()
+	     (dired-hide-details-mode)
+	     ))
    #+END_SRC
 
 * Engine-mode
@@ -974,31 +987,35 @@ Projectile provides easy project management and navigation. Some of Projectile's
       :ensure t
       :config
       (engine-mode t)
-      
+
       (engine/set-keymap-prefix (kbd "C-c s"))
 
       (defengine github
-        "https://github.com/search?ref=simplesearch&q=%s"
-        :keybinding "h")
+	"https://github.com/search?ref=simplesearch&q=%s"
+	:keybinding "h")
 
       (defengine google
-        "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
-        :keybinding "g")
+	"http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+	:keybinding "g")
 
       (defengine wikipedia
-        "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
-        :keybinding "w"
-        :docstring "Searchin' the wikis.")
+	"http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+	:keybinding "w"
+	:docstring "Searchin' the wikis.")
 
       (defengine wiktionary
-        "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
+	"https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
 
       (defengine wolfram-alpha
-        "http://www.wolframalpha.com/input/?i=%s")
+	"http://www.wolframalpha.com/input/?i=%s")
 
       (defengine youtube
-        "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
-        :keybinding "y")
+	"http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+	:keybinding "y")
+
+      (defengine imdb
+	"http://www.imdb.com/find?q=%s&ref_=nv_sr_sm"
+	:keybinding "i")
 
       ) 
   #+END_SRC

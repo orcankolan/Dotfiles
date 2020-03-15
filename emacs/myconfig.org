@@ -313,36 +313,60 @@ emacs.font: Hack-10
     (use-package lsp-ui
       :after lsp-mode
       :hook (lsp-mode . lsp-ui-mode)
-      :bind (:map lsp-ui-mode-map
-		  ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-		  ([remap xref-find-references] . lsp-ui-peek-find-references)
-		  ("C-c u" . lsp-ui-imenu))
-      :config
-      ;; lsp-ui-document
-      ;; (lsp-ui-doc-enable t)
-      ;; (lsp-ui-doc-header nil)
-      ;; (lsp-ui-doc-include-signature nil)
-      ;; (lsp-ui-doc-position 'top)
-      ;; (lsp-ui-doc-border (face-foreground 'default))
-
+      :bind
+      (:map lsp-mode-map
+	    ("C-c C-r" . lsp-ui-peek-find-references)
+	    ("C-c C-j" . lsp-ui-peek-find-definitions)
+	    ("C-c i"   . lsp-ui-peek-find-implementation)
+	    ("C-c m"   . lsp-ui-imenu)
+	    ("C-c l"   . lsp-ui-sideline-mode)
+	    ("C-c d"   . o/toggle-lsp-ui-doc))
+      :custom
+      ;; lsp-ui-doc
+      (lsp-ui-doc-enable nil)
+      (lsp-ui-doc-header nil)
+      (lsp-ui-doc-include-signature nil)
+      (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
+      (lsp-ui-doc-max-width 120)
+      (lsp-ui-doc-max-height 30)
+      (lsp-ui-doc-use-childframe nil)
+      (lsp-ui-doc-use-webkit nil)
+      ;; lsp-ui-flycheck
+      (lsp-ui-flycheck-enable t)
       ;; lsp-ui-sideline
-      ;; (lsp-ui-sideline-enable nil)
-      ;; (lsp-ui-sideline-ignore-duplicate t)
-      ;; (lsp-ui-sideline-show-symbol t)
-      ;; (lsp-ui-sideline-show-hover t)
-      ;; (lsp-ui-sideline-show-code-actions t)
-
-      ;; ;; lsp-ui-peek
-      ;; (lsp-ui-peek-enable nil)
-      ;; (lsp-ui-peek-peek-height 20)
-      ;; (lsp-ui-peek-list-width 50)
+      (lsp-ui-sideline-enable t)
+      (lsp-ui-sideline-ignore-duplicate t)
+      (lsp-ui-sideline-show-symbol t)
+      (lsp-ui-sideline-show-hover t)
+      (lsp-ui-sideline-show-diagnostics nil)
+      (lsp-ui-sideline-show-code-actions t)
+      (lsp-ui-sideline-code-actions-prefix "")
+      ;; lsp-ui-imenu
+      (lsp-ui-imenu-enable t)
+      (lsp-ui-imenu-kind-position 'top)
+      ;; lsp-ui-peek
+      (lsp-ui-peek-enable t)
+      (lsp-ui-peek-peek-height 20)
+      (lsp-ui-peek-list-width 50)
+      (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
+      :preface
+      (defun o/toggle-lsp-ui-doc ()
+	(interactive)
+	(if lsp-ui-doc-mode
+	    (progn
+	      (lsp-ui-doc-mode -1)
+	      (lsp-ui-doc--hide-frame))
+	  (lsp-ui-doc-mode 1)))
 
       ;; Use lsp-ui-doc-webkit only in GUI
       ;; (setq lsp-ui-doc-use-webkit t)
+
       ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
       ;; https://github.com/emacs-lsp/lsp-ui/issues/243
-      (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-	(setq mode-line-format nil))) 
+
+      ;; (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+      ;;   (setq mode-line-format nil))
+      ) 
 
     (use-package lsp-treemacs
       :after treemacs
@@ -826,6 +850,14 @@ changed and also be viewed.
   (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save)
 #+END_SRC
 
+* Dictionary 
+  #+BEGIN_SRC emacs-lisp
+    (use-package define-word
+      :ensure t
+	:bind (("C-c d" . define-word-at-point)
+	     ("C-c D" . define-word))
+    )
+  #+END_SRC
 * Projectile
 Projectile provides easy project management and navigation. Some of Projectile's features:
 - jump to a file in project
@@ -853,10 +885,10 @@ Projectile provides easy project management and navigation. Some of Projectile's
 #+BEGIN_SRC emacs-lisp
   (use-package dumb-jump
     :bind (("M-g o" . dumb-jump-go-other-window)
-           ("M-g j" . dumb-jump-go)
-           ("M-g i" . dumb-jump-go-prompt)
-           ("M-g x" . dumb-jump-go-prefer-external)
-           ("M-g z" . dumb-jump-go-prefer-external-other-window))
+	   ("M-g j" . dumb-jump-go)
+	   ("M-g i" . dumb-jump-go-prompt)
+	   ("M-g x" . dumb-jump-go-prefer-external)
+	   ("M-g z" . dumb-jump-go-prefer-external-other-window))
     :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
     :ensure)
 #+END_SRC

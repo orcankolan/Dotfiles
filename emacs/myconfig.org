@@ -12,6 +12,10 @@
    #+BEGIN_SRC emacs-lisp
      (setq frame-title-format "Orcans emacs")
    #+END_SRC
+** Full-size frame 
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+   #+END_SRC
 ** Other modes
 *** Tool bar
     #+BEGIN_SRC emacs-lisp

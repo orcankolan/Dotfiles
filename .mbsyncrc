@@ -74,3 +74,64 @@ Channel mygmail-archive
 # "Spam"
 # "Starred"
 # "Trash"
+
+IMAPAccount mymetu
+Host imap.metu.edu.tr
+User koorcan
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.config/mutt/metu-account.gpg"
+SSLType IMAPS
+AuthMechs LOGIN
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore mymetu-remote
+Account mymetu
+
+MaildirStore mymetu-local
+# Below path should be created manually. i.e mkdir -p Maildir/mymetu
+Path ~/Maildir/mymetu/
+Inbox ~/Maildir/mymetu/INBOX
+SubFolders Verbatim
+
+# MaildirStore mymetu-archive
+# Path ~/Maildir/mymetu/
+
+# Channel mymetu-archive
+# Master ":mymetu-remote:All Mail"
+# Slave ":mymetu-archive:Archive"
+# Create Slave
+# SyncState *
+# Sync Push Flags
+
+Channel mymetu-trash
+Master ":mymetu-remote:Trash"
+Slave ":mymetu-local:Trash"
+Create Slave
+Sync All
+
+Channel mymetu-drafts
+Master ":mymetu-remote:drafts"
+Slave ":mymetu-local:Drafts"
+Create Slave
+Sync All
+Expunge Both
+
+Channel mymetu-sent
+Master ":mymetu-remote:sent-mail"
+Slave ":mymetu-local:Sent"
+Create Slave
+Sync All
+Expunge Both
+
+Channel mymetu-inbox
+Master ":mymetu-remote:INBOX"
+Slave ":mymetu-local:INBOX"
+Create Slave
+Sync All
+Expunge Both
+
+Group mymetu
+Channel mymetu-trash
+Channel mymetu-inbox
+Channel mymetu-drafts
+Channel mymetu-sent
+# Channel mygmail-archive 

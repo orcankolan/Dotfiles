@@ -780,7 +780,7 @@ Emacs client/library for Debug Adapter Protocol is a wire protocol for communica
       (if (file-readable-p f)
 	  (load-file f)))
 
-    (load-if-exists "~/.config/mu4e-conf/mu4econfig.el")
+    (load-if-exists "~/.config/mu4e-conf/mu4emulticonf.el")
   #+END_SRC
 * Cheatsheet
   To create your own cheat-sheet

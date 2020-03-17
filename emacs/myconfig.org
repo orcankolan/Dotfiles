@@ -10,7 +10,7 @@
    #+END_SRC
 ** Main window title
    #+BEGIN_SRC emacs-lisp
-     (setq frame-title-format "Orcan's Emacs")
+     (setq frame-title-format "Orcan's emacs")
    #+END_SRC
 ** Full-size frame 
    #+BEGIN_SRC emacs-lisp

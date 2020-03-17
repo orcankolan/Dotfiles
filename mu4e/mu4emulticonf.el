@@ -33,6 +33,9 @@
 ;; Attachments
 (setq mu4e-attachment-dir  "~/Downloads/Mail-Attachments/")
 
+;; by default mu4e displays all emails in the selected directory and all other emails that share a thread with them
+(setq mu4e-headers-include-related t)
+
 ;; mu4e-context
 (setq mu4e-context-policy 'pick-first)
 (setq mu4e-compose-context-policy 'always-ask)

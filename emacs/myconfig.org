@@ -10,7 +10,7 @@
    #+END_SRC
 ** Main window title
    #+BEGIN_SRC emacs-lisp
-     (setq frame-title-format "Orcans emacs")
+     (setq frame-title-format "Orcan's Emacs")
    #+END_SRC
 ** Full-size frame 
    #+BEGIN_SRC emacs-lisp
@@ -1016,6 +1016,14 @@ Projectile provides easy project management and navigation. Some of Projectile's
 	     ))
    #+END_SRC
 
+* Wgrep (Writable grep) 
+#+BEGIN_SRC emacs-lisp
+  (use-package wgrep
+    :ensure t
+    :custom
+    (wgrep-auto-save-buffer t)
+    )
+#+END_SRC  
 * Engine-mode
   Define search engines, bind them to keybindings, and query them from the comfort of your editor.
   #+BEGIN_SRC emacs-lisp

@@ -495,6 +495,13 @@ Emacs client/library for Debug Adapter Protocol is a wire protocol for communica
   ;; if it is not enabled `dap-mode' will use the minibuffer.
   (tooltip-mode 1)
 #+END_SRC
+* Magit 
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t
+    :bind (("C-x g" . magit-status))
+    )
+#+END_SRC
 * Ivy-xref
   #+BEGIN_SRC emacs-lisp 
     (use-package ivy-xref

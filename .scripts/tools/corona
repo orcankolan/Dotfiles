@@ -1,0 +1,9 @@
+#!/bin/bash
+
+[ "$(stat -c %y ~/.cache/corona | awk -F':' '{print $1":"$2}')" != "$(date '+%Y-%m-%d %R')" ] &&
+	echo "updating file..." &&
+	curl -s https://corona-stats.online > ~/.cache/corona
+
+grep "Country\|Turkey" ~/.cache/corona 
+#	| sed "s/\s*//g"
+

@@ -900,7 +900,7 @@ Projectile provides easy project management and navigation. Some of Projectile's
 	   ("M-g i" . dumb-jump-go-prompt)
 	   ("M-g x" . dumb-jump-go-prefer-external)
 	   ("M-g z" . dumb-jump-go-prefer-external-other-window))
-    :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
+    :config ;;(setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
     :ensure)
 #+END_SRC
 * Horizontal-line on cursor

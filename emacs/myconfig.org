@@ -10,7 +10,7 @@
    #+END_SRC
 ** Main window title
    #+BEGIN_SRC emacs-lisp
-     (setq frame-title-format "Orcan's emacs")
+     (setq frame-title-format "orcan's emacs")
    #+END_SRC
 ** Full-size frame 
    #+BEGIN_SRC emacs-lisp
@@ -150,13 +150,20 @@ emacs.font: Hack-10
      (use-package ivy
        :ensure t
        :diminish (ivy-mode)
-       :bind (("C-x b" . ivy-switch-buffer))
+       :bind (("C-x b" . ivy-switch-buffer)
+	      )
        :config
        (ivy-mode 1)
+       (setq ivy-count-format "(%d/%d) ")
+       (setq ivy-use-selectable-prompt t)
        (setq ivy-use-virtual-buffers t)
        (setq ivy-display-style 'fancy)
      )   
    #+END_SRC
+
+   #+RESULTS:
+   : t
+
 ** Swiper package
    Using swiper for search and using counsel for find-file
    #+BEGIN_SRC emacs-lisp
@@ -169,9 +176,6 @@ emacs.font: Hack-10
               ("C-x C-f" . counsel-find-file))
        :config
        (progn
-         (ivy-mode 1)
-         (setq ivy-use-virtual-buffers t)
-         (setq ivy-display-style 'fancy)
          (setq enable-recursive-minibuffers t)
          (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
        )

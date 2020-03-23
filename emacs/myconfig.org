@@ -140,8 +140,10 @@ emacs.font: Hack-10
      (use-package counsel
        :ensure t
        :bind (
-              ("C-x C-o" . counsel-fzf)
-              )
+	      ("C-x C-o" . counsel-fzf)
+	      ("M-x" . counsel-M-x)
+	      ("C-x C-f" . counsel-find-file)
+	      )
        )
    #+END_SRC
 ** Ivy package
@@ -165,15 +167,14 @@ emacs.font: Hack-10
    #+BEGIN_SRC emacs-lisp
      (use-package swiper
        :ensure t
+       :after ivy
        :bind (("C-s" . swiper)
-              ("C-r" . swiper)
-              ("C-c C-r" . ivy-resume)
-              ("M-x" . counsel-M-x)
-              ("C-x C-f" . counsel-find-file))
+	      ("C-c C-r" . ivy-resume)
+	      )
        :config
        (progn
-         (setq enable-recursive-minibuffers t)
-         (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+	 (setq enable-recursive-minibuffers t)
+	 (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
        )
      )   
    #+END_SRC

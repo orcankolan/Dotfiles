@@ -160,10 +160,6 @@ emacs.font: Hack-10
        (setq ivy-display-style 'fancy)
      )   
    #+END_SRC
-
-   #+RESULTS:
-   : t
-
 ** Swiper package
    Using swiper for search and using counsel for find-file
    #+BEGIN_SRC emacs-lisp
@@ -482,9 +478,6 @@ emacs.font: Hack-10
       :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
       )
   #+END_SRC
-
-  #+RESULTS:
-
 * Debugger (dap-mode)
 Emacs client/library for Debug Adapter Protocol is a wire protocol for communication between client and Debug Server. It’s similar to the LSP but provides integration with debug server.
 #+BEGIN_SRC emacs-lisp
@@ -987,10 +980,6 @@ Projectile provides easy project management and navigation. Some of Projectile's
       (add-hook 'term-mode-hook #'eterm-256color-mode)
       )
   #+END_SRC
-
-  #+RESULTS:
-  : t
-
 * Choosing and starting\closing terminal
   #+BEGIN_SRC emacs-lisp
     (global-set-key "\C-x\C-a" '(lambda ()(interactive)(ansi-term "/bin/zsh"))) 

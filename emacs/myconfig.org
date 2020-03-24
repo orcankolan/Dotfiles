@@ -1076,9 +1076,32 @@ Projectile provides easy project management and navigation. Some of Projectile's
       (interactive)
       (load-file user-init-file))
 
+
+    (defun o/create-cmake-cproject ()
+      (interactive)
+       (let ((project-name (read-string "Project name: " nil nil "new-project")))
+	 (shell-command (concat "mkdir -p ~/dev/" project-name "/{src,build}"))
+	 (shell-command (format "touch ~/dev/%S/.projectile" project-name))
+	 (shell-command (format "touch ~/dev/%S/.CMakeLists.txt" project-name))
+	 (shell-command (format "touch ~/dev/%S/build/.gitignore" project-name))
+
+	 (with-temp-file (format "~/dev/%s/.projectile" project-name)
+	   (insert "-/build/CMakeFiles\n") 
+	   (insert "-/.ccls-cache\n") 
+	   (insert "-cmake_install.cmake") 
+	 )
+
+	 (with-temp-file (format "~/dev/%s/build/.gitignore" project-name)
+	   (insert "*\n") 
+	   (insert "*/\n") 
+	   (insert "!.gitignore") 
+	 )
+       )
+     )
   #+END_SRC
 * Personal Keymap
   #+BEGIN_SRC emacs-lisp
     (define-key o-map (kbd "w") 'o/swap-windows)
     (global-set-key (kbd "C-c C-l") 'reload-init-file)    ; Reload user emacs dotfile
+    (global-set-key (kbd "C-c C-m") 'o/create-cmake-cproject)    ; Create cmake project
   #+END_SRC

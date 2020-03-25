@@ -1089,7 +1089,7 @@ Projectile provides easy project management and navigation. Some of Projectile's
        (let ((project-name (read-string "Project name: " nil nil "new-project")))
 	 (shell-command (concat "mkdir -p ~/dev/" project-name "/{src,build}"))
 	 (shell-command (format "touch ~/dev/%S/.projectile" project-name))
-	 (shell-command (format "touch ~/dev/%S/.CMakeLists.txt" project-name))
+	 (shell-command (format "touch ~/dev/%S/CMakeLists.txt" project-name))
 	 (shell-command (format "touch ~/dev/%S/build/.gitignore" project-name))
 
 	 (with-temp-file (format "~/dev/%s/.projectile" project-name)

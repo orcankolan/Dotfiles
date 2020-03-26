@@ -202,11 +202,11 @@ apt-get purge packagename or apt-get remove --purge packagename
 will remove about everything regarding the package packagename, 
 but not the dependencies installed with it on installation. Both commands are equivalent.
 
-apt-get remove --auto-remove --purge packagename
-will remove dependency packages and the configuration files
-
 Particularly useful when you want to 'start all over' with an application because you messed up the configuration. 
 However, it does not remove configuration or data files residing in users home directories, usually in hidden folders there. There is no easy way to get those removed as well.
+
+apt-get remove --auto-remove --purge packagename
+will remove dependency packages and the configuration files
 
 apt-get autoremove
 

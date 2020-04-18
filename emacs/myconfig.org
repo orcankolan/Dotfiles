@@ -964,7 +964,7 @@ Projectile provides easy project management and navigation. Some of Projectile's
   Keeping snippets in the .emacs.d/snippets/text-mode
   #+BEGIN_SRC emacs-lisp
     (use-package yasnippet
-       
+
       :config
       (setq yas-snippet-dirs '("~/.emacs.d/snippets/text-mode"))
       :init

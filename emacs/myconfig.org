@@ -415,7 +415,7 @@ emacs.font: Hack-10
       :config
       (add-to-list 'company-backends 'company-c-headers)
       ;; Above line only add two include paths: /usr/include/ and /usr/local/include/
-      (add-to-list 'company-c-headers-path-system "/usr/include/c++/7.4.0/")
+      (add-to-list 'company-c-headers-path-system "/usr/include/c++/7.5.0/")
       )
 
     ;; (use-package company-quickhelp
@@ -944,7 +944,8 @@ Projectile provides easy project management and navigation. Some of Projectile's
            ("C-(" . sp-backward-slurp-sexp)
            ("M-)" . sp-forward-barf-sexp)
            ("M-(" . sp-backward-barf-sexp)
-           ("C-M-8" . sp-add-to-next-sexp)
+           ("C-M-8" . sp-add-to-previous-sexp)
+           ("C-M-9" . sp-add-to-next-sexp)
            ("C-S-s" . sp-splice-sexp)
            ("C-M-<backspace>" . backward-kill-sexp)
            ("C-M-S-<SPC>" . (lambda () (interactive) (mark-sexp -1))))
@@ -1048,6 +1049,19 @@ Projectile provides easy project management and navigation. Some of Projectile's
     (wgrep-auto-save-buffer t)
     )
 #+END_SRC  
+* Paragraph Modification
+#+BEGIN_SRC emacs-lisp
+  (use-package unfill
+    :ensure t)
+#+END_SRC
+* Evil-multi-cursor (evil-multiedit)
+  #+BEGIN_SRC emacs-lisp
+    (use-package evil-multiedit
+      :ensure t
+      :config
+      (evil-multiedit-default-keybinds)
+      )
+  #+END_SRC
 * Engine-mode
   Define search engines, bind them to keybindings, and query them from the comfort of your editor.
   #+BEGIN_SRC emacs-lisp
@@ -1119,9 +1133,17 @@ Projectile provides easy project management and navigation. Some of Projectile's
 	   (insert "*/\n") 
 	   (insert "!.gitignore") 
 	 )
+
+	 (with-temp-file (format "~/dev/%s/.clangformat" project-name)
+	   (insert "Basedonstyle: LLVM\n") 
+	   (insert "IndentWidth: 4") 
+	   )
+
+	 (treemacs-do-add-project-to-workspace (format "~/dev/%s" project-name))
        )
      )
   #+END_SRC
+
 * Personal Keymap
   #+BEGIN_SRC emacs-lisp
     (define-key o-map (kbd "w") 'o/swap-windows)

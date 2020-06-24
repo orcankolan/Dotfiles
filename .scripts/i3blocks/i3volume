@@ -1,9 +1,0 @@
-#!/bin/bash
-
-DEVICE="$BLOCK_INSTANCE"
-# to see all devices: aplay -L 
-
-VOLUME=$(amixer -D $DEVICE sget Master | grep 'Right:' | awk -F'[][]' '{ print $2 }')
-
-
-printf "%s %s\\n" "$BLOCK_LABEL" "$VOLUME"

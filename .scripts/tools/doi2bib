@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#A script to get info from crossref.org and append to a bib file
-
-echo >> ref-bib.bib
-curl -s "http://api.crossref.org/works/$1/transform/application/x-bibtex" >> ref-bib.bib
-echo >> ref-bib.bib
-

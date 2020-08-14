@@ -49,6 +49,8 @@
     #+END_SRC
 * JACK Settings with Cadence
   - See sound-notes on github/orcankolan
+  - Jack Bridges->ALSA Audio : ALSA -> Loop -> JACK
+  - Jack Bridges -> PulseAudio : Start
   - Use PulseAudio Bridge for JACK and enable auto-start at login
   - Configure -> Engine -> Realtime : Enabled
   - Configure -> Engine -> Realtime -> Priority : 10

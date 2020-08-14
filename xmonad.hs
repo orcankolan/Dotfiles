@@ -10,7 +10,9 @@
 import XMonad
 import Data.Monoid
 import System.Exit
+import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
+import XMonad.Hooks.ManageDocks
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -185,7 +187,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Mirror tiled ||| Full
+myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -250,13 +252,18 @@ myLogHook = return ()
 myStartupHook = do
     spawnOnce "nitrogen --restore &"
     spawnOnce "compton &"
+    spawnOnce "emacs --daemon &"
+    spawnOnce "xrdb ~/.Xdefaults &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad defaults
+-- main = xmonad defaults
+main = do
+    xmproc <- spawnPipe "xmobar -x 0 ~/.config/xmobar/.xmobarrc"    
+    xmonad $ docks defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will

@@ -1,21 +1,54 @@
---
--- xmonad example config file.
---
--- A template showing all available configuration hooks,
--- and how to override the defaults in your own xmonad.hs conf file.
---
--- Normally, you'd only override those defaults you care about.
---
+-- Orcans xmonad config file
 
-import XMonad
-import Data.Monoid
+-- imports
+--
+import XMonad hiding ( (|||) ) -- jump to layout
+import XMonad.Layout.LayoutCombinators (JumpToLayout(..), (|||)) -- jump to layout
+import XMonad.Config.Desktop
 import System.Exit
-import XMonad.Util.Run
-import XMonad.Util.SpawnOnce
-import XMonad.Hooks.ManageDocks
-
 import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
+
+-- data
+import Data.Char (isSpace)
+import Data.List
+import Data.Monoid
+import Data.Maybe (isJust)
+import Data.Ratio ((%)) -- for video
+import qualified Data.Map as M
+
+-- system
+import System.IO (hPutStrLn) -- for xmobar
+
+-- util
+import XMonad.Util.Run (safeSpawn, unsafeSpawn, runInTerm, spawnPipe)
+import XMonad.Util.SpawnOnce
+import XMonad.Util.EZConfig (additionalKeysP, additionalMouseBindings)  
+import XMonad.Util.NamedScratchpad
+import XMonad.Util.NamedWindows
+import XMonad.Util.WorkspaceCompare
+
+-- hooks
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks (avoidStruts, docksStartupHook, manageDocks, ToggleStruts(..))
+import XMonad.Hooks.EwmhDesktops -- to show workspaces in application switchers
+import XMonad.Hooks.FadeInactive
+import XMonad.Hooks.ManageHelpers (isFullscreen, isDialog,  doFullFloat, doCenterFloat, doRectFloat) 
+import XMonad.Hooks.Place (placeHook, withGaps, smart)
+import XMonad.Hooks.UrgencyHook
+import XMonad.Hooks.WorkspaceHistory
+
+-- actions
+import XMonad.Actions.CopyWindow -- for dwm window style tagging
+import XMonad.Actions.UpdatePointer -- update mouse postion
+import XMonad.Actions.DynamicWorkspaces
+
+-- layout 
+import XMonad.Layout.Renamed (renamed, Rename(Replace))
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Spacing
+import XMonad.Layout.GridVariants
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.BinarySpacePartition
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -30,8 +63,6 @@ myFocusFollowsMouse = False
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
--- Width of the window border in pixels.
---
 myBorderWidth   = 2
 
 -- modMask lets you specify which modkey you want to use. The default
@@ -50,13 +81,26 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+--myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+
+myWorkspaces = ["1:term","2:web","3:im","4:mail","5:media"] ++ map show [6..9]
+
 
 -- Border colors for unfocused and focused windows, respectively.
 --
 myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#aacc00"
 
+-- Other colors fro xmobar
+myppCurrent = "#cb4b16"
+myppVisible = "#cb4b16"
+myppHidden = "#268bd2"
+myppHiddenNoWindows = "#93A1A1"
+myppTitle = "#FDF6E3"
+myppUrgent = "#DC322F"
+
+windowCount :: X (Maybe String) 
+windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
@@ -231,15 +275,14 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
-
+myLogHook = fadeInactiveLogHook fadeAmount     
+    where fadeAmount = 1.0
 ------------------------------------------------------------------------
 -- Status bars and logging
 
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook = return ()
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -261,38 +304,40 @@ myStartupHook = do
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 -- main = xmonad defaults
+main :: IO ()
 main = do
     xmproc <- spawnPipe "xmobar -x 0 ~/.config/xmobar/.xmobarrc"    
-    xmonad $ docks defaults
+    xmonad $ ewmh def
+        { terminal           = myTerminal,
+          focusFollowsMouse  = myFocusFollowsMouse,
+          clickJustFocuses   = myClickJustFocuses,
+          borderWidth        = myBorderWidth,
+          modMask            = myModMask,
+          workspaces         = myWorkspaces,
+          normalBorderColor  = myNormalBorderColor,
+          focusedBorderColor = myFocusedBorderColor,
 
--- A structure containing your configuration settings, overriding
--- fields in the default config. Any you don't override, will
--- use the defaults defined in xmonad/XMonad/Config.hs
---
--- No need to modify this.
---
-defaults = def {
-      -- simple stuff
-        terminal           = myTerminal,
-        focusFollowsMouse  = myFocusFollowsMouse,
-        clickJustFocuses   = myClickJustFocuses,
-        borderWidth        = myBorderWidth,
-        modMask            = myModMask,
-        workspaces         = myWorkspaces,
-        normalBorderColor  = myNormalBorderColor,
-        focusedBorderColor = myFocusedBorderColor,
+          keys               = myKeys,
+          mouseBindings      = myMouseBindings,
 
-      -- key bindings
-        keys               = myKeys,
-        mouseBindings      = myMouseBindings,
-
-      -- hooks, layouts
-        layoutHook         = myLayout,
-        manageHook         = myManageHook,
-        handleEventHook    = myEventHook,
-        logHook            = myLogHook,
-        startupHook        = myStartupHook
-    }
+          -- hooks, layouts
+          layoutHook         = myLayout,
+          manageHook         = ( isFullscreen --> doFullFloat ) <+> myManageHook <+> manageDocks,
+          handleEventHook    = handleEventHook desktopConfig,
+          logHook = workspaceHistoryHook <+> myLogHook <+> dynamicLogWithPP xmobarPP  
+                        { ppOutput = hPutStrLn xmproc
+                        , ppCurrent = xmobarColor myppCurrent "" . wrap "[" "]" -- Current workspace in xmobar
+                        , ppVisible = xmobarColor myppVisible ""                -- Visible but not current workspace
+                        , ppHidden = xmobarColor myppHidden "" . wrap "+" ""   -- Hidden workspaces in xmobar
+                        , ppHiddenNoWindows = xmobarColor  myppHiddenNoWindows ""        -- Hidden workspaces (no windows)
+                        , ppTitle = xmobarColor  myppTitle "" . shorten 80     -- Title of active window in xmobar
+                        , ppSep =  "<fc=#586E75> | </fc>"                     -- Separators in xmobar
+                        , ppUrgent = xmobarColor  myppUrgent "" . wrap "!" "!"  -- Urgent workspace
+                        , ppExtras  = [windowCount]                           -- # of windows current workspace
+                        , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
+                        } >> updatePointer (0.25, 0.25) (0.25, 0.25),
+          startupHook        = myStartupHook
+       }
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String

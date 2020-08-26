@@ -286,7 +286,7 @@ myManageHook = composeAll
     , className =? "Gimp"           --> doFloat
     , className =? "Firefox" --> doShift "2:web"
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "ardour"       --> doIgnore ]
+    , resource  =? "ardour-5.12.0" --> doIgnore ]
 
 ------------------------------------------------------------------------
 -- Event handling

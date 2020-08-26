@@ -85,7 +85,7 @@ myModMask       = mod4Mask
 --
 --myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
-myWorkspaces = ["1:term","2:web","3:im","4:mail","5:media"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:web","3:emacs","4:music","5:video"] ++ map show [6..9]
 
 
 -- Border colors for unfocused and focused windows, respectively.
@@ -256,14 +256,26 @@ defaultLayout =
 	tiledLayout |||
 	fullLayout
 
+musicLayout =
+	avoidStruts $
+	smartBorders Full |||
+	smartBorders tiledLayout
+
+webLayout =
+	avoidStruts $
+	smartBorders Full |||
+	smartBorders tiledLayout
+
 termLayout = 
 	avoidStruts $
 	spacedLayout $
 	smartBorders tiledLayout |||
-	fullLayout
+	smartBorders Full
 
 myLayout = 
 	onWorkspaces ["1:term"] termLayout $
+	onWorkspaces ["2:web"] webLayout $
+	onWorkspaces ["4:music"] musicLayout $
 	defaultLayout
 
 ------------------------------------------------------------------------
@@ -283,10 +295,10 @@ myLayout =
 --
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
     , className =? "Firefox" --> doShift "2:web"
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "ardour-5.12.0" --> doIgnore ]
+    , resource =? "ardour-5.12.0" --> doFloat
+    , className  =? "Gimp" --> doFloat ]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -318,7 +330,8 @@ myStartupHook = do
     spawnOnce "nitrogen --restore &"
     spawnOnce "compton &"
     spawnOnce "emacs --daemon &"
-    spawnOnce "xrdb ~/.Xdefaults &"
+    spawnOnce "xrdb ~/.Xresources &"
+    spawnOnce "urxvt"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.

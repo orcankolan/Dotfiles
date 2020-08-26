@@ -20,7 +20,7 @@ Config { font = "xft:Ubuntu Regular:pixelsize=13:antialias=true:hinting=true"
                                           "--normal","green",
                                           "--high","red",
                                           "--low","lightblue"] 36000
-                    , Run Network "enp0s31f6" ["-L","0","-H","3200000",
+                    , Run Network "enp0s25" ["-L","0","-H","3200000",
 		      	  	  	  "--normal", "green",
                                           "--low","lightblue","--high","red"] 10
                     , Run Cpu ["-L","3","-H","50",
@@ -33,6 +33,6 @@ Config { font = "xft:Ubuntu Regular:pixelsize=13:antialias=true:hinting=true"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% | %cpu% | %memory% | %swap% | %enp0s31f6% }\
-                    \{ <fc=#ee9a00>%date%</fc> | %whoami% "
+       , template = "%StdinReader% }{ %cpu% | %memory% | %swap% | %enp0s25% |\
+                    \ <fc=#ee9a00>%date%</fc> | %whoami% "
        }

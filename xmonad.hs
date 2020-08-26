@@ -231,7 +231,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
+myLayout = avoidStruts (tiled ||| noBorders Full)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -263,6 +263,7 @@ myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
+    , className =? "Firefox" --> doShift "2:web"
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "ardour"       --> doIgnore ]
 
@@ -276,7 +277,7 @@ myManageHook = composeAll
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
 myLogHook = fadeInactiveLogHook fadeAmount     
-    where fadeAmount = 1.0
+    where fadeAmount = 0.85
 ------------------------------------------------------------------------
 -- Status bars and logging
 

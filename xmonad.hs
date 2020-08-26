@@ -236,11 +236,11 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
 
 gapsLayout = gaps [(U,10), (D,10)]
-spacedLayout = spacingRaw True (Border 0 10 10 10) False (Border 5 5 5 5) True
+spacedLayout = spacingRaw True (Border 0 5 5 5) False (Border 5 5 5 5) True
 
 fullLayout = 
 	avoidStruts $
-	noBorders Full
+	smartBorders Full
 
 tiledLayout = Tall nmaster delta ratio
     where
@@ -259,7 +259,7 @@ defaultLayout =
 termLayout = 
 	avoidStruts $
 	spacedLayout $
-	tiledLayout |||
+	smartBorders tiledLayout |||
 	fullLayout
 
 myLayout = 

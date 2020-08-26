@@ -98,7 +98,7 @@ myppCurrent = "#cb4b16"
 myppVisible = "#cb4b16"
 myppHidden = "#268bd2"
 myppHiddenNoWindows = "#93A1A1"
-myppTitle = "#FDF6E3"
+myppTitle = "#aacc00"
 myppUrgent = "#DC322F"
 
 windowCount :: X (Maybe String) 
@@ -236,7 +236,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
 
 gapsLayout = gaps [(U,10), (D,10)]
-spacedLayout = spacing 5
+spacedLayout = spacingRaw True (Border 0 10 10 10) False (Border 5 5 5 5) True
 
 fullLayout = 
 	avoidStruts $
@@ -298,7 +298,7 @@ myManageHook = composeAll
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
 myLogHook = fadeInactiveLogHook fadeAmount     
-    where fadeAmount = 0.85
+    where fadeAmount = 0.75
 ------------------------------------------------------------------------
 -- Status bars and logging
 

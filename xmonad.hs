@@ -46,9 +46,11 @@ import XMonad.Actions.DynamicWorkspaces
 import XMonad.Layout.Renamed (renamed, Rename(Replace))
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
+import XMonad.Layout.Gaps
 import XMonad.Layout.GridVariants
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.BinarySpacePartition
+import XMonad.Layout.PerWorkspace
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -63,7 +65,7 @@ myFocusFollowsMouse = False
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
-myBorderWidth   = 2
+myBorderWidth   = 3
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -231,19 +233,38 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (tiled ||| noBorders Full)
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
 
-     -- The default number of windows in the master pane
-     nmaster = 1
 
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
+gapsLayout = gaps [(U,10), (D,10)]
+spacedLayout = spacing 5
 
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
+fullLayout = 
+	avoidStruts $
+	noBorders Full
+
+tiledLayout = Tall nmaster delta ratio
+    where
+     	-- The default number of windows in the master pane
+        nmaster = 1
+        -- Default proportion of screen occupied by master pane
+       	ratio = 1/2
+        -- Percent of screen to increment by when resizing panes
+	delta = 3/100
+
+defaultLayout = 
+	avoidStruts $
+	tiledLayout |||
+	fullLayout
+
+termLayout = 
+	avoidStruts $
+	spacedLayout $
+	tiledLayout |||
+	fullLayout
+
+myLayout = 
+	onWorkspaces ["1:term"] termLayout $
+	defaultLayout
 
 ------------------------------------------------------------------------
 -- Window rules:

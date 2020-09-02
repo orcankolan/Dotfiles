@@ -1,0 +1,44 @@
+#TITLE = Web server project
+* Web server, 'ngynx'
+** set sshd_config:
+   in the /etc/ssh/shhd_config file:
+   do not set anything (port should be: 22)
+** to ssh to server with ip:
+   #+BEGIN_SRC sh
+     ssh -i ~/Downloads/Light... admin@staticip
+   #+END_SRC
+** install nginx
+  nginx - is the server application
+  certbot - for https
+  python-certbot-nginx fot certbot to connect nginx
+  #+BEGIN_SRC sh 
+    install ngynx certbot python-certbot-nginx
+  #+END_SRC
+** to restart nginx: 
+   #+BEGIN_SRC sh
+     systemctl reload nginx
+   #+END_SRC
+** to restart ssh service: 
+   #+BEGIN_SRC sh
+     systemctl restart ssh.service
+   #+END_SRC
+** to get ssl certificate for https connections:
+   #+BEGIN_SRC sh
+      sudo certbot --nginx -d linuxscoop.cc -d www.linuxscoop.cc
+   #+END_SRC
+** firewall (ufw) - seems not enough alone
+   #+BEGIN_SRC sh
+     sudo apt install ufw
+     sudo ufw enable
+     sudo ufw app list
+     sudo ufw allow 22/tcp comment 'Open port ssh tcp port 22'
+     sudo ufw allow 80
+     sudo ufw allow 443
+     sudo ufw allow 'Nginx Full'
+     sudo ufw status
+   #+END_SRC
+** also firewall on aws lightsail:
+   - in "Networking"->"Firewall"->"Add Rule"-> HTTPS 443
+* Database, 'mysql'
+* PHP
+* Drupal 

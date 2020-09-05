@@ -10,10 +10,8 @@
    #+END_SRC
 ** install nginx
   nginx - is the server application
-  certbot - for https
-  python-certbot-nginx fot certbot to connect nginx
   #+BEGIN_SRC sh 
-    install ngynx certbot python-certbot-nginx
+    install ngynx 
   #+END_SRC
 ** to restart nginx: 
    #+BEGIN_SRC sh
@@ -48,6 +46,7 @@
 
    - set "yes" for VALIDATE PASSWORD COMPONENT
    - set "MEDIUM" (i.e 1) for VALIDATION POLICY (i.e stregth of password)
+    MEDIUM policy adds the conditions that passwords must contain at least 1 numeric character, 1 lowercase character, 1 uppercase character, and 1 special (nonalphanumeric) character. 
    - set your password
    - set "yes" for REMOVE ANONYMOUS USERS
    - set "yes" for DISALLOW ROOT LOGIN REMOTELY  
@@ -60,8 +59,9 @@
    #+END_SRC
 *** create datbase and user, and set privilages
     #+BEGIN_SRC sql
-      CREATE DATABASE odtutmdrupal DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-      GRANT ALL ON odtutmprupal.* TO 'odtuuser'@'localhost' IDENTIFIED BY '5tR0n6p@s5WorD';
+      CREATE DATABASE drupalodtutm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+      CREATE USER odtutm@localhost IDENTIFIED BY 'password';
+      GRANT ALL PRIVILEGES ON drupalodtutm.* TO odtutm@localhost; 
       FLUSH PRIVILEGES;
       EXIT;
     #+END_SRC
@@ -84,10 +84,10 @@
    #+END_SRC
 ** with other php modules:
    #+BEGIN_SRC sh
-     sudo apt install php-cgi php-common php-fpm php-mysql php-gmp php-curl php-intl php-mbstring php-xmlrpc php-gd php-xml php-cli php-zip libssh2-php
+     sudo apt install php-cgi php-common php-fpm php-mysql php-gmp php-curl php-intl php-mbstring php-xmlrpc php-gd php-xml php-cli php-zip
    #+END_SRC
 ** php settings (php.ini):
-   settings wiil be done in /etc/php/7.3/fpm/php.ini
+   settings wiil be done in /etc/php/7.4/fpm/php.ini
    cgi.fix_pathinfo = 0
    
    also:
@@ -101,7 +101,7 @@
    date.timezone = Turkey //optional
 ** restart php-fpm service:
    #+BEGIN_SRC sh
-   sudo systemctl restart php7.3-fpm.service
+   sudo systemctl restart php7.4-fpm.service
    #+END_SRC
 * Configure nginx for drupal usage
   copy below to configuration file (e.g /etc/nginx/sites-available/odtu-tm):
@@ -146,10 +146,16 @@
      sudo nginx -t
      sudo ln -s /etc/nginx/sites-available/linuxscoop.cc /etc/nginx/sites-enabled/
      sudo systemctl restart nginx.service
-     sudo systemctl restart php7.3-fpm.service
+     sudo systemctl restart php7.4-fpm.service
    #+END_SRC
 * SSL Certificate  
+** install certbot
+   #+BEGIN_SRC  sh
+     sudo apt install certbot python-certbot-nginx
+   #+END_SRC
 ** to get ssl certificate for https connections:
+  certbot - for https
+  python-certbot-nginx fot certbot to connect nginx
    #+BEGIN_SRC sh
       sudo certbot --nginx -d odtu-tm.com -d www.odtu-tm.com
    #+END_SRC
@@ -164,6 +170,21 @@
 *** to see definitions of jobs:
     vim /etc/crontab
 * Drupal 
+** goto /tmp
+** Download drupal:
+   #+BEGIN_SRC sh
+   mkdir drupal
+   cd drupal
+   curl -sSL https://www.drupal.org/download-latest/tar.gz | tar -xz --strip-components=1
+   #+END_SRC
+** copy all drupal files into server folder:
+   #+BEGIN_SRC sh
+     sudo cp -a drupal/. /var/www/odtu-tm
+   #+END_SRC
+** change ownership of all files in odtu-tm to www-data:
+   #+BEGIN_SRC sh
+     sudo chown -R www-data:www-data /var/www/odtu-tm/
+   #+END_SRC
 * Using sftp and rclone with server
 ** Using just command-line stfp:
    #+BEGIN_SRC sh

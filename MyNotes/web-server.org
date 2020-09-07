@@ -254,6 +254,29 @@ server {
     }
 }
  #+END_SRC 
+** to make things simpler:
+   - take the above code and put it into /etc/nginx/apps/drupal file; then erase the necessary lines:
+     
+    server {
+    server_name _;
+    root /var/www/odtu-tm; ## <-- Your only path reference.
+
+   - then, your odtu-tm can be:
+
+    server {
+    server_name localhost;
+    root /var/www/odtu-tm;
+    include apps/drupal;
+    }
+
+   - also you can add other servers, with different root(another drupal site maybe) in the same file:
+
+    server {
+    server_name foo.demo.d8;
+    root /var/www/example-site;
+    include apps/drupal;
+    }
+
 ** to check syntax errors on nginx configuration file and to make it enabled and to restart services:
    #+BEGIN_SRC sh
      sudo nginx -t

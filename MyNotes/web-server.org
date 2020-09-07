@@ -44,6 +44,11 @@
     fastcgi_read_timeout 600s;
     ...
     } 
+** for multiple sites on local host:
+   - goto /etc/hosts:
+    add a "127.0.0.1 foo.demo.somename" 
+   - then add this name as server name in the nginx server conf in sites-available folder
+     i.e /etc/nginx/sites-available/somefile
 * Database, 'mysql'
 ** install mysql-server:
    #+BEGIN_SRC sh

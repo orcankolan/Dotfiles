@@ -284,6 +284,12 @@ server {
      sudo systemctl restart nginx.service
      sudo systemctl restart php7.4-fpm.service
    #+END_SRC
+** drupal files permissions (!!)
+   - cd to  var/www/example-site/web/sites/default folder
+   - "chmod o-w files settings.php" (remove write permission from others for files folder and settings.php file)
+   - "chgrp www-data files settings.php" (change group owner of files and settings.php to www-data which nginx uses)
+   - "chmod g-s files" (make groups stickych is www-data in files folder)
+   - also in the var/www/example-site create config/sync folders: "mkdir -p config/sync"
 * SSL Certificate  
 ** install certbot
    #+BEGIN_SRC  sh

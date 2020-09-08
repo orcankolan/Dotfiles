@@ -422,4 +422,8 @@ server {
   - drush en admin_toolbar(this should be done in the web folder (drupal root)), in order not to go bakc and forth to web and up: in the base : > drush use /var/www/odtu-tm/web#default
   - then do the above (drush cex , git push in odtu-tm and git pull, drush cex in production site)
 * Put trusted sites (if drupal complains about that!)
+  $settings['trusted_host_patterns'] = array(
+  '^www\.linuxscoop\.cc$',
+  '^linuxscoop\.cc$',
+  );
   

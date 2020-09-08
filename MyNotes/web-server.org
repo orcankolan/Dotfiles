@@ -117,10 +117,17 @@
    memory_limit = 256M
    cgi.fix_pathinfo = 0
    upload_max_filesize = 100M
-   max_execution_time = 600 or 60
+   max_execution_time = 360
    date.timezone = Turkey //optional
-   default_socket_timeout = 60 or 600
-   max_input_time = 60 or 600
+   default_socket_timeout = 60 or 600 (default=60)
+   max_input_time = 60 or 600 (default=60)
+   
+   short_open_tag = On
+   memory_limit = 256M
+   cgi.fix_pathinfo = 0
+   upload_max_filesize = 100M
+   max_execution_time = 360
+   date.timezone = America/Chicago //optional
 ** restart php-fpm service:
    #+BEGIN_SRC sh
    sudo systemctl restart php7.4-fpm.service
@@ -288,7 +295,7 @@ server {
    - cd to  var/www/example-site/web/sites/default folder
    - "chmod o-w files settings.php" (remove write permission from others for files folder and settings.php file)
    - "chgrp www-data files settings.php" (change group owner of files and settings.php to www-data which nginx uses)
-   - "chmod g-s files" (make groups stickych is www-data in files folder)
+   - "chmod g+s files/" (make groups stickych is www-data in files folder)
    - also in the var/www/example-site create config/sync folders: "mkdir -p config/sync"
 * SSL Certificate  
 ** install certbot
@@ -311,7 +318,7 @@ server {
    - 1 1 1 * * cerbot renew 
 *** to see definitions of jobs:
     vim /etc/crontab
-* Drupal 
+* Drupal without composer
 ** goto /tmp
 ** Download drupal:
    #+BEGIN_SRC sh
@@ -327,6 +334,46 @@ server {
    #+BEGIN_SRC sh
      sudo chown -R www-data:www-data /var/www/odtu-tm/
    #+END_SRC
+* Drupal insallation with composer
+** First install composer globally:
+   - execute commands from https://getcomposer.org/download/
+** Install drupal from https://getcomposer.org/download/
+   - to use composer give write permisson to others on /var/www: sudo chmod o+w /var/www
+   - after installation with composer take it back with: sudo chmod o-w /var/www
+   - before using composer make sure to install php modules (above PHP section)
+   - install drupal with composer:
+     composer create-project drupal-composer/drupal-project:8.x-dev some-dir --no-interaction
+* To start over drupal installation:
+  - drop database drupalodtutm
+  - cp /var/www/odtu-tm-d8/web/sites/default/default.settings.php /var/www/odtu-tm-d8/web/sites/default/settings.php
+  - but you have to create database again and give privileges to the pdtutm user (see Mysql section)
+* Git control on drupal site with composer
+** in the base directory /var/www/odtu-tm-d8  
+   - git init
+   - git status
+   - git add .
+   - git commit -m "Intial commit" 
+** Branching:
+   - Creating a second brach is important (if you mess things up)
+   - git branch test
+   - git brach -l (list branches)
+   - git checkout test (jump to test branch)
+   - then add remote to push your test branch:
+   - git remote add somefolder or server
+   - suppose you create a project in gitlab (private one), get the ssh address of your project
+   - git remote add somenameyouchoose sshaddressyoucopyfromgitlabpage
+   - to list remotes: git remote
+   - then add your ssh key (see SSH key generation section) 
+   - git remote update
+   - git push remotenameyouchoose test
+* SSH key generation
+   - to list all the keys generated: ls ~/.ssh
+   - to add a new key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"; see https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+   - to see the background ssh-agent PID: echo $SSH_AGENT_PID
+   - if no ssh-agent is running in the background: eval $(ssh-agent -s)
+   - to add your ssh key to ssh-agent: ssh-add ~/.ssh/id_rsa.pub or ~/.ssh/yourkeyfilename
+   - to copy ssh public key to clipboard: xclip -sel clip < ~/.ssh/id_rsa.pub
+   - add your public key to gitlab or github
 * Using sftp and rclone with server
 ** Using just command-line stfp:
    #+BEGIN_SRC sh
@@ -338,3 +385,4 @@ server {
    #+BEGIN_SRC sh
      sudo curl https://rclone.org/install.sh | sudo bash 
    #+END_SRC
+

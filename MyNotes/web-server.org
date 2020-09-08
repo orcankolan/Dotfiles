@@ -410,4 +410,16 @@ server {
   - then drush cim (but this will give uuid error)
   - To solve this:
   - From base : > vim config/sync/system.site.yaml
-  - and change the uuid with the odtu-tm uuid
+  - and change the uuid with the odtu-tm uuid from the config/sync/system.site.yaml:
+    in the production site: > drush cset system.site uuid "newvaluofuuid"
+  - the drush cim again
+  - then it gives shortcut links error
+  - To solve that: then remove the shortcuts menu (press shortcuts in the drupal page and then edit shortcuts and delete them)
+  - the drush cim again
+  - try changing something in the odtu-tm
+    ex:
+  - use composer for drupal packages: >composer require drupal/admin_toolbar (in the base level directory /www/odtu-tm)
+  - drush en admin_toolbar(this should be done in the web folder (drupal root)), in order not to go bakc and forth to web and up: in the base : > drush use /var/www/odtu-tm/web#default
+  - then do the above (drush cex , git push in odtu-tm and git pull, drush cex in production site)
+* Put trusted sites (if drupal complains about that!)
+  

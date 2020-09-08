@@ -293,10 +293,11 @@ server {
    #+END_SRC
 ** drupal files permissions (!!)
    - cd to  var/www/example-site/web/sites/default folder
+   - also in the var/www/example-site create config/sync folders: "mkdir -p config/sync" (it should not be owned by root)
    - "chmod o-w files settings.php" (remove write permission from others for files folder and settings.php file)
    - "chgrp www-data files settings.php" (change group owner of files and settings.php to www-data which nginx uses)
    - "chmod g+s files/" (make groups stickych is www-data in files folder)
-   - also in the var/www/example-site create config/sync folders: "mkdir -p config/sync"
+   - also in the var/www/example-site create config/sync folders: "mkdir -p config/sync" (it should not be owned by root)
 * SSL Certificate  
 ** install certbot
    #+BEGIN_SRC  sh
@@ -366,6 +367,9 @@ server {
    - then add your ssh key (see SSH key generation section) 
    - git remote update
    - git push remotenameyouchoose test
+** Merging branch with master
+   - git checkout master
+   - git merge test
 * SSH key generation
    - to list all the keys generated: ls ~/.ssh
    - to add a new key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"; see https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
@@ -386,3 +390,24 @@ server {
      sudo curl https://rclone.org/install.sh | sudo bash 
    #+END_SRC
 
+* Using drush to export / import configuration of drupal site:
+  - you need to install drush first: in the base folder (www/odtu-tm) : composer require drush/drush
+  - this command puts drush executable in the base : /vendor/bin/drush
+  - you can check version by: ./vendor/bin/drush --version
+  - Rather than have to type ./vendor/bin/drush or the relative path to the executable in order to execute Drush commands, install the Drush Launcher. That is a small program which listens on your $PATH and passes control to a project-specific Drush installation in the /vendor directory of the project associated with your current working directory. (The directory you're running drush within is somewhere in your project's directory hierarchy.)
+  - see https://drupalize.me/tutorial/install-drush-using-composer?p=1156
+  - somewhere in linux home:
+    wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar
+    chmod +x drush.phar
+    sudo mv drush.phar /usr/local/bin/drush 
+  - first export config from one site (odtu-tm-d8) > in the web folder: (sudo) drush cex (configurations will be saved in the ../config/)
+  - to do that change the setting.php in (/web/sites/default) as -> $settings['config_sync_directory'] = '../config/sync';
+  - Now you can see config folder with git status
+  - git push
+  - go to other site (production) folder and git clone first site (odtu-tm)
+    >git clone odtu-tm production (this clones and create production)
+  - and git pull (if /config/sync is owned by root it would fail)
+  - then drush cim (but this will give uuid error)
+  - To solve this:
+  - From base : > vim config/sync/system.site.yaml
+  - and change the uuid with the odtu-tm uuid

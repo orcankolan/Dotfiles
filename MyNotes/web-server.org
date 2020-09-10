@@ -436,7 +436,9 @@ server {
 ** Admin Toolbar (admin_toolbar)
 ** Webform (with Webform Access, Webform UI, Webform Node)
    - You probably need to > drush webform:repair (if add element does not appear)
-** Fillpdf
+** Fillpdf:
+   - You have to install pdftk (> sudo apt install pdftk)
+   - URL for fillpdf: /fillpdf?fid=1&entity_type=webform_submission&entity_id=[webform_submission:sid]
 ** Backup and Migrate Module
 ** Private file system settings:
    - see https://www.drupal.org/docs/8/modules/skilling/installation/set-up-a-private-file-path

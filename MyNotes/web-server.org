@@ -298,6 +298,10 @@ server {
    - "chgrp www-data files settings.php" (change group owner of files and settings.php to www-data which nginx uses)
    - "chmod g+s files/" (make groups stickych is www-data in files folder)
    - also in the var/www/example-site create config/sync folders: "mkdir -p config/sync" (it should not be owned by root)
+   - if your site is in /var/www (where only root can access); then:
+     1- > sudo gpasswd -a orcan www-data (add your user to www-data group)
+     1- sudo chown -R www-data:www-data /var/www/example-site (make owner and group owner www-data)
+     2- sudo chmod -R g+w /var/www/example-site (give write permissions to group owner, -R: recursively)
 * SSL Certificate  
 ** install certbot
    #+BEGIN_SRC  sh
@@ -427,3 +431,24 @@ server {
   '^linuxscoop\.cc$',
   );
   
+* Drupal Modules
+** Token
+** Admin Toolbar (admin_toolbar)
+** Webform (with Webform Access, Webform UI, Webform Node)
+   - You probably need to > drush webform:repair (if add element does not appear)
+** Fillpdf
+** Backup and Migrate Module
+** Private file system settings:
+   - see https://www.drupal.org/docs/8/modules/skilling/installation/set-up-a-private-file-path
+   - > mkdir tm-private-files (under var/www/example-site)
+   - > sudo chown www-data:/www-data var/www/example-site/tm-private-files
+   - you should add orcan to www-data group (> usermod -a -G orcan www-data)
+   - inside web/sites/default
+   - > sudo chmod u+w settings.php 
+   - insert:
+     $settings['file_private_path'] = '/var/www/example-site/tm-private-files';
+   - also insert:
+     $settings['trusted_host_patterns'] = [
+       '^demo\.example$',     #yourhostname
+     ];
+

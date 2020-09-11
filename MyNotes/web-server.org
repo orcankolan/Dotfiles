@@ -432,14 +432,26 @@ server {
   );
   
 * Drupal Modules
+** Speed up drupal local host
+   - in /etc/php/7.4/fpm/php.ini
+   - realpath_cache_size = 16M
+   - see: https://www.drupal.org/node/961012
 ** Token
 ** Admin Toolbar (admin_toolbar)
-** Webform (with Webform Access, Webform UI, Webform Node)
+** Webform (with Webform Access, Webform UI, Webform Node, and Web Form Attachment submodule)
    - You probably need to > drush webform:repair (if add element does not appear)
 ** Fillpdf:
    - You have to install pdftk (> sudo apt install pdftk)
    - URL for fillpdf: /fillpdf?fid=1&entity_type=webform_submission&entity_id=[webform_submission:sid]
 ** Backup and Migrate Module
+** Language Module, Content Translation adn Interface Translation modules
+   - Never change the default language, otherwise things will break!
+** SMTP
+   - > composer require drupal/smtp
+   - smtp.metu.edu.tr
+   - port 587
+   - Protocol: Use TLS
+   - koorcan and password
 ** Private file system settings:
    - see https://www.drupal.org/docs/8/modules/skilling/installation/set-up-a-private-file-path
    - > mkdir tm-private-files (under var/www/example-site)

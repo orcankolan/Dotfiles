@@ -440,6 +440,7 @@ server {
 ** Admin Toolbar (admin_toolbar)
 ** Webform (with Webform Access, Webform UI, Webform Node, and Web Form Attachment submodule)
    - You probably need to > drush webform:repair (if add element does not appear)
+   - /fillpdf?fid=1&download=1&entity_type=webform_submission&entity_id=[webform_submission:sid] (for url to fill pdf works with webform)
 ** Fillpdf:
    - You have to install pdftk (> sudo apt install pdftk)
    - URL for fillpdf: /fillpdf?fid=1&entity_type=webform_submission&entity_id=[webform_submission:sid]
@@ -466,3 +467,6 @@ server {
        '^demo\.example$',     #yourhostname
      ];
 
+** Ultimate Cron (ultimate_cron)
+   - You have to edit cron by: > crontab -e
+   - * * * * *      /usr/bin/wget -O - -q -t 1 http://demo.example/cron/bA55m1aX15KJu8dMnefJr-QGB2_INaI3Pwe_YBIpxgRNz2ymR_iZP24a0pRe9LMZXOOg_3AEnw

@@ -353,11 +353,16 @@ server {
   - cp /var/www/odtu-tm-d8/web/sites/default/default.settings.php /var/www/odtu-tm-d8/web/sites/default/settings.php
   - but you have to create database again and give privileges to the pdtutm user (see Mysql section)
 * Git control on drupal site with composer
+** Git remote settings
+   - git add remote <desired name> git@gitlab.com:orcan/drupal-site.git 
+   - to remove git remote
+     git remote rm <remote name>
 ** in the base directory /var/www/odtu-tm-d8  
    - git init
    - git status
    - git add .
    - git commit -m "Intial commit" 
+   - git push --set-upstream <name  of remote> <name of branch>
 ** Branching:
    - Creating a second brach is important (if you mess things up)
    - git branch test
@@ -367,7 +372,7 @@ server {
    - git remote add somefolder or server
    - suppose you create a project in gitlab (private one), get the ssh address of your project
    - git remote add somenameyouchoose sshaddressyoucopyfromgitlabpage
-   - to list remotes: git remote
+   - to list remotes: git remote -v
    - then add your ssh key (see SSH key generation section) 
    - git remote update
    - git push remotenameyouchoose test

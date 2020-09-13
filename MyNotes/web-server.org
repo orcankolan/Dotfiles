@@ -7,6 +7,7 @@
    
    #+BEGIN_SRC sh
      ssh -i ~/Downloads/Light... admin@staticip
+     or ssh -i ~/Downloads/Light... admin@odtu-tm.com
    #+END_SRC
 ** install nginx
   nginx - is the server application
@@ -416,6 +417,7 @@ server {
   - git push
   - go to other site (production) folder and git clone first site (odtu-tm)
     >git clone odtu-tm production (this clones and create production)
+    or > sudo git clone git@gitlab.com:orcan/drupal-site.git foldername
   - you need to change permissions to settings.php, files folder in the web/sites/default folder
   - also you need to set  
     1- $settings['trusted_host_patterns'] = array(
@@ -496,4 +498,11 @@ server {
    - You have to edit cron by: > crontab -e
    - * * * * *      /usr/bin/wget -O - -q -t 1 http://demo.example/cron/bA55m1aX15KJu8dMnefJr-QGB2_INaI3Pwe_YBIpxgRNz2ymR_iZP24a0pRe9LMZXOOg_3AEnw
 ** Webform views integration module
-   - > composer require drupal/webform_views
+   - > composer require drupal/webform_viewsclip < ~/.ssh/id_rsa.pubxclip -sel clip < ~/.ssh/id_rsa.pub
+** Maintenance Mode Set and Unset:
+   to set:
+   - > drush sset system.maintenance_mode 0
+   - > druch cr
+   to unset:
+   - > drush sset system.maintenance_mode 1
+   - > druch cr

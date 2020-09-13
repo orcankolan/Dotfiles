@@ -458,6 +458,7 @@ server {
    - port 587
    - Protocol: Use TLS
    - koorcan and password
+   - send from should be koorcan@metu.edu.tr
 ** Private file system settings:
    - see https://www.drupal.org/docs/8/modules/skilling/installation/set-up-a-private-file-path
    - > mkdir tm-private-files (under var/www/example-site)
@@ -475,3 +476,5 @@ server {
 ** Ultimate Cron (ultimate_cron)
    - You have to edit cron by: > crontab -e
    - * * * * *      /usr/bin/wget -O - -q -t 1 http://demo.example/cron/bA55m1aX15KJu8dMnefJr-QGB2_INaI3Pwe_YBIpxgRNz2ymR_iZP24a0pRe9LMZXOOg_3AEnw
+** Webform views integration module
+   - > composer require drupal/webform_views

@@ -399,7 +399,8 @@ server {
      sudo curl https://rclone.org/install.sh | sudo bash 
    #+END_SRC
 
-* Using drush to export / import configuration of drupal site:
+* Using drush to export / import configuration of drupal site (cloning a site from gitlab):
+** Procedure:
   - you need to install drush first: in the base folder (www/odtu-tm) : composer require drush/drush
   - this command puts drush executable in the base : /vendor/bin/drush
   - you can check version by: ./vendor/bin/drush --version
@@ -409,18 +410,26 @@ server {
     wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar
     chmod +x drush.phar
     sudo mv drush.phar /usr/local/bin/drush 
-  - first export config from one site (odtu-tm-d8) > in the web folder: (sudo) drush cex (configurations will be saved in the ../config/)
-  - to do that change the setting.php in (/web/sites/default) as -> $settings['config_sync_directory'] = '../config/sync';
+  - to export config from one site (odtu-tm-d8) > in the web folder: (sudo) drush cex (configurations will be saved in the ../config/)
+  - to do that change the settings.php in (/web/sites/default) as -> $settings['config_sync_directory'] = '../config/sync';
   - Now you can see config folder with git status
   - git push
   - go to other site (production) folder and git clone first site (odtu-tm)
     >git clone odtu-tm production (this clones and create production)
-  - and git pull (if /config/sync is owned by root it would fail)
+  - you need to change permissions to settings.php, files folder in the web/sites/default folder
+  - also you need to set  
+    1- $settings['trusted_host_patterns'] = array(
+  '^www\.linuxscoop\.cc$',
+  '^linuxscoop\.cc$',
+  );
+    2- $settings['file_private_path'] = '/var/www/example-site/tm-private-files';
+    3- $settings['config_sync_directory'] = '../config/sync' 
+  - to get the dependencies and modules : > composer install (in the production site)
   - then drush cim (but this will give uuid error)
   - To solve this:
   - From base : > vim config/sync/system.site.yaml
-  - and change the uuid with the odtu-tm uuid from the config/sync/system.site.yaml:
-    in the production site: > drush cset system.site uuid "newvaluofuuid"
+  - get the uuid with from the config/sync/system.site.yaml from the production site config (this is the uuid of odtu-tm):
+    and put it in the production site: > drush cset system.site uuid "newvaluofuuid" (so it will ignore its own uuid)
   - the drush cim again
   - then it gives shortcut links error
   - To solve that: then remove the shortcuts menu (press shortcuts in the drupal page and then edit shortcuts and delete them)
@@ -428,15 +437,25 @@ server {
   - try changing something in the odtu-tm
     ex:
   - use composer for drupal packages: >composer require drupal/admin_toolbar (in the base level directory /www/odtu-tm)
-  - drush en admin_toolbar(this should be done in the web folder (drupal root)), in order not to go bakc and forth to web and up: in the base : > drush use /var/www/odtu-tm/web#default
-  - then do the above (drush cex , git push in odtu-tm and git pull, drush cex in production site)
+  - this command changes composer.json and composer.lock files
+  - git add, commit and push those into brach
+  - int the production git pull and then > composer update (to load the composer.lock who has the new module info)
+  - in the odtu-tm, drush en admin_toolbar(this should be done in the web folder (drupal root)), in order not to go bakc and forth to web and up: in the base : > drush use /var/www/odtu-tm/web#default
+  - to add this config drush cex (this command will change the config/sync in the base)
+  - git push in odtu-tm and git pull, drush cim in production site
+** In Summary:
+   - First time you create the site (use composer install)
+   - if you install a module (you do it by composer require and it changes composer.lock), after commit, push, pull you have to (composer update, which implements composer.lock)
+   - if you enable a module (which is a configuration change), before commit,push pull: drush cex ;after commit, push, pull you have to drush cim
 * Put trusted sites (if drupal complains about that!)
-  $settings['trusted_host_patterns'] = array(
+  $settings['trusted_host_patterns] = array(
   '^www\.linuxscoop\.cc$',
   '^linuxscoop\.cc$',
-  );
+  );'
   
 * Drupal Modules
+** How to update installed modules with composer
+   - > composer update drupal/<modulename>
 ** Speed up drupal local host
    - in /etc/php/7.4/fpm/php.ini
    - realpath_cache_size = 16M

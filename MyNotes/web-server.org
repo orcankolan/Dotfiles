@@ -9,6 +9,11 @@
      ssh -i ~/Downloads/Light... admin@staticip
      or ssh -i ~/Downloads/Light... admin@odtu-tm.com
    #+END_SRC
+** Add your ssh public key to remote servers authorized keys
+   - > cat ~/.ssh/id_rsa.pub 
+   - copy the result
+   - and paste it in to the server's ~/.ssh/authorized_keys
+   - This way you you are not supposed to: ssh -i ~/Downloads/Light... admin@odtu-tm.org , with the pem file from lightsail site
 ** install nginx
   nginx - is the server application
   #+BEGIN_SRC sh 
@@ -77,7 +82,8 @@
     #+BEGIN_SRC sql
       CREATE DATABASE drupalodtutm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
       CREATE USER odtutm@localhost IDENTIFIED BY 'password';
-      GRANT ALL PRIVILEGES ON drupalodtutm.* TO odtutm@localhost; 
+      GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON drupal_example_site.* TO 'odtutm'@'localhost'
+      this causes problems with drush sql-sync -> GRANT ALL PRIVILEGES ON drupalodtutm.* TO odtutm@localhost; 
       FLUSH PRIVILEGES;
       EXIT;
     #+END_SRC
@@ -411,6 +417,12 @@ server {
     wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar
     chmod +x drush.phar
     sudo mv drush.phar /usr/local/bin/drush 
+    to update: drush self-update (you should be in root, e.g /var/www/example-site)
+  - Similarly, "drupal console" launcher can be used for dupal launcer comman which is "drupal":
+    curl https://drupalconsole.com/installer -L -o drupal.phar
+    mv drupal.phar /usr/local/bin/drupal
+    chmod +x /usr/local/bin/drupal
+    to update drupal console : > drupal self-update (you should be on the root base folder. e.g /var/www/example-site ) 
   - to export config from one site (odtu-tm-d8) > in the web folder: (sudo) drush cex (configurations will be saved in the ../config/)
   - to do that change the settings.php in (/web/sites/default) as -> $settings['config_sync_directory'] = '../config/sync';
   - Now you can see config folder with git status
@@ -506,3 +518,29 @@ server {
    to unset:
    - > drush sset system.maintenance_mode 1
    - > druch cr
+* Using drush (dump-sql rsync sql-sync) to get contents to/from production site
+** Add your ssh public key to remote servers authorized keys
+   - > cat ~/.ssh/id_rsa.pub 
+   - copy the result
+   - and paste it in to the server's ~/.ssh/authorized_keys
+   - This way you you are not supposed to: ssh -i ~/Downloads/Light... admin@odtu-tm.org , with the pem file from lightsail site
+** Configure self.site.yml file for site aliases:
+   - vim /var/www/example-site/drush/sites/self.site.yml 
+   - prod:
+       host: odtu-tm.org
+       user: admin
+       root: /var/www/odtu-tm-org
+       uri: http://www.odtu-tm-org
+   - There should be a sigle space after semicolon(: )  
+   - This conf uses to ssh to your server with drush commands
+   - Now you have @self (which your local site:http://demo.example) and @self.prod (which is your server with above conf)
+** Drush commands (https://drushcommands.com/drush-9x/cache/cache:clear/):
+   - > drush @self status or > drush status (to see your local site info, with db info)
+   - > drush @self.prod status (to see your server site info)
+   - > drush @self sql-dump --result-file=/home/orcan/Videos/odtu-local-dump.sq (to backup your database)
+   - > drush sa (site aliases, to see the sites aliases)  
+   - > drush (show available commands) 
+   - > drush sql-sync @self.prod @self => (sql-sync from-dest to-dest) (get database from server to local)
+   - Risk! Dont do this the other way around (from local to server, you might mess the production site)
+   - This command craetes a sql file in /tmp folder of your local machine
+   - > drush @self cr or > drush cr (cache:rebuild, clears all caches of drupal)

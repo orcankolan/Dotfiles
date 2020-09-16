@@ -80,6 +80,8 @@
    #+END_SRC
 *** create datbase and user, and set privilages
     #+BEGIN_SRC sql
+      CREATE DATABASE drupalodtutm DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
       CREATE DATABASE drupalodtutm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
       CREATE USER odtutm@localhost IDENTIFIED BY 'password';
       GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON drupal_example_site.* TO 'odtutm'@'localhost'
@@ -429,7 +431,7 @@ server {
   - git push
   - go to other site (production) folder and git clone first site (odtu-tm)
     >git clone odtu-tm production (this clones and create production)
-    or > sudo git clone git@gitlab.com:orcan/drupal-site.git foldername
+    or > sudo git clone git@gitlab.com:orcan/drupal-site.git foldername (do this in the home/videos folder bec. git clone wont work in /var/www/)
   - you need to change permissions to settings.php, files folder in the web/sites/default folder
   - also you need to set  
     1- $settings['trusted_host_patterns'] = array(
@@ -548,5 +550,7 @@ server {
    - > drush (show available commands) 
    - > drush sql-sync @self.prod @self => (sql-sync from-dest to-dest) (get database from server to local)
    - Risk! Dont do this the other way around (from local to server, you might mess the production site)
-   - This command craetes a sql file in /tmp folder of your local machine
+   - This command craetes a sql file in /tmp folder of your target machine
    - > drush @self cr or > drush cr (cache:rebuild, clears all caches of drupal)
+   - manually installing database from dump file: sudo mysql -uodtutm -p'username' drupalodtutm < /tmp/dump_file_20200916_210737.sql 
+   - if above gives error: sed -i /tmp/dump_file.sql -e 's/utf8mb4_0900_ai_ci/utf8mb4_unicode_ci/g'

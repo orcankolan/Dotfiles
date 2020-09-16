@@ -523,6 +523,7 @@ server {
    to unset:
    - > drush sset system.maintenance_mode 1
    - > druch cr
+   - to login in maintenance mode https://odtu-tm.org/user/login
 * Using drush (dump-sql rsync sql-sync) to get contents to/from production site
 ** Add your ssh public key to remote servers authorized keys
    - > cat ~/.ssh/id_rsa.pub 
@@ -542,7 +543,7 @@ server {
 ** Drush commands (https://drushcommands.com/drush-9x/cache/cache:clear/):
    - > drush @self status or > drush status (to see your local site info, with db info)
    - > drush @self.prod status (to see your server site info)
-   - > drush @self sql-dump --result-file=/home/orcan/Videos/odtu-local-dump.sq (to backup your database)
+   - > drush @self sql-dump --result-file=/home/orcan/Videos/odtu-local-dump.sql (to backup your database)
    - > drush sa (site aliases, to see the sites aliases)  
    - > drush (show available commands) 
    - > drush sql-sync @self.prod @self => (sql-sync from-dest to-dest) (get database from server to local)

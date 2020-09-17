@@ -441,6 +441,7 @@ server {
     2- $settings['file_private_path'] = '../tm-private-files';
     3- $settings['config_sync_directory'] = '../config/sync' 
     4- $settings['trusted_host_patterns'] = array('^www\.odtu-tm\.org$','^odtu-tm\.org$');
+    5- for local  $settings['trusted_host_patterns'] = array('^demo\.example$'); 
   - to get the dependencies and modules : > composer install (in the production site)
   - then drush cim (but this will give uuid error)
   - To solve this:

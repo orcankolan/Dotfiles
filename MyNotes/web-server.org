@@ -438,8 +438,9 @@ server {
   '^www\.linuxscoop\.cc$',
   '^linuxscoop\.cc$',
   );
-    2- $settings['file_private_path'] = '/var/www/example-site/tm-private-files';
+    2- $settings['file_private_path'] = '../tm-private-files';
     3- $settings['config_sync_directory'] = '../config/sync' 
+    4- $settings['trusted_host_patterns'] = array('^www\.odtu-tm\.org$','^odtu-tm\.org$');
   - to get the dependencies and modules : > composer install (in the production site)
   - then drush cim (but this will give uuid error)
   - To solve this:
@@ -554,3 +555,18 @@ server {
    - > drush @self cr or > drush cr (cache:rebuild, clears all caches of drupal)
    - manually installing database from dump file: sudo mysql -uodtutm -p'username' drupalodtutm < /tmp/dump_file_20200916_210737.sql 
    - if above gives error: sed -i /tmp/dump_file.sql -e 's/utf8mb4_0900_ai_ci/utf8mb4_unicode_ci/g'
+* To remove mysql (safely) and install mariadb:
+  - sudo apt purge mysql-server
+  - sudo apt autoremove
+  - sudo rm -rf /etc/mysql /var/lib/mysql
+  - sudo apt-get dist-upgrade
+  - sudo apt autoremove
+  - sudo apt install mariadb-server mariadb-client
+** Also if you installed mysql earlier:
+   - sudo 
+   - echo "/usr/sbin/mysqld { }" > /etc/apparmor.d/usr.sbin.mysqld
+   - apparmor_parser -v -R /etc/apparmor.d/usr.sbin.mysqld
+   - systemctl restart mariadb
+
+    Background:
+  - If you previously had MySQL installed, it activated an AppArmor profile which is incompatible with MariaDB. apt-get remove --purge only removes the profile, but does not deactivate/unload it. Only manually unloading it lets MariaDB work unhindered by AppArmor.

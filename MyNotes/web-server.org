@@ -571,3 +571,21 @@ server {
 
     Background:
   - If you previously had MySQL installed, it activated an AppArmor profile which is incompatible with MariaDB. apt-get remove --purge only removes the profile, but does not deactivate/unload it. Only manually unloading it lets MariaDB work unhindered by AppArmor.
+* Securing file permissions and ownership:
+** See https://www.drupal.org/node/244924#linuxservers 
+** In the base of drupal (/var/www/example-site/):
+   - sudo chown -R orcan:www-data .
+   - sudo find . -type d -exec chmod u=rwx,g=rwx,o=rx '{}' \;
+   - sudo find . -type f -exec chmod u=rw,g=rw,o=r '{}' \;
+** In the drupal root (/var/www/example-site/web):
+   - sudo find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+   - sudo find . -type f -exec chmod u=rw,g=r,o= '{}' \;
+** In the sites directory (var/www/example-site/web/sites/):
+   - find . -type d -name files -exec chmod ug=rwx,o= '{}' \;
+** For the /sites/default or other existing sites (run command from web/sites directory):
+   - for d in ./*/files
+      do
+         sudo find $d -type d -exec chmod ug=rwx,o=rx '{}' \;
+         sudo find $d -type f -exec chmod ug=rw,o=r '{}' \;
+      done 
+

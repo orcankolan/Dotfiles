@@ -477,6 +477,20 @@ server {
   );'
   
 * Drupal Modules
+** List updatable packages,
+   - > composer show -l
+   - or > composer outadted
+** For only drupal 
+   - > composer outdated "drupal/*"
+** List security updates
+   - > drush pm:security
+** Drupal fora given project
+   - > composer update drupal/modulename --with-dependencies
+   Finally, run any database updates, rebuild the cache and export the potentially changed configurations, reviewing the changes via --diff:
+   
+   drush updatedb
+   drush cache:rebuild
+   drush config:export --diff
 ** How to update installed modules with composer
    - > composer update drupal/<modulename>
 ** Speed up drupal local host

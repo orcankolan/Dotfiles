@@ -601,8 +601,8 @@ server {
 ** For the /sites/default or other existing sites (run command from web/sites directory):
    - for d in ./*/files
       do
-         sudo find $d -type d -exec chmod ug=rwx,o=rx '{}' \;
-         sudo find $d -type f -exec chmod ug=rw,o=r '{}' \;
+         sudo find $d -type d -exec chmod ug=rwx,o= '{}' \;
+         sudo find $d -type f -exec chmod ug=rw,o= '{}' \;
       done 
 
 * Deploying local site to remote site:

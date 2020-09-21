@@ -137,6 +137,8 @@
    upload_max_filesize = 100M
    max_execution_time = 360
    date.timezone = America/Chicago //optional
+   
+   on the dev site: display_errors = On
 ** restart php-fpm service:
    #+BEGIN_SRC sh
    sudo systemctl restart php7.4-fpm.service

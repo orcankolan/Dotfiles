@@ -596,8 +596,11 @@ server {
 ** In the drupal root (/var/www/example-site/web):
    - sudo find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
    - sudo find . -type f -exec chmod u=rw,g=r,o= '{}' \;
+     OR:
+   - sudo find . -type f -exec chmod u=rw,g=rw,o= '{}' \; 
+   and > sudo find . -type f -exec chmod u=rw,g=r,o= '{}' \; in /web/sites/default folder (to make settings.php non-reachable)
 ** In the sites directory (var/www/example-site/web/sites/):
-   - find . -type d -name files -exec chmod ug=rwx,o= '{}' \;
+   - sudo find . -type d -name files -exec chmod ug=rwx,o= '{}' \;
 ** For the /sites/default or other existing sites (run command from web/sites directory):
    - for d in ./*/files
       do

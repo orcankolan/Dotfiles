@@ -459,7 +459,7 @@ server {
   - use composer for drupal packages: >composer require drupal/admin_toolbar (in the base level directory /www/odtu-tm)
   - this command changes composer.json and composer.lock files
   - git add, commit and push those into brach
-  - int the production git pull and then > composer update (to load the composer.lock who has the new module info)
+  - int the production git pull and then > composer install (to load the composer.lock who has the new module info)
   - in the odtu-tm, drush en admin_toolbar(this should be done in the web folder (drupal root)), in order not to go bakc and forth to web and up: in the base : > drush use /var/www/odtu-tm/web#default
   - to add this config drush cex (this command will change the config/sync in the base)
   - git push in odtu-tm and git pull, drush cim in production site

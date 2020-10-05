@@ -368,7 +368,7 @@ server {
   - but you have to create database again and give privileges to the pdtutm user (see Mysql section)
 * Git control on drupal site with composer
 ** Git remote settings
-   - git add remote <desired name> git@gitlab.com:orcan/drupal-site.git 
+   - git remote add <desired name> git@gitlab.com:orcan/drupal-site.git 
    - to remove git remote
      git remote rm <remote name>
 ** in the base directory /var/www/odtu-tm-d8  
@@ -393,6 +393,8 @@ server {
 ** Merging branch with master
    - git checkout master
    - git merge test
+** Git reset to gitlab original: 
+   - git reset --hard test/test
 * SSH key generation
    - to list all the keys generated: ls ~/.ssh
    - to add a new key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"; see https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
@@ -535,7 +537,7 @@ server {
      ];
 
 ** Ultimate Cron (ultimate_cron)
-   - You have to edit cron by: > crontab -e
+   - You have to edit cron by: > sudo crontab -e
    - * * * * *      /usr/bin/wget -O - -q -t 1 http://demo.example/cron/bA55m1aX15KJu8dMnefJr-QGB2_INaI3Pwe_YBIpxgRNz2ymR_iZP24a0pRe9LMZXOOg_3AEnw
 ** Webform views integration module
    - > composer require drupal/webform_views

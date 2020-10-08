@@ -394,6 +394,10 @@ server {
    - git checkout master
    - git merge test
 ** Git reset to gitlab original: 
+   - git branch --set-upstream-to=test/test test  (--set-upstream-to=<remote-name>/<branch-name> <branch-name-on-this-machine>)
+   - git pull <remote-name> <branch-name> --allow-unrelated-histories 
+   - git add .
+   - git commit -m "Resolved conflicts"
    - git reset --hard test/test
 * SSH key generation
    - to list all the keys generated: ls ~/.ssh

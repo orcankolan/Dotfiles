@@ -662,3 +662,34 @@ server {
    drush deploy
    drush state:set system.maintenance_mode 0
    drush cache:rebuild
+* PHP development environment
+** Installing nodejs in ubuntu:
+   > curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+   > sudo apt-get install -y nodejs
+** Node package.json file example:
+   {
+    "name": "learn-app",
+    "version": "1.0.0",
+    "devDependencies": {
+        "browser-sync": "^2.26.12"
+    },
+    "dependencies": {
+        "live-server": "^1.2.1"
+    }
+   }
+
+** Using browser-sync (nodejs package)
+   - > ./node_modules/.bin/browser-sync start --proxy "learn" --files "*.*" (in /var/www/learn folder)
+   -  npx browser-sync start --proxy "learn" --files "*.*" (npx locates the packge) 
+** To use live-server package: 
+   > ./node_modules/.bin/live-server .
+** PHP Packages, composer.json file example:  
+   {
+    "require": {
+        "phospr/fraction": "dev-master"
+    }
+   }
+** Using npm (node.js package manager)
+   - https://nodejs.dev/learn/update-all-the-nodejs-dependencies-to-their-latest-version
+   - npm install <packagename>
+   - npm outdated

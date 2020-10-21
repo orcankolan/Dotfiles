@@ -361,7 +361,7 @@ server {
    - after installation with composer take it back with: sudo chmod o-w /var/www
    - before using composer make sure to install php modules (above PHP section)
    - install drupal with composer:
-     composer create-project drupal-composer/drupal-project:8.x-dev some-dir --no-interaction
+     composer create-project drupal-composer/drupal-project:8.x-dev some-dir --no-interactiony
 * To start over drupal installation:
   - drop database drupalodtutm
   - cp /var/www/odtu-tm-d8/web/sites/default/default.settings.php /var/www/odtu-tm-d8/web/sites/default/settings.php
@@ -399,6 +399,22 @@ server {
    - git add .
    - git commit -m "Resolved conflicts"
    - git reset --hard test/test
+** Whole drupal installation with git, drupal-composer
+   - create a folder say <example> in /var/www
+   - give proper permissions to the folder, > sudo chown -R orcan:www-data .
+   - get the drupal-composer project, > composer create-project drupal-composer/drupal-project:8.x-dev some-dir --no-interaction
+   - git add .
+   - > git init
+   - > git commit -m "Initial commit"
+   - > git branch -m test (This renames the branch from master to test once it's created) 
+   - > git remote add gitlab git@gitlab.com:orcan/drupal-site.git
+   - > git pull gitlab test (will fail, due to unrelated histories)
+   - > git pull (will give a message for setting upstream for remote)
+   - > git branch --set-upstream-to=gitlab/test test  (--set-upstream-to=<remote-name>/<branch-name> <branch-name-on-this-machine>)
+   - > git reset --hard gitlab/test
+   - > git pull
+   - > composer install
+   
 * SSH key generation
    - to list all the keys generated: ls ~/.ssh
    - to add a new key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"; see https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent

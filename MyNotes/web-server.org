@@ -693,3 +693,6 @@ server {
    - https://nodejs.dev/learn/update-all-the-nodejs-dependencies-to-their-latest-version
    - npm install <packagename>
    - npm outdated
+* Drupal Theming (Bootstrap)
+** Check out
+*** https://www.youtube.com/watch?v=D5A_aFdlWEs

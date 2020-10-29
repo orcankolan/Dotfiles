@@ -696,3 +696,12 @@ server {
 * Drupal Theming (Bootstrap)
 ** Check out
 *** https://www.youtube.com/watch?v=D5A_aFdlWEs
+* Fillpdf and webform settings
+** URL/path for fillpdf in the Attachment Settings of webform
+   /fillpdf?fid=2&download=1&entity_type=webform_submission&entity_id=[webform_submission:sid]
+  - fid is important and can be found from fillpdf forms edit section (under form info)
+** Filname in the Attachment settings of webform
+  - kurs-basvuru-formu-[webform_submission:sid].pdf
+** Mapping for fillpdf
+  - [webform_submission:values:firma_ismi] 
+  - firma_ismi is the key name from the webform

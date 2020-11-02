@@ -679,7 +679,7 @@ server {
    }
 
 ** Using browser-sync (nodejs package)
-   - > ./node_modules/.bin/browser-sync start --proxy "learn" --files "*.*" (in /var/www/learn folder)
+   - > ./node_modules/.bin/browser-sync start --proxy "learn" --files "*.*" (in /var/www/learn folder, "learn" should be server name in nginx)
    -  npx browser-sync start --proxy "learn" --files "*.*" (npx locates the packge) 
 ** To use live-server package: 
    > ./node_modules/.bin/live-server .

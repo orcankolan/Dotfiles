@@ -678,9 +678,11 @@ server {
     }
    }
 
-** Using browser-sync (nodejs package)
+** Using browser-sync (nodejs package, install it globally)
+   - npm install -g browser-sync
    - > ./node_modules/.bin/browser-sync start --proxy "learn" --files "*.*" (in /var/www/learn folder, "learn" should be server name in nginx)
-   -  npx browser-sync start --proxy "learn" --files "*.*" (npx locates the packge) 
+   - npx browser-sync start --proxy "learn" --files "**/*" (npx locates the package and **/* is for all sub folders and files) 
+   - npx browser-sync start --proxy "learn" --startPath "example-abstract/index.php" --files "**/*" (to start from another project folder)
 ** To use live-server package: 
    > ./node_modules/.bin/live-server .
 ** PHP Packages, composer.json file example:  
@@ -692,7 +694,9 @@ server {
 ** Using npm (node.js package manager)
    - https://nodejs.dev/learn/update-all-the-nodejs-dependencies-to-their-latest-version
    - npm install <packagename>
+   - npm install -g browser-sync (to install globally)
    - npm outdated
+   - npm list -g --depth 0 (to see the global packages) , npm list --depth 0 (for local)
 * Drupal Theming (Bootstrap)
 ** Check out
 *** https://www.youtube.com/watch?v=D5A_aFdlWEs

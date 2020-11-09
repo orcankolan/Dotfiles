@@ -683,6 +683,34 @@ server {
    - > ./node_modules/.bin/browser-sync start --proxy "learn" --files "*.*" (in /var/www/learn folder, "learn" should be server name in nginx)
    - npx browser-sync start --proxy "learn" --files "**/*" (npx locates the package and **/* is for all sub folders and files) 
    - npx browser-sync start --proxy "learn" --startPath "example-abstract/index.php" --files "**/*" (to start from another project folder)
+   - for this to work your index.php must be in html tag:
+   <html>
+   <head>
+   <title>Learning PHP </title>
+   </head>
+
+   <body>
+
+   <?php
+
+   require_once 'Application.php';
+   require_once 'Mysql.php';
+   require_once 'Mariadb.php';
+
+   echo "Abstract Class Example";
+   echo "<br>";echo "<br>";
+
+
+   $app = new Application(
+   // new Mariadb
+   new Mysql);
+
+   $app->db->getName();
+
+   ?>
+   </body>
+
+   </html> 
 ** To use live-server package: 
    > ./node_modules/.bin/live-server .
 ** PHP Packages, composer.json file example:  

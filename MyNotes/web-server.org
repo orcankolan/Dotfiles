@@ -395,7 +395,7 @@ server {
    - git merge test
 ** Git reset to gitlab original: 
    - git branch --set-upstream-to=test/test test  (--set-upstream-to=<remote-name>/<branch-name> <branch-name-on-this-machine>)
-   - git pull <remote-name> <branch-name> --allow-unrelated-histories 
+   - git pull <remote-name> <branch-name-on-the-remote> --allow-unrelated-histories 
    - git add .
    - git commit -m "Resolved conflicts"
    - git reset --hard test/test
@@ -405,6 +405,7 @@ server {
    - get the drupal-composer project, > composer create-project drupal-composer/drupal-project:8.x-dev some-dir --no-interaction
    - git add .
    - > git init
+   - > git add "somefile" (you need to add some file to commit)
    - > git commit -m "Initial commit"
    - > git branch -m test (This renames the branch from master to test once it's created) 
    - > git remote add gitlab git@gitlab.com:orcan/drupal-site.git
@@ -414,7 +415,13 @@ server {
    - > git reset --hard gitlab/test
    - > git pull
    - > composer install
-   
+** Creating a git copy of remote site (simpler than above)
+   - mkdir test (somewhere you choose)
+   - cd test
+   - > git init
+   - > git checkout -b <some-other-name> (to change the default master name-optional)
+   - > git remote add <desired-name-for-remote> git@gitlab.com:orcan/drupal-site.git
+   - > git pull <remote-name> <remote-branch>
 * SSH key generation
    - to list all the keys generated: ls ~/.ssh
    - to add a new key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"; see https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent

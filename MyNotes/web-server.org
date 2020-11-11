@@ -327,6 +327,8 @@ server {
    #+BEGIN_SRC sh
       sudo certbot --nginx -d odtu-tm.com -d www.odtu-tm.com
    #+END_SRC
+** just renewing certs only:
+ - > sudo certbot --nginx -d odtu-tm.com -d www.odtu-tm.com certonly
 ** auto renewal of certificates (from luke smith's web server video):
    you have to use:
    #+BEGIN_SRC sh

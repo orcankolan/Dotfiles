@@ -147,7 +147,7 @@
    sudo systemctl restart php7.4-fpm.service
    #+END_SRC
 * Configure nginx for drupal usage
-  copy below to configuration file (e.g /etc/nginx/sites-available/odtu-tm):
+** copy below to configuration file (e.g /etc/nginx/sites-available/odtu-tm):
   ------
  #+BEGIN_SRC sh 
 server {
@@ -598,6 +598,7 @@ server {
    - > drush @self status or > drush status (to see your local site info, with db info)
    - > drush @self.prod status (to see your server site info)
    - > drush @self sql-dump --result-file=/home/orcan/Videos/odtu-local-dump.sql (to backup your database)
+   - > by default backup-folder is ~/drush-backups/
    - > drush sa (site aliases, to see the sites aliases)  
    - > drush (show available commands) 
    - > drush sql-sync @self.prod @self => (sql-sync from-dest to-dest) (get database from server to local)

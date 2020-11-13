@@ -421,9 +421,12 @@ server {
    - mkdir test (somewhere you choose)
    - cd test
    - > git init
-   - > git checkout -b <some-other-name> (to change the default master name-optional)
+   - > git checkout -b <some-other-name> (to change the default master) (making this name same as remote branch shortens terminal prompt)
+   - > git branch -m <some-name> (or change name after above command)
    - > git remote add <desired-name-for-remote> git@gitlab.com:orcan/drupal-site.git
    - > git pull <remote-name> <remote-branch>
+** Some useful git commands
+   - > git branch -d <branch-name>
 * SSH key generation
    - to list all the keys generated: ls ~/.ssh
    - to add a new key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"; see https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent

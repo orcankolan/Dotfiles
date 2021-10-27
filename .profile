@@ -23,7 +23,7 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export TERMINAL="urxvt"
 
 # set PATH to include ~/.scripts folder -recursively
-export PATH="$(du $HOME/.scripts/ | cut -f2 | tr '\n' ':')$PATH"
+export PATH="$(du $HOME/.scripts/tools | cut -f2 | tr '\n' ':')$PATH"
 
 # swap caps and escape key
 setxkbmap -option caps:swapescape

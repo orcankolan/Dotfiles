@@ -1,0 +1,15 @@
+tell application "Finder"
+
+    activate
+
+    tell application "System Events"
+
+        tell process "Finder"
+
+            click menu item "Bring All to Front" of menu "Window" of menu bar 1
+
+        end tell
+
+    end tell
+
+end tell

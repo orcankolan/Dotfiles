@@ -1,0 +1,25 @@
+{
+  "title": "Launch finder and bring to front",
+  "rules": [
+    {
+      "description": "Launch finder with right option and period",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "slash",
+            "modifiers": {
+              "mandatory": ["right_option"],
+              "optional": ["caps_lock"]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a Finder && osascript /Users/orcan/.config/karabiner/assets/complex_modifications/app_script"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

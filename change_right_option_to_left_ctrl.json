@@ -1,0 +1,27 @@
+{
+  "title": "Change right option to left control",
+  "rules": [
+    {
+      "description": "Change right option to left control",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "right_option",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "left_control"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,67 @@
+{
+  "title": "Double tap Command-Q to quit programs",
+  "rules": [
+    {
+      "description": "Quit application [Cmd + Q *twice*]",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "q",
+            "modifiers": {
+              "mandatory": ["command"],
+              "optional": ["caps_lock"]
+            }
+          },
+          "to": {
+            "key_code": "q",
+            "modifiers": ["command"]
+          },
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "quit_application_mode",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "q",
+            "modifiers": {
+              "mandatory": ["command"],
+              "optional": ["caps_lock"]
+            }
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "quit_application_mode",
+                "value": 1
+              }
+            }
+          ],
+          "to_delayed_action": {
+            "to_if_invoked": [
+              {
+                "set_variable": {
+                  "name": "quit_application_mode",
+                  "value": 0
+                }
+              }
+            ],
+            "to_if_canceled": [
+              {
+                "set_variable": {
+                  "name": "quit_application_mode",
+                  "value": 0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

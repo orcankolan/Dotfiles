@@ -1,8 +1,8 @@
 {
-  "title": "Double tap left_command to open iterm",
+  "title": "Double tap right_command to open iterm",
   "rules": [
     {
-      "description": "Double tap control button to open iterm",
+      "description": "Double tap right_command button to open iterm",
       "manipulators": [
         {
           "conditions": [

@@ -1,6 +1,7 @@
 tell application "Finder"
 
     activate
+    set index of window to 1
 
     tell application "System Events"
 

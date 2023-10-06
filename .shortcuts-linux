@@ -1,0 +1,12 @@
+alias ndt="cd /var/www/ndt-portal"
+alias psm="cd /var/www/psm-portal"
+alias www="cd /var/www"
+alias aws="ssh admin@odtu-tm.org"
+alias bnd="cd /home/orcan/repos/bnd"
+alias unis="cd /home/orcan/repos/dev/rust/unis_bnd"
+alias mntshare="sudo mount -t cifs -o rw,vers=1.0,user=admin,password=orku1602 //DSL-AC68U-22E0/SharedMedia /media/smb-share/"
+alias python=python3
+alias rc-backup="rclone -q sync gdrive:laravel-backups ~/laravel-backups"                                          
+alias uz-latest="find ~/laravel-backups -type f | sort -nr | cut -d: -f2- | head -1 | xargs unzip -d ~/laravel-backups -q"                                                                                                            
+alias cp-storage-psm="sudo cp -rf  ~/laravel-backups/opt/homebrew/var/www/psm-portal/storage/app/ /var/www/psm-portal/storage"                                                                                                             
+alias upto-db="sudo mysql psm_portal < ~/laravel-backups/db-dumps/mysql-psm_portal.sql" 

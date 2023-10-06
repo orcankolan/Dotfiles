@@ -1,0 +1,23 @@
+theme = "catppuccin_mocha"
+
+[editor]
+mouse = true
+# line-number = "relative"
+auto-format = false
+cursorline = true
+lsp.display-inlay-hints = true
+bufferline = "multiple"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+
+[keys.normal]
+esc = ["collapse_selection", "keep_primary_selection"]
+
+[keys.normal.space]
+r = ":sh cargo run 2>&1 || true"

@@ -1,0 +1,73 @@
+#!/bin/bash
+
+echo "===== Updating and Upgrading system ====="
+sudo apt -y update && sudo apt -y upgrade &&
+
+echo "===== SSH key generation ====="
+if ! [ -f /home/admin/.ssh/id_ed25519 ]; then
+    ssh-keygen -t ed25519 -C "orcankolankaya@gmail.com"
+else
+    echo "Skipping since key exist!"
+fi
+
+echo "===== Install Git ====="
+sudo apt -y install git
+
+echo "===== Vim Vundle PlugIn Install====="
+if ! [ -d /usr/share/vim/bundle/Vundle.vim ]; then
+    sudo git clone https://github.com/gmarik/Vundle.vim.git /usr/share/vim/bundle/Vundle.vim
+    echo "Press Enter to install local .vim/bundle and /usr/share/vim/bundle..."
+    sudo vim +PluginInstall +qall >/dev/null 2>&1
+    vim +PluginInstall +qall >/dev/null 2>&1
+else
+    echo "Skipping since vundle exists!"
+fi
+
+echo "===== Download .vimrc ====="
+if ! [ -f /home/admin/.dotfiles/.vimrc ]; then
+    mkdir ~/.dotfiles
+    curl -o ~/.dotfiles/.vimrc https://raw.githubusercontent.com/orcankolan/Dotfiles/master/.vimrc
+else
+    echo "Skipping since .dotfiles/.vimrc exists!"
+fi
+
+echo "===== Create Symbolic link for .vimrc ====="
+sudo ln -s /home/admin/.dotfiles/.vimrc /etc/vim/vimrc.local
+
+echo "===== Install ZSH ====="
+sudo apt install -y zsh &&
+sudo chsh -s /bin/zsh admin
+
+echo "===== Insatll FZF ====="
+if ! [ -d /home/admin/.fzf ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+else
+    echo "Skipping since FZF exists!"
+fi
+
+echo "===== Install OhMyZSH ====="
+dirname='/home/admin/.oh-my-zsh'
+if [ -d "$dirname" ]; then
+    echo "$dirname exists so skip installing Oh-My-ZSH"
+else
+    sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+fi
+
+echo "===== ZSH Plugin - zsh-autosuggestions, zsh-syntax-highlighting ====="
+if ! [ -d /home/admin/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+fi
+
+if ! [ -d /home/admin/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+fi
+
+sed -i 's/\(^plugins=([^)]*\)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting/' ~/.zshrc
+
+echo "===== Install PHP and PHP Extensions ====="
+sudo apt install -y php-cgi php-common php-fpm php-mysql php-gmp php-curl php-intl php-mbstring php-xmlrpc php-gd php-xml php-cli php-zip php-bcmath
+
+# Composer
+# Nginx
+# MariaDB
+# Imagemagick

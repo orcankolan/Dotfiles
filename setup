@@ -67,7 +67,48 @@ sed -i 's/\(^plugins=([^)]*\)/plugins=(git zsh-autosuggestions zsh-syntax-highli
 echo "===== Install PHP and PHP Extensions ====="
 sudo apt install -y php-cgi php-common php-fpm php-mysql php-gmp php-curl php-intl php-mbstring php-xmlrpc php-gd php-xml php-cli php-zip php-bcmath
 
-# Composer
+echo "===== Install Composer for PHP ====="
+if ! command -v composer &> /dev/null; then
+    EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
+
+    if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]
+    then
+        >&2 echo 'ERROR: Invalid installer checksum for Composer'
+        rm composer-setup.php
+        exit 1
+    fi
+
+    php composer-setup.php --quiet
+    rm composer-setup.php
+    sudo mv composer.phar /usr/local/bin/composer
+else
+    echo "Composer installed. So skipping!"
+fi
+
+echo "===== Install MariaDB ====="
+if command -v mariadb &> /dev/null; then
+    echo "MariaDB found, skipping..."
+else
+    sudo apt install mariadb-server
+    echo "
+    Instructions:
+    $ sudo mysql_secure_installation
+    (Do not enter/provide password for root, just press enter (enter for none),
+    (No to switch to unix socket authentication),
+    (No to change root password)
+    $ sudo mariadb
+    MariaDB > CREATE DATABASE db_name CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    MariaDB > GRANT ALL ON db_name.* TO 'user_name'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
+              (WITH GRANT OPTION ndt user can grant privileges to others)
+    MariaDB > FLUSH PRIVILEGES;
+    MariaDB > EXIT;
+    "
+fi
+
+# if command -v nginx &> /dev/null; then
+
 # Nginx
-# MariaDB
+# TextLive
 # Imagemagick

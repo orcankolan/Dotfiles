@@ -1,7 +1,10 @@
 #!/bin/bash
+echo "===== Setting locale ====="
+sudo sed -i d /etc/default/locale
+sudo awk -i inplace 'BEGINFILE{print"LC_CTYPE=\"en_US.UTF-8\"\nLC_ALL=\"en_US.UTF-8\"\nLANG=\"en_US.UTF-8\""}' /etc/default/locale
 
 echo "===== Updating and Upgrading system ====="
-sudo apt -y update && sudo apt -y upgrade &&
+sudo apt -y update && sudo apt -y upgrade && 
 
 echo "===== SSH key generation ====="
 if ! [ -f /home/admin/.ssh/id_ed25519 ]; then
@@ -40,7 +43,7 @@ sudo chsh -s /bin/zsh admin
 
 echo "===== Insatll FZF ====="
 if ! [ -d /home/admin/.fzf ]; then
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install 
 else
     echo "Skipping since FZF exists!"
 fi
@@ -72,14 +75,14 @@ if ! command -v composer &> /dev/null; then
     EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
-
+    
     if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]
     then
         >&2 echo 'ERROR: Invalid installer checksum for Composer'
         rm composer-setup.php
         exit 1
     fi
-
+    
     php composer-setup.php --quiet
     rm composer-setup.php
     sudo mv composer.phar /usr/local/bin/composer
@@ -94,7 +97,7 @@ else
     sudo apt install mariadb-server
     echo "
     Instructions:
-    $ sudo mysql_secure_installation
+    $ sudo mysql_secure_installation 
     (Do not enter/provide password for root, just press enter (enter for none),
     (No to switch to unix socket authentication),
     (No to change root password)

@@ -139,9 +139,13 @@ else
     echo "TexLive found, skipping!"
 fi
 
-# if command -v nginx &> /dev/null; then
+echo "===== Install NGINX ====="
+if ! sudo nginx -v &> /dev/null; then
+    echo "Nginx is installing"
+    sudo apt -y install nginx
+else
+    echo "Nginx already installed, skipping"
+fi
 
-# Nginx
 # nodejs and npm
 # Imagemagick
-# /etc/php/8.2/fpm/pool.d/www.conf PATH settings

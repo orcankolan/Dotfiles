@@ -74,6 +74,13 @@ else
     echo "PHP installed, skipping!"
 fi
 
+php_conf_file="/etc/php/$(php -r "echo PHP_MAJOR_VERSION;echo '.';echo PHP_MINOR_VERSION;")/fpm/pool.d/www.conf"
+
+if [ -f "$php_conf_file" ]; then
+    echo "===== Setting www.conf ===="
+    sudo sed -i 's/\(^;env\[PATH\][^)]*\)/env[PATH] = \/usr\/local\/bin:\/usr\/bin:\/bin/' $php_conf_file
+fi
+
 echo "===== Install Composer for PHP ====="
 if ! command -v composer &> /dev/null; then
     EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
@@ -122,9 +129,12 @@ if ! command -v pdflatex &> /dev/null; then
             [[ $dir =~ install-tl-[0-9]{1,8} ]] && { cd "$dir" && break; }
         done
     curl -o "$dir"/texlive.profile https://raw.githubusercontent.com/orcankolan/Dotfiles/master/texlive.profile
+
     sudo perl ./install-tl --profile texlive.profile
+    sed -i "s/2024/$(date +%Y)/g" "$dir"/texlive.profile
     rm -rf $dir
     rm "$HOME"/install-tl-unx.tar.gz
+    cd "$HOME"
 else
     echo "TexLive found, skipping!"
 fi
@@ -132,5 +142,6 @@ fi
 # if command -v nginx &> /dev/null; then
 
 # Nginx
+# nodejs and npm
 # Imagemagick
 # /etc/php/8.2/fpm/pool.d/www.conf PATH settings

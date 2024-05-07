@@ -68,7 +68,11 @@ fi
 sed -i 's/\(^plugins=([^)]*\)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting/' ~/.zshrc
 
 echo "===== Install PHP and PHP Extensions ====="
-sudo apt install -y php-cgi php-common php-fpm php-mysql php-gmp php-curl php-intl php-mbstring php-xmlrpc php-gd php-xml php-cli php-zip php-bcmath
+if ! command -v php &> /dev/null; then
+    sudo apt install -y php-cgi php-common php-fpm php-mysql php-gmp php-curl php-intl php-mbstring php-xmlrpc php-gd php-xml php-cli php-zip php-bcmath
+else
+    echo "PHP installed, skipping!"
+fi
 
 echo "===== Install Composer for PHP ====="
 if ! command -v composer &> /dev/null; then
@@ -110,8 +114,23 @@ else
     "
 fi
 
+echo "===== Install TexLive ====="
+if ! command -v pdflatex &> /dev/null; then
+    curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+    zcat < install-tl-unx.tar.gz | tar xf -
+        for dir in /home/admin/*; do
+            [[ $dir =~ install-tl-[0-9]{1,8} ]] && { cd "$dir" && break; }
+        done
+    curl -o "$dir"/texlive.profile https://raw.githubusercontent.com/orcankolan/Dotfiles/master/texlive.profile
+    sudo perl ./install-tl --profile texlive.profile
+    rm -rf $dir
+    rm "$HOME"/install-tl-unx.tar.gz
+else
+    echo "TexLive found, skipping!"
+fi
+
 # if command -v nginx &> /dev/null; then
 
 # Nginx
-# TextLive
 # Imagemagick
+# /etc/php/8.2/fpm/pool.d/www.conf PATH settings

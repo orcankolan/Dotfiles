@@ -147,5 +147,46 @@ else
     echo "Nginx already installed, skipping"
 fi
 
-# nodejs and npm
-# Imagemagick
+echo "===== Install Nodejs and NPM ====="
+if ! command -v node &> /dev/null; then
+    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - &&
+    sudo apt-get install -y nodejs
+else
+    echo "Nodejs installed, skipping!"
+fi
+
+echo "===== Install Imagemagick ====="
+if ! command -v convert &> /dev/null; then
+    sudo apt -y install imagemagick
+else
+    echo "Imagemagick already installed, skipping!"
+fi
+
+echo "===== Install Rclone ====="
+if ! command -v rclone &> /dev/null; then
+    sudo apt -y install rclone
+else
+    echo "Rclone already installed, skipping!"
+fi
+
+echo "===== Get Rclone conf from AWS Debian-2 ====="
+if ! [ -d ~/.config/rclone ]; then
+    mkdir ~/.config/rclone
+fi
+if ! [ -f ~/.config/rclone/rclone.conf ]; then
+    scp admin@odtu-psm.org:~/.config/rclone/rclone.conf ~/.config/rclone/rclone.conf
+else
+    echo "Rclone config exists, skipping!"
+fi
+
+echo "===== Install Unzip ====="
+if ! command -v unzip &> /dev/null; then
+    sudo apt -y install unzip
+else
+    echo "Unzip already installed, skipping!"
+fi
+
+# create dabase sudo mariadb -e "show databases"
+# import existing database
+# Install laravel
+# sudo apt install python3-certbot-nginx

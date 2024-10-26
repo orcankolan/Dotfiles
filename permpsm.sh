@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chown -R admin:admin ./psm-portal
+chown -R admin:www-data ./psm-portal
 # psm-portal folder first
 find ./psm-portal -type d -exec chmod u=rwx,g=rx,o= '{}' +
 find ./psm-portal -type f -exec chmod u=rw,g=r,o= '{}' +

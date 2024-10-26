@@ -1,9 +1,0 @@
-#!/bin/bash
-shopt -s expand_aliases
-source ~/.shortcuts
-echo "PSM Database is loading from Google drive"
-rc-backup
-uz-latest
-cp-storage-psm
-upto-db
-echo "OK" 

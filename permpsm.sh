@@ -11,3 +11,4 @@ find ./psm-portal/storage -type f -exec chmod u=rw,g=rw,o= '{}' +
 find ./psm-portal/bootstrap/cache -type d -exec chmod u=rwx,g=rwx,o= '{}' +
 find ./psm-portal/bootstrap/cache -type f -exec chmod u=rw,g=rw,o= '{}' +
 
+chmod -R u+x ./psm-portal/node_modules

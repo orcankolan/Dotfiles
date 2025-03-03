@@ -1,5 +1,5 @@
 {
-  "title": "Double tap right_option to open file in finder",
+  "title": "Double tap left_option to open file in finder",
   "rules": [
     {
       "description": "Double tap right_option key to open file in finder",

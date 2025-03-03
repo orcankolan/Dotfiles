@@ -1,0 +1,66 @@
+{
+  "title": "Double tap right_command to open ghostty",
+  "rules": [
+    {
+      "description": "Double tap right_command button to open ghostty",
+      "manipulators": [
+        {
+          "conditions": [
+            {
+              "name": "right_command pressed",
+              "type": "variable_if",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "right_command",
+            "modifiers": {
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "open -a ghostty.app"
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "from": {
+            "key_code": "right_command",
+            "modifiers": {
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "right_command pressed",
+                "value": 1
+              }
+            }
+          ],
+          "to_delayed_action": {
+            "to_if_canceled": [
+              {
+                "set_variable": {
+                  "name": "right_command pressed",
+                  "value": 0
+                }
+              }
+            ],
+            "to_if_invoked": [
+              {
+                "set_variable": {
+                  "name": "right_command pressed",
+                  "value": 0
+                }
+              }
+            ]
+          },
+          "type": "basic"
+        }
+      ]
+    }
+  ]
+}
